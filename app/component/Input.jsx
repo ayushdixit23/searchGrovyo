@@ -1,0 +1,521 @@
+import React, { useContext, useEffect, useState } from "react";
+import { IoDocumentSharp, IoSend } from "react-icons/io5";
+import { RxCross2 } from "react-icons/rx";
+import moment from "moment";
+import {
+  MdOutlineEmojiEmotions,
+  MdOutlineGif,
+  MdOutlineOndemandVideo,
+  MdPermMedia,
+} from "react-icons/md";
+import { TfiImage } from "react-icons/tfi";
+import {
+  Grid,
+  SearchBar,
+  SearchContext,
+  SearchContextManager,
+  SuggestionBar,
+} from "@giphy/react-components";
+import { GiphyFetch } from "@giphy/js-fetch-api";
+import { setPreview } from "../redux/slice/remember";
+import EmojiPicker from "emoji-picker-react";
+import { socketemitfunc } from "../utils/SocketWrapper";
+
+const Input = ({
+  sendMessages,
+  sendgif,
+  setincommsgs,
+  handleSend,
+  image = null,
+  senderId,
+  reply,
+  convId,
+  recieverId,
+  sender_fullname,
+  type,
+  name,
+  content,
+  size,
+  socket,
+  message,
+  setContent,
+  setMessage,
+  setType,
+  dispatch,
+}) => (
+  <SearchContextManager apiKey={"BhiAZ1DOyIHjZlGxrtP2NozVsmpJ27Kz"}>
+    <Component
+      sendMessages={sendMessages}
+      setincommsgs={setincommsgs}
+      image={image}
+      reply={reply}
+      sendgif={sendgif}
+      handleSend={handleSend}
+      senderId={senderId}
+      socket={socket}
+      convId={convId}
+      recieverId={recieverId}
+      sender_fullname={sender_fullname}
+      type={type}
+      name={name}
+      content={content}
+      size={size}
+      message={message}
+      setContent={setContent}
+      setMessage={setMessage}
+      setType={setType}
+      dispatch={dispatch}
+    />
+  </SearchContextManager>
+);
+
+const Component = ({
+  sendMessages,
+  sendgif,
+  image,
+  setincommsgs,
+  socket,
+  handleSend,
+  reply,
+  senderId,
+  convId,
+  recieverId,
+  sender_fullname,
+  type,
+  name,
+  content,
+  size,
+  message,
+  setContent,
+  setMessage,
+  setType,
+  dispatch,
+}) => {
+  // const [message, setMessage] = useState("");
+  const [d, setD] = useState("");
+  const [showgif, setShowgif] = useState(false);
+  const [show, setShow] = useState(false);
+  const [showEmoji, setShowEmoji] = useState(false);
+  const [emoji, setEmoji] = useState("");
+  const { fetchGifs, searchKey } = useContext(SearchContext);
+
+  const mainSendingFunction = () => {
+    try {
+      const rid = Math.floor(Math.random() * 90000000) + 10000000;
+      const timer = moment(new Date()).format("HH:mm").toString();
+      const timestamp = `${new Date()}`;
+      const mess = {
+        sender_fullname: sender_fullname,
+        sender_id: senderId,
+        text: message,
+        createdAt: timestamp,
+        timestamp: timer,
+        mesId: rid,
+        typ:
+          type === "image"
+            ? "image"
+            : type === "video"
+            ? "video"
+            : type === "doc"
+            ? "doc"
+            : "message",
+        convId: convId,
+        reciever: recieverId,
+        isread: false,
+        //      sequence: data.length + 1,
+        sender: { fullname: sender_fullname, _id: senderId },
+        content: { content, name, size },
+        url: content
+          ? typeof content === "string"
+            ? content
+            : URL.createObjectURL(content)
+          : null,
+        status: "active",
+        readby: [],
+        dp: image,
+      };
+
+      if (type == "text" || !type) {
+        console.log("runde");
+        sendMessages(rid);
+        if (message.length > 0) {
+          dispatch(setincommsgs(mess));
+        }
+      } else if (type == "gif") {
+        sendgif(content, rid);
+      }
+      if (type == "image" || type == "video" || type == "doc") {
+        handleSend(rid);
+        dispatch(setincommsgs(mess));
+      } else if (type === "reply") {
+        reply(rid);
+      }
+      dispatch(setMessage(""));
+      dispatch(setContent(""));
+      dispatch(setPreview(false));
+      dispatch(setType("text"));
+      setD("");
+
+      console.log(mess);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      mainSendingFunction();
+    }
+
+    if (e.key === "Backspace") {
+      if (!message) return;
+
+      const cursorPosition = e.target.selectionStart;
+      const value = e.target.value;
+
+      if (cursorPosition > 0) {
+        // Get the character before the cursor
+        const charBeforeCursor = value[cursorPosition - 1];
+
+        // Emoji regex including surrogate pairs
+        const emojiRegex =
+          /([\uD800-\uDBFF][\uDC00-\uDFFF]|[\u2700-\u27BF]|[\uE000-\uF8FF]|[\uD83C-\uDBFF\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83D[\uDC00-\uDDFF])/g;
+
+        // Check if the character before the cursor is an emoji
+        const matchedEmojis = value.slice(0, cursorPosition).match(emojiRegex);
+
+        if (matchedEmojis) {
+          const lastEmoji = matchedEmojis[matchedEmojis.length - 1];
+          const lastEmojiIndex = value
+            .slice(0, cursorPosition)
+            .lastIndexOf(lastEmoji);
+
+          const newMessage =
+            value.slice(0, lastEmojiIndex) + value.slice(cursorPosition);
+          dispatch(setMessage(newMessage));
+        } else {
+          const newMessage =
+            value.slice(0, cursorPosition - 1) + value.slice(cursorPosition);
+          dispatch(setMessage(newMessage));
+        }
+
+        e.preventDefault();
+      }
+    }
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      console.log("Key pressed:", event.key);
+      socketemitfunc({
+        event: "typing",
+        data: {
+          userId: senderId,
+          id: recieverId,
+          roomId: convId,
+          status: true,
+        },
+        socket,
+      });
+    };
+
+    // Attach the event listeners
+    window.addEventListener("keydown", handleKeyDown);
+
+    // Clean up the event listeners on component unmount
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [socket]);
+
+  return (
+    <>
+      {showEmoji && (
+        <div
+          className={`${
+            showEmoji === false
+              ? "w-full  left-0 absolute bottom-0 h-full"
+              : "w-full left-0 absolute bottom-0 h-full"
+          }`}
+        >
+          <EmojiPicker
+            width={"100%"}
+            allowExpandReactions={true}
+            disableAutoFocus={true}
+            reactionsDefaultOpen={true}
+            onEmojiClick={(emo) => {
+              setEmoji((emoji) => emoji + emo.emoji);
+              if (message) {
+                const mes = message + emo.emoji;
+                dispatch(setMessage(mes));
+                emo = "";
+              } else {
+                dispatch(setMessage(emo.emoji));
+                emo = "";
+              }
+            }}
+          />
+        </div>
+      )}
+
+      {showgif && (
+        <div className="h-[50vh] w-full overflow-y-scroll no-scrollbar">
+          <SearchBar />
+          <SuggestionBar />
+
+          <Grid
+            width={800}
+            columns={3}
+            gutter={6}
+            onGifClick={(item, e) => {
+              e.preventDefault();
+              console.log(item, "item");
+              dispatch(setPreview(true));
+              setShow(false);
+              dispatch(
+                setContent({
+                  content: item?.images.downsized.url,
+                })
+              );
+              dispatch(setType("gif"));
+            }}
+            fetchGifs={fetchGifs}
+            key={searchKey}
+          />
+        </div>
+      )}
+
+      <div className="bg-grey-lighter flex items-center">
+        <div className=" flex justify-center gap-2 items-center">
+          {showEmoji ? (
+            <RxCross2
+              className="text-2xl"
+              onClick={() => setShowEmoji(false)}
+            />
+          ) : (
+            <MdOutlineEmojiEmotions
+              className="text-2xl"
+              onClick={() => setShowEmoji(true)}
+            />
+          )}
+
+          <RxCross2
+            className={`text-2xl duration-100 ${
+              show ? "rotate-0" : "rotate-[45deg]"
+            }`} // Adjust rotation based on show state
+            onClick={() => setShow((prevShow) => !prevShow)} // Toggle show state
+          />
+
+          <div
+            className={` ${
+              show
+                ? "absolute left-5 z-40 bottom-12 rounded-[12px]"
+                : " -z-10 absolute left-0 bottom-0 rounded-[0px] "
+            } `}
+          >
+            <div
+              className={`duration-75  ${
+                show === true
+                  ? "flex flex-col bg-white shadow-xl rounded-[12px] gap-4 py-4 justify-center items-center h-full"
+                  : "gap-0 py-0 h-0"
+              }`}
+            >
+              {/* gif  */}
+              <div className="flex items-center hover:bg-slate-50">
+                <MdOutlineGif
+                  onClick={() => {
+                    setShow(false);
+                    setShowgif(true);
+                  }}
+                  className={`duration-75 ${
+                    show === true ? "w-[25px] h-[25px]" : "h-[0px] w-[0px]"
+                  }`}
+                />
+                <div
+                  className={`duration-75 ${
+                    show === true
+                      ? "w-[100px] text-start pl-2"
+                      : "w-[0px] text-[0px] pl-0"
+                  }`}
+                >
+                  GIF
+                </div>
+              </div>
+              {/* image  */}
+              <div className="flex items-center hover:bg-slate-50">
+                <div>
+                  <input
+                    id="image"
+                    type="file"
+                    name="image"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const selectedFile = e.target.files && e.target.files[0];
+                      if (selectedFile) {
+                        dispatch(setType("image"));
+                        setShow(false);
+                        dispatch(
+                          setContent({
+                            content: e.target.files[0],
+                            name: selectedFile.name,
+                            size: selectedFile.size,
+                          })
+                        );
+                        dispatch(setPreview(true));
+                      }
+                      console.log(message);
+                    }}
+                    className="hidden"
+                  />
+                  <label htmlFor="image">
+                    <TfiImage
+                      className={`duration-75 ${
+                        show === true ? "w-[30px] h-[30px]" : "h-[0px] w-[0px]"
+                      }`}
+                    />
+                  </label>
+                </div>
+                <div
+                  className={`duration-75 ${
+                    show === true
+                      ? "w-[100px] text-start pl-2"
+                      : "w-[0px] text-[0px] pl-0"
+                  }`}
+                >
+                  {" "}
+                  Image{" "}
+                </div>
+              </div>
+              {/* video  */}
+              <div className="flex items-center hover:bg-slate-50">
+                <div>
+                  <input
+                    id="video"
+                    type="file"
+                    name="video"
+                    accept="video/*"
+                    onChange={(e) => {
+                      const selectedFile = e.target.files && e.target.files[0];
+                      if (selectedFile) {
+                        setShow(false);
+                        dispatch(setType("video"));
+                        dispatch(
+                          setContent({
+                            content: e.target.files[0],
+                            name: selectedFile.name,
+                            size: selectedFile.size,
+                          })
+                        );
+                        dispatch(setPreview(true));
+                      }
+                    }}
+                    className="hidden"
+                  />
+                  <label htmlFor="video">
+                    <MdOutlineOndemandVideo
+                      className={`duration-75 ${
+                        show === true ? "w-[30px] h-[30px]" : "h-[0px] w-[0px]"
+                      }`}
+                    />
+                  </label>
+                </div>
+                <div
+                  className={`duration-75 ${
+                    show === true
+                      ? "w-[100px] text-start pl-2"
+                      : "w-[0px] text-[0px] pl-0"
+                  }`}
+                >
+                  {" "}
+                  Video{" "}
+                </div>
+              </div>
+              {/* document  */}
+              <div className="flex items-center hover:bg-slate-50">
+                <div className="">
+                  <input
+                    id="document"
+                    type="file"
+                    name="document"
+                    accept=".pdf, .zip"
+                    onChange={(e) => {
+                      const selectedFile = e.target.files && e.target.files[0];
+                      if (selectedFile) {
+                        setShow(false);
+                        dispatch(setType("doc"));
+                        dispatch(
+                          setContent({
+                            content: e.target.files[0],
+                            name: selectedFile.name,
+                            size: selectedFile.size,
+                          })
+                        );
+                      }
+                    }}
+                    className="hidden"
+                  />
+                  <label htmlFor="document">
+                    <IoDocumentSharp
+                      className={`duration-75 ${
+                        show === true ? "w-[30px] h-[30px]" : "h-[0px] w-[0px]"
+                      }`}
+                    />
+                  </label>
+                </div>
+                <div
+                  className={`duration-75 ${
+                    show === true
+                      ? "w-[100px] text-start pl-2"
+                      : "w-[0px] text-[0px] pl-0"
+                  }`}
+                >
+                  {" "}
+                  Document{" "}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex-1 mx-2 border-2 dark:bg-[#354259] dark:border-[#464e59] rounded-lg border-[#f2f2f2]">
+          {!d ? (
+            <input
+              value={message}
+              onKeyDown={handleKeyDown}
+              onChange={(e) => {
+                dispatch(setMessage(e.target.value));
+                if (!content && type !== "reply") {
+                  dispatch(setType("text"));
+                }
+              }}
+              className="w-full  dark:bg-[#354259] rounded-lg   outline-none px-2 py-2"
+              type="text"
+            />
+          ) : (
+            <div className="flex justify-between items-center w-full">
+              <div>{d}</div>
+              <div
+                onClick={() => {
+                  setD("");
+                  setMessage("");
+                }}
+                className="text-xl"
+              >
+                <RxCross2 />
+              </div>
+            </div>
+          )}
+        </div>
+        <div
+          onClick={() => {
+            mainSendingFunction();
+          }}
+        >
+          <IoSend className="text-2xl" />
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Input;
