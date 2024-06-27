@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Page from "./billing/page";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { useAuthContext } from "@/app/utils/AuthWrapper";
@@ -152,8 +151,8 @@ const page = () => {
 
   const isProfileChangedAnswer = isProfileChanged();
   return (
-    <div className="md:h-[100vh] flex flex-1 flex-col dark:bg-[#273142] h-full bg-white">
-      <div className="flex justify-between border-b px-2 sm:px-7 py-2 dark:border-[#3d4654] items-center w-full">
+    <div className="h-[100vh]  flex flex-1 flex-col dark:bg-[#273142]  bg-white">
+      <div className="flex justify-between border-b  px-2 sm:px-7 py-2 dark:border-[#3d4654] items-center w-full">
         <div className=" w-full font-medium text-[#4880FF]">Edit Profile</div>
         <div className="flex justify-end items-center gap-3 w-full flex-grow">
           <div className="flex justify-center items-center gap-2">
@@ -187,9 +186,9 @@ const page = () => {
           )}
         </div>
       </div>
-      <div className="flex justify-center items-center w-full">
+      <div className="flex justify-center h-full  items-center w-full">
         <div className="grid sm:max-md:grid-cols-4 md:grid-cols-8 lg:grid-cols-7 gap-6 p-2 sm:p-5 w-[95%] h-full">
-          <div className="md:col-span-2 sm:max-md:col-span-4 lg:col-span-1 pt-5">
+          <div className="md:col-span-2 md:mt-16 sm:max-md:col-span-4 lg:col-span-1 pt-5">
             <div className="flex justify-center items-center">
               {data?.data?.image ? (
                 <label
@@ -202,8 +201,8 @@ const page = () => {
                       typeof profile.image === "string"
                         ? data?.data?.image
                         : profile.image
-                        ? URL.createObjectURL(profile.image)
-                        : ""
+                          ? URL.createObjectURL(profile.image)
+                          : ""
                     }
                     alt=""
                   />
@@ -267,7 +266,7 @@ const page = () => {
               )}
             </div>
           </div>
-          <div className="w-full flex lg:pl-3 flex-col gap-4 md:col-span-3 sm:max-md:col-span-2 lg:col-span-3">
+          <div className="w-full flex lg:pl-3 md:mt-16 flex-col gap-4 md:col-span-3 sm:max-md:col-span-2 lg:col-span-3">
             <div className="w-full flex flex-col gap-1 sm:max-w-[450px]">
               <div className="w-full text-sm">Your Name</div>
               <div className="flex justify-center items-center dark:bg-[#323d4e] p-1.5 px-3  rounded-xl dark:border-none border w-full">
@@ -316,7 +315,7 @@ const page = () => {
               />
             </div>
           </div>
-          <div className="w-full lg:pl-3 flex flex-col gap-4 md:col-span-3 sm:max-md:col-span-2 lg:col-span-3">
+          <div className="w-full lg:pl-3 flex flex-col md:mt-16 gap-4 md:col-span-3 sm:max-md:col-span-2 lg:col-span-3">
             <div className="w-full flex flex-col gap-1 sm:max-w-[450px]">
               <div className="w-full text-sm">User Name</div>
               <input
@@ -361,7 +360,7 @@ const page = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col justify-end items-center sm:items-end sm:hidden w-full sm:w-[85%] mt-2 sm:mb-3 mb-[10%] gap-2">
+      <div className="flex flex-col  justify-end items-center sm:items-end sm:hidden w-full sm:w-[85%] mt-2 sm:mb-3 mb-[10%] gap-2">
         <div
           className="h-full text-white bg-red-600 rounded-2xl pn:max-sm:w-[90%] py-2 sm:px-6 flex justify-center items-center"
           onClick={() => setOpen(true)}
@@ -370,7 +369,7 @@ const page = () => {
           <div>Log Out</div>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

@@ -6,27 +6,20 @@ import axios from "axios";
 import { API } from "../../../Essentials";
 import { useAuthContext } from "../../utils/AuthWrapper";
 import Chats from "./../../component/Chats";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setVisible } from "../../redux/slice/anotherSlice";
 import { useSearchParams } from "next/navigation";
 import { IoCheckmark, IoChevronBack } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import Convs from "@/app/component/Convs";
 import styles from "../../CustomScrollbarComponent.module.css";
-import {
-  selectlight,
-  graylight,
-  bluelight,
-  bluedark,
-  navdark,
-  selectdark,
-  graydark,
-} from "../../utils/Colors";
+import { setData } from "@/app/redux/slice/lastMessage";
 
 export default function ChatLayout({ children }) {
-  const [data, setData] = useState([]);
+
   const [checkRequest, setCheckRequest] = useState(false);
   const [request, setRequest] = useState([]);
+  const data = useSelector((state) => state.lastmessage.data)
   const { data: user } = useAuthContext();
   const [lastMessage, setLastMessage] = useState("");
   const [load, setLoad] = useState(false);
@@ -36,42 +29,6 @@ export default function ChatLayout({ children }) {
   const params = useSearchParams();
   const id = params.get("id");
   const con = params.get("con");
-  // chats outer
-  //   const fetchConv = useCallback(async () => {
-  //     setLoad(false);
-  //     const id = sessionStorage.getItem("id");
-  //     try {
-  //       const res = await axios.get(`${API}/getconv/${id}`);
-  //       const conv = res.data.data.conv;
-  //       const r = res.data.data.receiver;
-  //       const rdp = res.data.data.receiverdp;
-  //       const m = res.data.data.message;
-  //       if (conv.length > 0) {
-  //         setNo(true);
-  //       } else {
-  //         setNo(false);
-  //       }
-  //       const merge = conv.map((c, i) => ({
-  //         c,
-  //         rec: r[i],
-  //         dp: rdp[i],
-  //         msg: m[i],
-  //         a: i,
-  //       }));
-  //       setData(merge);
-  //       console.log(merge, "fum");
-  //       setCid(merge?.c?._id);
-  //       setLoad(true);
-  //     } catch (e) {
-  //       setLoad(false);
-
-  //       console.log(e.message);
-  //     }
-  //   }, []);
-
-  //   useEffect(() => {
-  //     fetchConv();
-  //   }, [fetchConv]);
 
   const handleMuting = async (currectconvId) => {
     try {
@@ -84,7 +41,7 @@ export default function ChatLayout({ children }) {
         const newData = data.map((f) =>
           f?.convid === currectconvId ? { ...f, ismuted: !f?.ismuted } : f
         );
-        setData(newData);
+        dispatch(setData(newData));
       }
     } catch (error) {
       console.log(error);
@@ -99,7 +56,8 @@ export default function ChatLayout({ children }) {
     try {
       const res = await axios.get(`${API}/fetchallchatsnew/${user?.id}`);
       // setRequest(res.data.conv);
-      setData(res.data.conv);
+      // setData(res.data.conv);
+      dispatch(setData(res.data.conv))
       // setLastMessage(res.data.conv.length - 1[res.data.conv.length - 1]?.)
     } catch (error) {
       console.log(error);
@@ -137,7 +95,7 @@ export default function ChatLayout({ children }) {
 
       if (res?.data?.success) {
         const newData = data.filter((f) => f?.convid !== currectconvId);
-        setData(newData);
+        dispatch(setData(newData));
       }
     } catch (e) {
       detecterror({ e });
@@ -207,11 +165,10 @@ export default function ChatLayout({ children }) {
                   onClick={() => {
                     setClick(true);
                   }}
-                  className={`pn: max - md: hidden justify - center items - center ${
-                    click
-                      ? "w-[100%] rounded-xl hover:bg-[#f9f9f9]   h-[70px] px-4 flex flex-row "
-                      : "w-[100%] rounded-xl bg-[#fff]  h-[70px] px-4 flex flex-row "
-                  }`}
+                  className={`pn: max - md: hidden justify - center items - center ${click
+                    ? "w-[100%] rounded-xl hover:bg-[#f9f9f9]   h-[70px] px-4 flex flex-row "
+                    : "w-[100%] rounded-xl bg-[#fff]  h-[70px] px-4 flex flex-row "
+                    }`}
                 >
                   {/* profile */}
 
@@ -338,6 +295,12 @@ export default function ChatLayout({ children }) {
                   key={i}
                   d={d}
                   handleVisible={() => {
+                    const newData = data.map((f) =>
+                      f?.convid === d?.convid ? { ...f, unread: 0 } : f
+                    );
+                    setTimeout(() => {
+                      dispatch(setData(newData))
+                    }, 1000)
                     dispatch(setVisible(false));
                   }}
                   href={`/main/chat?id=${d?.id}&con=${d?.convid}`}
@@ -385,7 +348,15 @@ export default function ChatLayout({ children }) {
               {data.map((d, i) => (
                 <Convs
                   key={i}
-                  handleVisible={() => {}}
+                  handleVisible={() => {
+                    const newData = data.map((f) =>
+                      f?.convid === d?.convid ? { ...f, unread: 0 } : f
+                    );
+                    setTimeout(() => {
+
+                      dispatch(setData(newData))
+                    }, 1000)
+                  }}
                   d={d}
                   href={`/main/chat/${d?.id}/${d?.convid}`}
                   handleMuting={handleMuting}

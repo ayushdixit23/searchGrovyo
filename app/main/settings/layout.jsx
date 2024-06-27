@@ -58,20 +58,21 @@ export default function SettingLayout({ children }) {
 
   return (
     <>
-      <div className="w-[100%] h-[100vh] bg-white flex pn:max-md:justify-center ">
+      <div className="w-[100%] h-[100vh] bg-white dark:bg-bluedark flex pn:max-md:justify-center ">
         <div className=" pn:max-md:h-[100vh] h-screen overflow-auto scrollbar-hide select-none md:min-w-[390px] lg:w-[360px] flex flex-col items-center md:border-r-2 border-[#f7f7f7] self-end w-full">
           <div
-            className="w-[100%] h-[50px] bg-slate-100
+            className="w-[100%] h-[50px] dark:bg-bluedark bg-slate-100
            flex flex-row px-5 justify-between items-center pn:max-md:h-[50px]"
           >
-            <div className="text-[24px] text-black font-sans font-semibold">
+            <div className="text-[24px] text-black dark:text-white font-sans font-semibold">
               Settings
             </div>
           </div>
 
           <div
-            className={`md:col-span-1  w-full sm:col-span-2 h-[90%] bg-maincolor max-h-screen ${isChildrenHidden ? "pn:max-sm:hidden" : " pn:max-sm:w-full"
-              }`}
+            className={`md:col-span-1  w-full sm:col-span-2 h-[90%] bg-maincolor max-h-screen ${
+              isChildrenHidden ? "pn:max-sm:hidden" : " pn:max-sm:w-full"
+            }`}
           >
             <div className="flex flex-col w-full">
               <div className="flex items-center gap-3 dark:bg-maincolor dark:border dark:border-border sm:max-md:p-2 p-4 rounded-xl">

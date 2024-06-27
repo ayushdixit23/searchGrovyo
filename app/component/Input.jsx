@@ -16,7 +16,6 @@ import {
   SearchContextManager,
   SuggestionBar,
 } from "@giphy/react-components";
-import { GiphyFetch } from "@giphy/js-fetch-api";
 import { setPreview } from "../redux/slice/remember";
 import EmojiPicker from "emoji-picker-react";
 import { socketemitfunc } from "../utils/SocketWrapper";
@@ -232,10 +231,10 @@ const Component = ({
     <>
       {showEmoji && (
         <div
-          className={`${
+          className={` duration-75 z-0 ${
             showEmoji === false
-              ? "w-full  left-0 absolute bottom-0 h-full"
-              : "w-full left-0 absolute bottom-0 h-full"
+              ? "w-full left-0 absolute bottom-0 h-0"
+              : "w-full left-0 absolute bottom-[8%] "
           }`}
         >
           <EmojiPicker
@@ -258,20 +257,28 @@ const Component = ({
         </div>
       )}
 
-      {showgif && (
-        <div className="h-[50vh] w-full overflow-y-scroll no-scrollbar">
+      <div
+        className={`duration-75 ${
+          showgif === true
+            ? "h-[60vh] bg-[#e4e4e4] p-2 gap-2 w-full right-0 absolute bottom-[8vh] overflow-y-scroll no-scrollbar"
+            : "h-[0vh] bg-[#e4e4e4] p-0 gap-0 w-full right-0 absolute bottom-0 overflow-y-scroll no-scrollbar"
+        }`}
+      >
+        <div>
           <SearchBar />
+        </div>
+        <div>
           <SuggestionBar />
-
+        </div>
+        <div>
           <Grid
-            width={800}
-            columns={3}
             gutter={6}
             onGifClick={(item, e) => {
               e.preventDefault();
               console.log(item, "item");
               dispatch(setPreview(true));
               setShow(false);
+              setShowgif(false);
               dispatch(
                 setContent({
                   content: item?.images.downsized.url,
@@ -283,9 +290,9 @@ const Component = ({
             key={searchKey}
           />
         </div>
-      )}
+      </div>
 
-      <div className="bg-grey-lighter flex items-center">
+      <div className="bg-grey-lighter flex z-20 items-center">
         <div className=" flex justify-center gap-2 items-center">
           {showEmoji ? (
             <RxCross2
@@ -301,7 +308,9 @@ const Component = ({
 
           <RxCross2
             className={`text-2xl duration-100 ${
-              show ? "rotate-0" : "rotate-[45deg]"
+              show
+                ? "rotate-0 bg-[#1717177a] p-1 rounded-xl"
+                : "rotate-[45deg] "
             }`} // Adjust rotation based on show state
             onClick={() => setShow((prevShow) => !prevShow)} // Toggle show state
           />
@@ -316,17 +325,19 @@ const Component = ({
             <div
               className={`duration-75  ${
                 show === true
-                  ? "flex flex-col bg-white shadow-xl rounded-[12px] gap-4 py-4 justify-center items-center h-full"
+                  ? "flex flex-col bg-red-300 shadow-xl rounded-[12px] gap-1 p-1 justify-center items-center h-full"
                   : "gap-0 py-0 h-0"
               }`}
             >
               {/* gif  */}
-              <div className="flex items-center hover:bg-slate-50">
+              <div
+                onClick={() => {
+                  setShow(false);
+                  setShowgif(true);
+                }}
+                className="flex items-center py-2 duration-75 rounded-xl hover:bg-slate-50"
+              >
                 <MdOutlineGif
-                  onClick={() => {
-                    setShow(false);
-                    setShowgif(true);
-                  }}
                   className={`duration-75 ${
                     show === true ? "w-[25px] h-[25px]" : "h-[0px] w-[0px]"
                   }`}
@@ -342,52 +353,54 @@ const Component = ({
                 </div>
               </div>
               {/* image  */}
-              <div className="flex items-center hover:bg-slate-50">
-                <div>
-                  <input
-                    id="image"
-                    type="file"
-                    name="image"
-                    accept="image/*"
-                    onChange={(e) => {
-                      const selectedFile = e.target.files && e.target.files[0];
-                      if (selectedFile) {
-                        dispatch(setType("image"));
-                        setShow(false);
-                        dispatch(
-                          setContent({
-                            content: e.target.files[0],
-                            name: selectedFile.name,
-                            size: selectedFile.size,
-                          })
-                        );
-                        dispatch(setPreview(true));
-                      }
-                      console.log(message);
-                    }}
-                    className="hidden"
-                  />
-                  <label htmlFor="image">
+              <label htmlFor="image">
+                <div className="flex items-center py-2 duration-75 rounded-xl hover:bg-slate-50">
+                  <div>
+                    <input
+                      id="image"
+                      type="file"
+                      name="image"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const selectedFile =
+                          e.target.files && e.target.files[0];
+                        if (selectedFile) {
+                          dispatch(setType("image"));
+                          setShow(false);
+                          dispatch(
+                            setContent({
+                              content: e.target.files[0],
+                              name: selectedFile.name,
+                              size: selectedFile.size,
+                            })
+                          );
+                          dispatch(setPreview(true));
+                        }
+                        console.log(message);
+                      }}
+                      className="hidden"
+                    />
+
                     <TfiImage
                       className={`duration-75 ${
                         show === true ? "w-[30px] h-[30px]" : "h-[0px] w-[0px]"
                       }`}
                     />
-                  </label>
+                  </div>
+                  <div
+                    className={`duration-75 ${
+                      show === true
+                        ? "w-[100px] text-start pl-2"
+                        : "w-[0px] text-[0px] pl-0"
+                    }`}
+                  >
+                    {" "}
+                    Image{" "}
+                  </div>
                 </div>
-                <div
-                  className={`duration-75 ${
-                    show === true
-                      ? "w-[100px] text-start pl-2"
-                      : "w-[0px] text-[0px] pl-0"
-                  }`}
-                >
-                  {" "}
-                  Image{" "}
-                </div>
-              </div>
+              </label>
               {/* video  */}
-              <div className="flex items-center hover:bg-slate-50">
+              <div className="flex items-center py-2 duration-75 rounded-xl hover:bg-slate-50">
                 <div>
                   <input
                     id="video"
@@ -431,7 +444,7 @@ const Component = ({
                 </div>
               </div>
               {/* document  */}
-              <div className="flex items-center hover:bg-slate-50">
+              <div className="flex items-center py-2 duration-75 rounded-xl hover:bg-slate-50">
                 <div className="">
                   <input
                     id="document"
@@ -510,8 +523,9 @@ const Component = ({
           onClick={() => {
             mainSendingFunction();
           }}
+          className="bg-[#0075ff] p-2 rounded-xl"
         >
-          <IoSend className="text-2xl" />
+          <IoSend className="text-2xl text-white" />
         </div>
       </div>
     </>

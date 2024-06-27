@@ -1,58 +1,148 @@
-import Link from 'next/link'
-import React, { useState } from 'react'
-import { CiMenuKebab } from 'react-icons/ci'
+import Link from "next/link";
+import React, { useEffect, useRef, useState } from "react";
+import { CiMenuKebab } from "react-icons/ci";
 
 const Convs = ({ d, handleMuting, removingchat, href, handleVisible }) => {
-	const [show, setShow] = useState(false)
-	return (
-		<>
-			<div onClick={() => setShow(false)} className={` fixed inset-0 ${show ? "z-40" : "-z-20"}  w-screen h-screen`}></div>
-			<div
+  const [show, setShow] = useState(false);
+  const [popupPosition, setPopupPosition] = useState("bottom");
 
-				className="w-[100%]  gap-2 py-2 px-2 duration-200 hover:bg-slate-100 hover:dark:bg-gray-700 h-[55px]  flex flex-row justify-between items-center "
-			>
-				<Link onClick={handleVisible} href={href} className=" gap-2 py-2 flex flex-row justify-start items-center ">
-					<div>
-						<img
-							src={d?.pic}
-							className="h-[40px] w-[40px] rounded-[17px] ring-1 dark:ring-[#273142] ring-white bg-white dark:bg-bluedark "
-						/>
-					</div>
-					<div>
-						<div className="text-[15px] font-semibold">
-							{d?.fullname}
-						</div>
-						{d?.msgs[0]?.typ === "message" && <div className="text-[14px] ">{d?.msgs[0]?.text.length > 30 ? `${d?.msgs[0]?.text.slice(0, 15)}..` : d?.msgs[0]?.text}</div>}
-						{d?.msgs[0]?.typ === "image" && <div>Image</div>}
-						{d?.msgs[0]?.typ === "video" && <div>Video</div>}
-						{d?.msgs[0]?.typ === "doc" && <div>Document</div>}
-						{d?.msgs[0]?.typ === "glimpse" && <div>Glimpse</div>}
-						{d?.msgs[0]?.typ === "reply" && <div className='text-[14px]'>{d?.msgs[0]?.text.length > 30 ? `${d?.msgs[0]?.text.slice(0, 15)}..` : d?.msgs[0]?.text}</div>}
-						{d?.msgs[0]?.typ === "post" && <div>Post</div>}
-						{d?.msgs[0]?.typ === "gif" && <div>Gif</div>}
-						{d?.msgs[0]?.typ === "product" && <div>Product</div>}
-					</div>
-				</Link>
-				<div className="flex justify-center items-center gap-2">
+  const iconRef = useRef(null);
+  const handleIconClick = () => {
+    const iconRect = iconRef.current.getBoundingClientRect();
+    const iconBottom = iconRect.bottom;
+    if (window.innerHeight - iconBottom < 200) {
+      setPopupPosition("top");
+    } else {
+      setPopupPosition("bottom");
+    }
+  };
 
-					{d?.unread != "0" && <div className="w-6 h-6 p-1 text-xs bg-blue-700 text-white flex justify-center items-center rounded-full">{d?.unread}</div>}
-					<div className="relative">
-						<CiMenuKebab onClick={() => setShow(true)} />
+  useEffect(() => {
+    if (!show) {
+      setPopupPosition("bottom"); // Reset popup position when show is false
+    }
+  }, [show]);
 
-						{show && <div className="absolute top-2 -left-[100px] bg-[#333]  text-white py-3 rounded-xl z-40 w-[100px]">
-							<div className="flex flex-col ">
-								<div className='hover:bg-[#555]  mb-2 px-3'>{d?.ismuted ? <div onClick={() => handleMuting(d?.convid)}>UnMute</div> : <div onClick={() => handleMuting(d?.convid)}>Mute</div>}</div>
-								<div className='hover:bg-[#555]   px-3' onClick={() => removingchat(d?.convid)}>Delete</div>
-							</div>
-						</div>}
-					</div>
+  return (
+    <>
+      {/* {console.log(d, "ushj")} */}
+      <div
+        onClick={() => setShow(false)}
+        className={` fixed inset-0 ${
+          show ? "z-40" : "-z-20"
+        }  w-screen h-screen`}
+      ></div>
+      <div className="w-[100%] gap-2 py-2 px-2 duration-200 hover:bg-slate-100 hover:dark:bg-gray-700 h-[55px]  flex flex-row justify-between items-center ">
+        <Link
+          onClick={handleVisible}
+          href={href}
+          className=" gap-2 py-2 w-full flex flex-row justify-start items-center "
+        >
+          <div>
+            <img
+              src={d?.pic}
+              className="h-[40px] w-[40px] rounded-[17px] ring-1 dark:ring-[#273142] ring-white bg-white dark:bg-bluedark "
+            />
+          </div>
+          <div>
+            <div className="text-[15px] font-semibold">{d?.fullname}</div>
+            {d?.msgs[0]?.typ === "message" && (
+              <div className="text-[14px] ">
+                {d?.msgs[0]?.text.length > 30
+                  ? `${d?.msgs[0]?.text.slice(0, 15)}..`
+                  : d?.msgs[0]?.text}
+              </div>
+            )}
+            {d?.msgs[0]?.typ === "image" && <div>Image</div>}
+            {d?.msgs[0]?.typ === "video" && <div>Video</div>}
+            {d?.msgs[0]?.typ === "doc" && <div>Document</div>}
+            {d?.msgs[0]?.typ === "glimpse" && <div>Glimpse</div>}
+            {d?.msgs[0]?.typ === "reply" && (
+              <div className="text-[14px]">
+                {d?.msgs[0]?.text.length > 30
+                  ? `${d?.msgs[0]?.text.slice(0, 15)}..`
+                  : d?.msgs[0]?.text}
+              </div>
+            )}
+            {d?.msgs[0]?.typ === "post" && <div>Post</div>}
+            {d?.msgs[0]?.typ === "gif" && <div>Gif</div>}
+            {d?.msgs[0]?.typ === "product" && <div>Product</div>}
+          </div>
+        </Link>
+        <div className="flex relative justify-center items-center gap-2">
+          {d?.unread != "0" && (
+            <div className="w-6 h-6 p-1 text-xs bg-blue-700 text-white flex justify-center items-center rounded-full">
+              {d?.unread}
+            </div>
+          )}
 
-				</div>
-			</div >
+          <div className="relative">
+            <CiMenuKebab onClick={() => setShow(true)} />
 
-			<div className="w-[99%] border-b-[0.5px] "></div>
-		</>
-	)
+            <div
+              className={`absolute  duration-100 bg-white dark:text-white dark:bg-bluedark ${
+                show
+                  ? "top-2 w-auto h-auto text-sm -left-[65px]"
+                  : "w-0 h-0 left-0 top-0 text-[0px]"
+              } text-white py-3 rounded-xl z-40`}
+            >
+              <div className="flex gap-1 flex-col ">
+                <div className="hover:bg-[#555]  mb-2 px-3">
+                  {d?.ismuted ? (
+                    <div onClick={() => handleMuting(d?.convid)}>UnMute</div>
+                  ) : (
+                    <div onClick={() => handleMuting(d?.convid)}>Mute</div>
+                  )}
+                </div>
+                <div
+                  className="hover:bg-[#555]   px-3"
+                  onClick={() => removingchat(d?.convid)}
+                >
+                  Delete
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="w-[99%] border-b-[0.5px] "></div>
+    </>
+  );
+};
+
+export default Convs;
+
+{
+  /* <div
+            ref={iconRef}
+            onClick={() => {
+              setShow(true);
+            }}
+            className={`relative group-hover:absolute hidden bg-transparent rounded-2xl group-hover:block group-hover:shadow-2xl shadow-black top-2 right-0`}
+          >
+            <CiMenuKebab onClick={() => setShow(true)} />
+          </div>
+          <div
+            className={`${
+              popupPosition === "top" ? "bottom-0" : "top-4" // Dynamically set position based on popupPosition state
+            } absolute z-40  shadow-2xl  text-black  duration-100
+                      ${
+                        show
+                          ? "rounded-[15px] bg-white shadow-2xl  py-2 w-[80px] h-[110px]"
+                          : "rounded-[0px] bg-white shadow-0 py-0 w-[0px] h-[0px]"
+                      } `}
+          >
+            {d?.ismuted ? (
+              <div onClick={() => handleMuting(d?.convid)}>UnMute</div>
+            ) : (
+              <div onClick={() => handleMuting(d?.convid)}>Mute</div>
+            )}
+            <div
+              className="hover:bg-[#555]   px-3"
+              onClick={() => removingchat(d?.convid)}
+            >
+              Delete
+            </div>
+          </div> */
 }
-
-export default Convs

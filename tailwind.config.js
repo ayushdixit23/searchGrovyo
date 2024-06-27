@@ -21,20 +21,23 @@ module.exports = {
       txl: "1600px",
     },
     extend: {
+      backgroundImage: {
+        chatbg: "url('./assets/chatbg.png')",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        bluedark:"hsl(var(--bluedark))",
-        selectlight:"hsl(var(--selectlight))",
-        graylight:"hsl(var(--graylight))",
+        bluedark: "hsl(var(--bluedark))",
+        selectlight: "hsl(var(--selectlight))",
+        graylight: "hsl(var(--graylight))",
 
-        bluelight:"hsl(var(--bluelight))",
-        navdark:"hsl(var(--navdark))",
-        selectdark:"hsl(var(--selectdark))",
-        graydark:"hsl(var(--graydark))",
+        bluelight: "hsl(var(--bluelight))",
+        navdark: "hsl(var(--navdark))",
+        selectdark: "hsl(var(--selectdark))",
+        graydark: "hsl(var(--graydark))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",

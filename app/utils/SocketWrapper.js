@@ -13,16 +13,16 @@ export const useSocketContext = () => {
 
 //emitting function
 export const socketemitfunc = async ({ event, data, socket }) => {
-  console.log("Socket Connection:", socket.connected);
-  if (!socket.connected) {
-    socket.connect();
-    socket.emit(event, data);
+  console.log("Socket Connection:", socket?.connected);
+  if (!socket?.connected) {
+    socket?.connect();
+    socket?.emit(event, data);
     setTimeout(() => {
-      console.log("Reconnecting...", socket.connected);
+      console.log("Reconnecting...", socket?.connected);
     }, 1000);
   } else {
     console.log("Connecting...");
-    socket.emit(event, data);
+    socket?.emit(event, data);
   }
 };
 

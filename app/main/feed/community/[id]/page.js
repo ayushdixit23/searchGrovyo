@@ -262,10 +262,10 @@ function Components({ params }) {
         const newwfeed = com.map((d) =>
           d?.posts._id === postId
             ? {
-                ...d,
-                liked: false,
-                posts: { ...d.posts, likes: Number(d?.posts?.likes) - 1 },
-              }
+              ...d,
+              liked: false,
+              posts: { ...d.posts, likes: Number(d?.posts?.likes) - 1 },
+            }
             : d
         );
         setCom(newwfeed);
@@ -273,10 +273,10 @@ function Components({ params }) {
         const newwfeed = com.map((d) =>
           d?.posts._id === postId
             ? {
-                ...d,
-                liked: true,
-                posts: { ...d.posts, likes: Number(d?.posts?.likes) + 1 },
-              }
+              ...d,
+              liked: true,
+              posts: { ...d.posts, likes: Number(d?.posts?.likes) + 1 },
+            }
             : d
         );
         setCom(newwfeed);
@@ -329,28 +329,28 @@ function Components({ params }) {
         type === "image"
           ? "image"
           : type === "video"
-          ? "video"
-          : type === "doc"
-          ? "doc"
-          : "doc",
+            ? "video"
+            : type === "doc"
+              ? "doc"
+              : "doc",
         {
           uri: content,
           type:
             type === "image"
               ? "image/jpg"
               : type === "video"
-              ? "video/mp4"
-              : type === "doc"
-              ? content?.type
-              : content?.type,
+                ? "video/mp4"
+                : type === "doc"
+                  ? content?.type
+                  : content?.type,
           name:
             type === "image"
               ? "image.jpg"
               : type === "video"
-              ? "video.mp4"
-              : type === "doc"
-              ? "doc.pdf"
-              : "doc.pdf",
+                ? "video.mp4"
+                : type === "doc"
+                  ? "doc.pdf"
+                  : "doc.pdf",
         }
       );
       form.append("data", JSON.stringify(mess));
@@ -431,7 +431,7 @@ function Components({ params }) {
         socket,
       });
 
-      return () => {};
+      return () => { };
     }
   };
 
@@ -467,7 +467,7 @@ function Components({ params }) {
       socket,
     });
 
-    return () => {};
+    return () => { };
   };
 
   const replyFunc = async () => {
@@ -806,11 +806,10 @@ function Components({ params }) {
 
         {!optionType && (
           <div
-            className={`${
-              currentState === "chat"
-                ? "h-[84%] w-full relative overflow-y-scroll"
-                : "h-[92%] w-full relative overflow-y-scroll"
-            }`}
+            className={`${currentState === "chat"
+              ? "h-[84%] w-full relative overflow-y-scroll"
+              : "h-[92%] w-full relative overflow-y-scroll"
+              }`}
           >
             <div
               className="flex justify-center z-10  w-full py-2
@@ -823,7 +822,10 @@ function Components({ params }) {
                   key={i}
                   className="w-full flex justify-center"
                 >
-                  <div className="flex items-center dark:text-black bg-[#f2f2f2] dark:bg-[#7D8BA8] px-4 rounded-lg ">
+                  <div className={`flex items-center px-4 ${tId === d?._id
+                    ? "bg-blue-600  text-white"
+                    : "bg-[#f2f2f2] dark:text-black"
+                    } rounded-lg `}>
                     {d?.title}
                   </div>
                 </div>

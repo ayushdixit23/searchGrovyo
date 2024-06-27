@@ -1,15 +1,7 @@
-// import { MediaPlayer, MediaProvider } from '@vidstack/react'
-// import {
-// 	defaultLayoutIcons,
-// 	DefaultVideoLayout,
-// } from "@vidstack/react/player/layouts/default";
-
 import React, { useEffect, useRef, useState } from "react";
-import { HiOutlineDotsVertical } from "react-icons/hi";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import axios from "axios";
 import { API } from "../../Essentials";
-import { socketemitfunc } from "../utils/SocketWrapper";
 import {
   setHiddenMsgs,
   setMessages,
@@ -17,8 +9,8 @@ import {
   setType,
 } from "../redux/slice/messageSlice";
 import { useSelector } from "react-redux";
-import { FaAngleDown } from "react-icons/fa6";
 import { IoDocumentSharp } from "react-icons/io5";
+import VideoPlayer from "./VideoPlayer";
 
 const PrivateChats = React.forwardRef(
   (
@@ -138,37 +130,41 @@ const PrivateChats = React.forwardRef(
     return (
       <>
         {delopen && (
-          <div className="fixed inset-0 z-40 flex justify-center items-center w-screen h-screen">
-            <div className="flex justify-center flex-col items-center h-full w-[40%]">
-              <div className="text-xl">Delete Message</div>
-              <div>
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 transition-opacity duration-300 ease-out">
+            <div className="bg-white dark:bg-bluedark p-6 rounded-lg shadow-lg max-w-md w-full transform transition-transform duration-300 ease-out scale-95">
+              <h2 className="text-2xl font-bold mb-4">Delete Message</h2>
+              <p className="mb-6 text-gray-600">
+                Are you sure you want to delete this message?
+              </p>
+              <div className="flex flex-col justify-end items-end gap-3 ">
                 {data?.id === d?.sender?._id && (
-                  <div
+                  <button
+                    className="px-4 py-2 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
                     onClick={() => handleDelete("everyone")}
-                    className="p-2 px-5 rounded-xl bg-black text-white"
                   >
                     Delete for Everyone
-                  </div>
+                  </button>
                 )}
-                <div
+                <button
+                  className="px-4 py-2 text-sm bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2"
                   onClick={() => handleDelete("me")}
-                  className="p-2 px-5 rounded-xl bg-black text-white"
                 >
-                  Delete for me
-                </div>
-                <div
+                  Delete for Me
+                </button>
+                <button
+                  className="px-4 py-2 text-sm bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-offset-2"
                   onClick={() => {
                     setDelopen(false);
                     setMsgId("");
                   }}
-                  className="p-2 px-5 rounded-xl bg-black text-white"
                 >
                   Cancel
-                </div>
+                </button>
               </div>
             </div>
           </div>
         )}
+
         <div
           onClick={() => setClick(false)}
           className={`fixed inset-0 duration-100 ${
@@ -205,8 +201,8 @@ const PrivateChats = React.forwardRef(
                 }}
                 className={`relative group h-auto flex justify-start items-center mt-6 ${
                   data?.id === d?.sender?._id
-                    ? "bg-[#0075ff]  text-white p-2 px-4 md:text-[14px]  rounded-l-2xl pn:max-sm:text-[14px] max-w-[650px]  rounded-br-2xl "
-                    : "bg-[#ffffff]  dark:text-black dark:bg-gray-100 p-2 px-4 rounded-r-2xl md:text-[14px] pn:max-sm:text-[14px] max-w-[650px] rounded-bl-2xl"
+                    ? "bg-[#0075ff] text-white p-2 px-4 md:text-[14px]  rounded-l-2xl pn:max-sm:text-[14px] max-w-[650px]  rounded-br-2xl "
+                    : "bg-[#ffffff] dark:text-black dark:bg-gray-100 p-2 px-4 rounded-r-2xl md:text-[14px] pn:max-sm:text-[14px] max-w-[650px] rounded-bl-2xl"
                 } `}
                 style={{
                   overflowWrap: "break-word",
@@ -216,7 +212,9 @@ const PrivateChats = React.forwardRef(
               >
                 <div className="">
                   {d.status === "deleted" ? (
-                    <div className="italic">This Message was Deleted!</div>
+                    <div className="italic text-[14px] font-semibold px-2">
+                      This Message was Deleted!
+                    </div>
                   ) : (
                     <>
                       {d?.text?.match(/https:\/\/[^\s]+/g)
@@ -260,19 +258,18 @@ const PrivateChats = React.forwardRef(
                   )}
                 </div>
 
-                <div
-                  onClick={() => {
-                    setClick(true);
-                    handleIconClick();
-                  }}
-                  ref={iconRef}
-                  className={`${
-                    data?.id === d?.sender?._id ? "right-0" : "left-0"
-                  } relative group-hover:absolute hidden bg-transparent rounded-2xl group-hover:block group-hover:shadow-2xl shadow-black top-2 right-0`}
-                >
-                  <BsThreeDotsVertical size={16} className=""/>
-                </div>
-
+                {d?.status !== "deleted" && (
+                  <div
+                    onClick={() => {
+                      setClick(true);
+                      handleIconClick();
+                    }}
+                    ref={iconRef}
+                    className={` relative group-hover:absolute hidden bg-transparent rounded-2xl group-hover:block group-hover:shadow-2xl shadow-black top-2 right-0`}
+                  >
+                    <BsThreeDotsVertical size={16} className="" />
+                  </div>
+                )}
                 <div
                   className={`${
                     popupPosition === "top" ? "bottom-0" : "top-4" // Dynamically set position based on popupPosition state
@@ -289,7 +286,10 @@ const PrivateChats = React.forwardRef(
                 >
                   {d?.hidden?.includes(data?.id) ? (
                     <div
-                      onClick={() => UnhideChats(d?.mesId)}
+                      onClick={() => {
+                        UnhideChats(d?.mesId);
+                        setClick(false);
+                      }}
                       className={`duration-100 ${
                         click === true
                           ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
@@ -300,7 +300,10 @@ const PrivateChats = React.forwardRef(
                     </div>
                   ) : (
                     <div
-                      onClick={() => hideChats(d?.mesId)}
+                      onClick={() => {
+                        hideChats(d?.mesId);
+                        setClick(false);
+                      }}
                       className={`duration-100 ${
                         click === true
                           ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
@@ -311,7 +314,10 @@ const PrivateChats = React.forwardRef(
                     </div>
                   )}
                   <div
-                    onClick={() => deletepopUp(d?.mesId)}
+                    onClick={() => {
+                      deletepopUp(d?.mesId);
+                      setClick(false);
+                    }}
                     className={`duration-100 ${
                       click === true
                         ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
@@ -330,6 +336,7 @@ const PrivateChats = React.forwardRef(
                             replyId: d?.mesId,
                           })
                         );
+                        setClick(false);
                       }}
                       className={`duration-100 ${
                         click === true
@@ -358,13 +365,13 @@ const PrivateChats = React.forwardRef(
                 }}
                 className={`relative group h-auto  flex justify-center items-center mt-6 ${
                   data?.id === d?.sender?._id
-                    ? "bg-[#0075ff]  text-white p-2  rounded-l-2xl pn:max-sm:text-[14px] max-w-[320px] rounded-br-2xl "
+                    ? "bg-[#0075ff]  text-white  rounded-l-2xl pn:max-sm:text-[14px] max-w-[320px] rounded-br-2xl "
                     : "bg-[#ffffff] dark:text-black dark:bg-gray-100 p-2 rounded-r-2xl pn:max-sm:text-[14px] max-w-[320px] rounded-bl-2xl"
                 }`}
               >
                 <div className="p-2">
                   {d.status === "deleted" ? (
-                    <div className="italic">This Message was Deleted!</div>
+                    <div>This Message was Deleted!</div>
                   ) : (
                     <>
                       {d?.text?.match(/https:\/\/[^\s]+/g) ? (
@@ -438,68 +445,100 @@ const PrivateChats = React.forwardRef(
                   )}
                 </div>
 
-                <div
-                  onClick={() => {
-                    setClick(true);
-                    handleIconClick();
-                  }}
-                  ref={iconRef}
-                  className={`${
-                    data?.id === d?.sender?._id ? "right-0" : "left-0"
-                  } relative group-hover:absolute hidden bg-transparent group-hover:block   top-2 right-0`}
-                >
-                  <BsThreeDotsVertical size={16} />
-                </div>
-                {click && (
+                {d?.status !== "deleted" && (
                   <div
-                    className={`${
-                      popupPosition === "top" ? "bottom-20" : "top-4" // Dynamically set position based on popupPosition state
-                    } absolute z-40 ${
-                      data?.id === d?.sender?._id
-                        ? "right-0 bg-white"
-                        : "left-0 bg-[#f3f3f3]"
-                    }   shadow-2xl  text-black  
-                     rounded-lg py-2 w-[80px] h-[110px]  `}
+                    onClick={() => {
+                      setClick(true);
+                      handleIconClick();
+                    }}
+                    ref={iconRef}
+                    className={` relative group-hover:absolute hidden bg-transparent rounded-2xl group-hover:block group-hover:shadow-2xl shadow-black top-2 right-0`}
                   >
-                    {d?.hidden?.includes(data?.id) ? (
-                      <div
-                        onClick={() => UnhideChats(d?.mesId)}
-                        className="text-sm my-2 px-3 hover:bg-[#f1f1f1] cursor-pointer"
-                      >
-                        Unhide
-                      </div>
-                    ) : (
-                      <div
-                        onClick={() => hideChats(d?.mesId)}
-                        className="text-sm my-2 px-3 hover:bg-[#f3f3f3] cursor-pointer"
-                      >
-                        Hide
-                      </div>
-                    )}
-                    <div
-                      onClick={() => deletepopUp(d?.mesId)}
-                      className="text-sm my-2 px-3 hover:bg-[#f3f3f3] cursor-pointer"
-                    >
-                      Delete
-                    </div>
-                    {showHiddenreply && (
-                      <div
-                        onClick={() => {
-                          dispatch(setType("reply"));
-                          dispatch(
-                            setReplyFunction({
-                              reply: d?.text,
-                              replyId: d?.mesId,
-                            })
-                          );
-                        }}
-                        className="text-sm my-2 px-3 hover:bg-[#f3f3f3] cursor-pointer"
-                      >
-                        Reply
-                      </div>
-                    )}
+                    <BsThreeDotsVertical size={16} className="" />
                   </div>
                 )}
+
+                <div
+                  className={`${
+                    popupPosition === "top" ? "bottom-0" : "top-4" // Dynamically set position based on popupPosition state
+                  } absolute z-40 ${
+                    data?.id === d?.sender?._id
+                      ? "right-0"
+                      : "left-0 bg-[#f3f3f3]"
+                  }   shadow-2xl  text-black  duration-100
+                      ${
+                        click === true
+                          ? "rounded-[15px] bg-white shadow-2xl  py-2 w-[80px] h-[110px]"
+                          : "rounded-[0px] bg-white shadow-0 py-0 w-[0px] h-[0px]"
+                      } `}
+                >
+                  {d?.hidden?.includes(data?.id) ? (
+                    <div
+                      onClick={() => {
+                        UnhideChats(d?.mesId);
+                        setClick(false);
+                      }}
+                      className={`duration-100 ${
+                        click === true
+                          ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          : "text-[0px] my-0 px-0"
+                      }`}
+                    >
+                      Unhide
+                    </div>
+                  ) : (
+                    <div
+                      onClick={() => {
+                        hideChats(d?.mesId);
+                        setClick(false);
+                      }}
+                      className={`duration-100 ${
+                        click === true
+                          ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          : "text-[0px] my-0 px-0"
+                      }`}
+                    >
+                      Hide
+                    </div>
+                  )}
+                  <div
+                    onClick={() => {
+                      deletepopUp(d?.mesId);
+                      setClick(false);
+                    }}
+                    className={`duration-100 ${
+                      click === true
+                        ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                        : "text-[0px] my-0 px-0"
+                    }`}
+                  >
+                    Delete
+                  </div>
+                  {showHiddenreply && (
+                    <div
+                      onClick={() => {
+                        dispatch(setType("reply"));
+                        dispatch(
+                          setReplyFunction({
+                            reply: d?.text,
+                            replyId: d?.mesId,
+                          })
+                        );
+                        setClick(false);
+                      }}
+                      className={`duration-100 ${
+                        click === true
+                          ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          : "text-[0px] my-0 px-0"
+                      }`}
+                    >
+                      Reply
+                    </div>
+                  )}
+
+                  {/* <div></div>
+				<div></div> */}
+                </div>
               </div>
             )}
 
@@ -525,7 +564,7 @@ const PrivateChats = React.forwardRef(
                   }`}
                 >
                   {d.status === "deleted" ? (
-                    <div className="italic">This Message was Deleted!</div>
+                    <div>This Message was Deleted!</div>
                   ) : (
                     <div className="">
                       <img
@@ -551,68 +590,100 @@ const PrivateChats = React.forwardRef(
                     </div>
                   )}
                 </div>
-                <div
-                  onClick={() => {
-                    setClick(true);
-                    handleIconClick();
-                  }}
-                  ref={iconRef}
-                  className={`${
-                    data?.id === d?.sender?._id ? "right-0" : "left-0"
-                  } relative group-hover:absolute hidden bg-transparent group-hover:block   top-2 right-0`}
-                >
-                  <BsThreeDotsVertical size={16} />
-                </div>
-                {click && (
+                {d?.status !== "deleted" && (
                   <div
-                    className={`${
-                      popupPosition === "top" ? "bottom-20" : "top-4" // Dynamically set position based on popupPosition state
-                    } absolute z-40 ${
-                      data?.id === d?.sender?._id
-                        ? "right-0 bg-white"
-                        : "left-0 bg-[#f3f3f3]"
-                    }   shadow-2xl  text-black  
-                     rounded-lg py-2 w-[80px] h-[110px]  `}
+                    onClick={() => {
+                      setClick(true);
+                      handleIconClick();
+                    }}
+                    ref={iconRef}
+                    className={` relative group-hover:absolute hidden bg-transparent rounded-2xl group-hover:block group-hover:shadow-2xl shadow-black top-2 right-0`}
                   >
-                    {d?.hidden?.includes(data?.id) ? (
-                      <div
-                        onClick={() => UnhideChats(d?.mesId)}
-                        className="text-sm my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
-                      >
-                        Unhide
-                      </div>
-                    ) : (
-                      <div
-                        onClick={() => hideChats(d?.mesId)}
-                        className="text-sm my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
-                      >
-                        Hide
-                      </div>
-                    )}
-                    <div
-                      onClick={() => deletepopUp(d?.mesId)}
-                      className="text-sm my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
-                    >
-                      Delete
-                    </div>
-                    {showHiddenreply && (
-                      <div
-                        onClick={() => {
-                          dispatch(setType("reply"));
-                          dispatch(
-                            setReplyFunction({
-                              reply: "Image",
-                              replyId: d?.mesId,
-                            })
-                          );
-                        }}
-                        className="text-sm my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
-                      >
-                        Reply
-                      </div>
-                    )}
+                    <BsThreeDotsVertical size={16} className="" />
                   </div>
                 )}
+
+                <div
+                  className={`${
+                    popupPosition === "top" ? "bottom-0" : "top-4" // Dynamically set position based on popupPosition state
+                  } absolute z-40 ${
+                    data?.id === d?.sender?._id
+                      ? "right-0"
+                      : "left-0 bg-[#f3f3f3]"
+                  }   shadow-2xl  text-black  duration-100
+                      ${
+                        click === true
+                          ? "rounded-[15px] bg-white shadow-2xl  py-2 w-[80px] h-[110px]"
+                          : "rounded-[0px] bg-white shadow-0 py-0 w-[0px] h-[0px]"
+                      } `}
+                >
+                  {d?.hidden?.includes(data?.id) ? (
+                    <div
+                      onClick={() => {
+                        UnhideChats(d?.mesId);
+                        setClick(false);
+                      }}
+                      className={`duration-100 ${
+                        click === true
+                          ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          : "text-[0px] my-0 px-0"
+                      }`}
+                    >
+                      Unhide
+                    </div>
+                  ) : (
+                    <div
+                      onClick={() => {
+                        hideChats(d?.mesId);
+                        setClick(false);
+                      }}
+                      className={`duration-100 ${
+                        click === true
+                          ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          : "text-[0px] my-0 px-0"
+                      }`}
+                    >
+                      Hide
+                    </div>
+                  )}
+                  <div
+                    onClick={() => {
+                      deletepopUp(d?.mesId);
+                      setClick(false);
+                    }}
+                    className={`duration-100 ${
+                      click === true
+                        ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                        : "text-[0px] my-0 px-0"
+                    }`}
+                  >
+                    Delete
+                  </div>
+                  {showHiddenreply && (
+                    <div
+                      onClick={() => {
+                        dispatch(setType("reply"));
+                        dispatch(
+                          setReplyFunction({
+                            reply: "Image",
+                            replyId: d?.mesId,
+                          })
+                        );
+                        setClick(false);
+                      }}
+                      className={`duration-100 ${
+                        click === true
+                          ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          : "text-[0px] my-0 px-0"
+                      }`}
+                    >
+                      Reply
+                    </div>
+                  )}
+
+                  {/* <div></div>
+				<div></div> */}
+                </div>
               </div>
             )}
 
@@ -621,7 +692,7 @@ const PrivateChats = React.forwardRef(
                 onDoubleClick={() => {
                   dispatch(setType("reply"));
                   dispatch(
-                    setReplyFunction({ reply: d?.text, replyId: d?.mesId })
+                    setReplyFunction({ reply: "Document", replyId: d?.mesId })
                   );
                 }}
                 className={`relative group ${
@@ -632,7 +703,7 @@ const PrivateChats = React.forwardRef(
               >
                 <div className="group-hover:pr-2">
                   {d.status === "deleted" ? (
-                    <div className="italic">This Message was Deleted!</div>
+                    <div>This Message was Deleted!</div>
                   ) : (
                     <a
                       href={d.url}
@@ -649,68 +720,100 @@ const PrivateChats = React.forwardRef(
                   )}
                 </div>
 
-                <div
-                  onClick={() => {
-                    setClick(true);
-                    handleIconClick();
-                  }}
-                  ref={iconRef}
-                  className={`${
-                    data?.id === d?.sender?._id ? "right-0" : "left-0"
-                  } relative group-hover:absolute hidden bg-transparent group-hover:block   top-2 right-0`}
-                >
-                  <BsThreeDotsVertical size={16} />
-                </div>
-                {click && (
+                {d?.status !== "deleted" && (
                   <div
-                    className={`${
-                      popupPosition === "top" ? "bottom-20" : "top-4" // Dynamically set position based on popupPosition state
-                    } absolute z-40 ${
-                      data?.id === d?.sender?._id
-                        ? "right-0 bg-white"
-                        : "left-0 bg-[#f3f3f3]"
-                    }   shadow-2xl  text-black  
-                     rounded-lg py-2 w-[80px] h-[110px]  `}
+                    onClick={() => {
+                      setClick(true);
+                      handleIconClick();
+                    }}
+                    ref={iconRef}
+                    className={` relative group-hover:absolute hidden bg-transparent rounded-2xl group-hover:block group-hover:shadow-2xl shadow-black top-2 right-0`}
                   >
-                    {d?.hidden?.includes(data?.id) ? (
-                      <div
-                        onClick={() => UnhideChats(d?.mesId)}
-                        className="text-sm my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
-                      >
-                        Unhide
-                      </div>
-                    ) : (
-                      <div
-                        onClick={() => hideChats(d?.mesId)}
-                        className="text-sm my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
-                      >
-                        Hide
-                      </div>
-                    )}
-                    <div
-                      onClick={() => deletepopUp(d?.mesId)}
-                      className="text-sm my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
-                    >
-                      Delete
-                    </div>
-                    {showHiddenreply && (
-                      <div
-                        onClick={() => {
-                          dispatch(setType("reply"));
-                          dispatch(
-                            setReplyFunction({
-                              reply: "Image",
-                              replyId: d?.mesId,
-                            })
-                          );
-                        }}
-                        className="text-sm my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
-                      >
-                        Reply
-                      </div>
-                    )}
+                    <BsThreeDotsVertical size={16} className="" />
                   </div>
                 )}
+
+                <div
+                  className={`${
+                    popupPosition === "top" ? "bottom-0" : "top-4" // Dynamically set position based on popupPosition state
+                  } absolute z-40 ${
+                    data?.id === d?.sender?._id
+                      ? "right-0"
+                      : "left-0 bg-[#f3f3f3]"
+                  }   shadow-2xl  text-black  duration-100
+                      ${
+                        click === true
+                          ? "rounded-[15px] bg-white shadow-2xl  py-2 w-[80px] h-[110px]"
+                          : "rounded-[0px] bg-white shadow-0 py-0 w-[0px] h-[0px]"
+                      } `}
+                >
+                  {d?.hidden?.includes(data?.id) ? (
+                    <div
+                      onClick={() => {
+                        UnhideChats(d?.mesId);
+                        setClick(false);
+                      }}
+                      className={`duration-100 ${
+                        click === true
+                          ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          : "text-[0px] my-0 px-0"
+                      }`}
+                    >
+                      Unhide
+                    </div>
+                  ) : (
+                    <div
+                      onClick={() => {
+                        hideChats(d?.mesId);
+                        setClick(false);
+                      }}
+                      className={`duration-100 ${
+                        click === true
+                          ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          : "text-[0px] my-0 px-0"
+                      }`}
+                    >
+                      Hide
+                    </div>
+                  )}
+                  <div
+                    onClick={() => {
+                      deletepopUp(d?.mesId);
+                      setClick(false);
+                    }}
+                    className={`duration-100 ${
+                      click === true
+                        ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                        : "text-[0px] my-0 px-0"
+                    }`}
+                  >
+                    Delete
+                  </div>
+                  {showHiddenreply && (
+                    <div
+                      onClick={() => {
+                        dispatch(setType("reply"));
+                        dispatch(
+                          setReplyFunction({
+                            reply: "Document",
+                            replyId: d?.mesId,
+                          })
+                        );
+                        setClick(false);
+                      }}
+                      className={`duration-100 ${
+                        click === true
+                          ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          : "text-[0px] my-0 px-0"
+                      }`}
+                    >
+                      Reply
+                    </div>
+                  )}
+
+                  {/* <div></div>
+				<div></div> */}
+                </div>
               </div>
             )}
 
@@ -719,7 +822,7 @@ const PrivateChats = React.forwardRef(
                 onDoubleClick={() => {
                   dispatch(setType("reply"));
                   dispatch(
-                    setReplyFunction({ reply: d?.text, replyId: d?.mesId })
+                    setReplyFunction({ reply: "Video", replyId: d?.mesId })
                   );
                 }}
                 className={`relative group ${
@@ -730,83 +833,121 @@ const PrivateChats = React.forwardRef(
               >
                 <div className="group-hover:pr-2">
                   {d.status === "deleted" ? (
-                    <div className="italic">This Message was Deleted!</div>
+                    <div>This Message was Deleted!</div>
                   ) : (
-                    <div>
-                      <video
+                    <div className="rounded-2xl ">
+                      {/* <video
                         src={d?.url}
                         className="h-[145px] w-[145px] rounded-2xl bg-yellow-300"
                         controls
+                      /> */}
+                      <VideoPlayer
+                        width={"100%"}
+                        height={"h-full"}
+                        src={d?.url}
                       />
                       {d?.text && <div>{d?.text}</div>}
                     </div>
                   )}
                 </div>
 
-                <div
-                  onClick={() => {
-                    setClick(true);
-                    handleIconClick();
-                  }}
-                  ref={iconRef}
-                  className={`${
-                    data?.id === d?.sender?._id ? "right-0" : "left-0"
-                  } relative group-hover:absolute hidden bg-transparent group-hover:block   top-2 right-0`}
-                >
-                  <BsThreeDotsVertical size={16} />
-                </div>
-                {click && (
+                {d?.status !== "deleted" && (
                   <div
-                    className={`${
-                      popupPosition === "top" ? "bottom-20" : "top-4" // Dynamically set position based on popupPosition state
-                    } absolute z-40 ${
-                      data?.id === d?.sender?._id
-                        ? "right-0 bg-white"
-                        : "left-0 bg-[#f3f3f3]"
-                    }   shadow-2xl  text-black  
-                     rounded-lg py-2 w-[80px] h-[110px]  `}
+                    onClick={() => {
+                      setClick(true);
+                      handleIconClick();
+                    }}
+                    ref={iconRef}
+                    className={` relative group-hover:absolute hidden bg-transparent rounded-2xl group-hover:block group-hover:shadow-2xl shadow-black top-2 right-0`}
                   >
-                    {d?.hidden?.includes(data?.id) ? (
-                      <div
-                        onClick={() => UnhideChats(d?.mesId)}
-                        className="text-sm my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
-                      >
-                        Unhide
-                      </div>
-                    ) : (
-                      <div
-                        onClick={() => hideChats(d?.mesId)}
-                        className="text-sm my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
-                      >
-                        Hide
-                      </div>
-                    )}
-                    <div
-                      onClick={() => deletepopUp(d?.mesId)}
-                      className="text-sm my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
-                    >
-                      Delete
-                    </div>
-                    {showHiddenreply && (
-                      <div
-                        onClick={() => {
-                          dispatch(setType("reply"));
-                          dispatch(
-                            setReplyFunction({
-                              reply: "Video",
-                              replyId: d?.mesId,
-                            })
-                          );
-                        }}
-                        className="text-sm my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
-                      >
-                        Reply
-                      </div>
-                    )}
+                    <BsThreeDotsVertical size={16} className="" />
                   </div>
                 )}
+
+                <div
+                  className={`${
+                    popupPosition === "top" ? "bottom-0" : "top-4" // Dynamically set position based on popupPosition state
+                  } absolute z-40 ${
+                    data?.id === d?.sender?._id
+                      ? "right-0"
+                      : "left-0 bg-[#f3f3f3]"
+                  }   shadow-2xl  text-black  duration-100
+                      ${
+                        click === true
+                          ? "rounded-[15px] bg-white shadow-2xl  py-2 w-[80px] h-[110px]"
+                          : "rounded-[0px] bg-white shadow-0 py-0 w-[0px] h-[0px]"
+                      } `}
+                >
+                  {d?.hidden?.includes(data?.id) ? (
+                    <div
+                      onClick={() => {
+                        UnhideChats(d?.mesId);
+                        setClick(false);
+                      }}
+                      className={`duration-100 ${
+                        click === true
+                          ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          : "text-[0px] my-0 px-0"
+                      }`}
+                    >
+                      Unhide
+                    </div>
+                  ) : (
+                    <div
+                      onClick={() => {
+                        hideChats(d?.mesId);
+                        setClick(false);
+                      }}
+                      className={`duration-100 ${
+                        click === true
+                          ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          : "text-[0px] my-0 px-0"
+                      }`}
+                    >
+                      Hide
+                    </div>
+                  )}
+                  <div
+                    onClick={() => {
+                      deletepopUp(d?.mesId);
+                      setClick(false);
+                    }}
+                    className={`duration-100 ${
+                      click === true
+                        ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                        : "text-[0px] my-0 px-0"
+                    }`}
+                  >
+                    Delete
+                  </div>
+                  {showHiddenreply && (
+                    <div
+                      onClick={() => {
+                        dispatch(setType("reply"));
+                        dispatch(
+                          setReplyFunction({
+                            reply: "Video",
+                            replyId: d?.mesId,
+                          })
+                        );
+                        setClick(false);
+                      }}
+                      className={`duration-100 ${
+                        click === true
+                          ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          : "text-[0px] my-0 px-0"
+                      }`}
+                    >
+                      Reply
+                    </div>
+                  )}
+
+                  {/* <div></div>
+				<div></div> */}
+                </div>
               </div>
             )}
+            
             {d?.typ == "glimpse" && (
               <div
                 onDoubleClick={() => {
@@ -823,7 +964,7 @@ const PrivateChats = React.forwardRef(
               >
                 <div className="group-hover:pr-2">
                   {d.status === "deleted" ? (
-                    <div className="italic">This Message was Deleted!</div>
+                    <div>This Message was Deleted!</div>
                   ) : (
                     <video
                       src={d?.url}
@@ -833,71 +974,100 @@ const PrivateChats = React.forwardRef(
                   )}
                 </div>
 
-                <div
-                  onClick={() => {
-                    setClick(true);
-                    handleIconClick();
-                  }}
-                  ref={iconRef}
-                  className={`${
-                    data?.id === d?.sender?._id ? "right-0" : "left-0"
-                  } relative group-hover:absolute hidden bg-transparent group-hover:block   top-2 right-0`}
-                >
-                  <BsThreeDotsVertical size={16} />
-                </div>
-                {click && (
+                {d?.status !== "deleted" && (
                   <div
-                    className={`${
-                      popupPosition === "top" ? "bottom-20" : "top-4" // Dynamically set position based on popupPosition state
-                    } absolute z-40 ${
-                      data?.id === d?.sender?._id
-                        ? "right-0 bg-white"
-                        : "left-0 bg-[#f3f3f3]"
-                    }   shadow-2xl  text-black  
-                     rounded-lg py-2 w-[80px] h-[110px]  `}
+                    onClick={() => {
+                      setClick(true);
+                      handleIconClick();
+                    }}
+                    ref={iconRef}
+                    className={` relative group-hover:absolute hidden bg-transparent rounded-2xl group-hover:block group-hover:shadow-2xl shadow-black top-2 right-0`}
                   >
-                    {d?.hidden?.includes(data?.id) ? (
-                      <div
-                        onClick={() => UnhideChats(d?.mesId)}
-                        className="text-sm my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
-                      >
-                        Unhide
-                      </div>
-                    ) : (
-                      <div
-                        onClick={() => hideChats(d?.mesId)}
-                        className="text-sm my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
-                      >
-                        Hide
-                      </div>
-                    )}
-                    <div
-                      onClick={() => deletepopUp(d?.mesId)}
-                      className="text-sm my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
-                    >
-                      Delete
-                    </div>
-                    {showHiddenreply && (
-                      <div
-                        onClick={() => {
-                          dispatch(setType("reply"));
-                          dispatch(
-                            setReplyFunction({
-                              reply: "Glimpse",
-                              replyId: d?.mesId,
-                            })
-                          );
-                        }}
-                        className="text-sm my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
-                      >
-                        Reply
-                      </div>
-                    )}
-
-                    {/* <div></div>
-				<div></div> */}
+                    <BsThreeDotsVertical size={16} className="" />
                   </div>
                 )}
+
+                <div
+                  className={`${
+                    popupPosition === "top" ? "bottom-0" : "top-4" // Dynamically set position based on popupPosition state
+                  } absolute z-40 ${
+                    data?.id === d?.sender?._id
+                      ? "right-0"
+                      : "left-0 bg-[#f3f3f3]"
+                  }   shadow-2xl  text-black  duration-100
+                      ${
+                        click === true
+                          ? "rounded-[15px] bg-white shadow-2xl  py-2 w-[80px] h-[110px]"
+                          : "rounded-[0px] bg-white shadow-0 py-0 w-[0px] h-[0px]"
+                      } `}
+                >
+                  {d?.hidden?.includes(data?.id) ? (
+                    <div
+                      onClick={() => {
+                        UnhideChats(d?.mesId);
+                        setClick(false);
+                      }}
+                      className={`duration-100 ${
+                        click === true
+                          ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          : "text-[0px] my-0 px-0"
+                      }`}
+                    >
+                      Unhide
+                    </div>
+                  ) : (
+                    <div
+                      onClick={() => {
+                        hideChats(d?.mesId);
+                        setClick(false);
+                      }}
+                      className={`duration-100 ${
+                        click === true
+                          ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          : "text-[0px] my-0 px-0"
+                      }`}
+                    >
+                      Hide
+                    </div>
+                  )}
+                  <div
+                    onClick={() => {
+                      deletepopUp(d?.mesId);
+                      setClick(false);
+                    }}
+                    className={`duration-100 ${
+                      click === true
+                        ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                        : "text-[0px] my-0 px-0"
+                    }`}
+                  >
+                    Delete
+                  </div>
+                  {showHiddenreply && (
+                    <div
+                      onClick={() => {
+                        dispatch(setType("reply"));
+                        dispatch(
+                          setReplyFunction({
+                            reply: d?.text,
+                            replyId: d?.mesId,
+                          })
+                        );
+                        setClick(false);
+                      }}
+                      className={`duration-100 ${
+                        click === true
+                          ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          : "text-[0px] my-0 px-0"
+                      }`}
+                    >
+                      Reply
+                    </div>
+                  )}
+
+                  {/* <div></div>
+				<div></div> */}
+                </div>
               </div>
             )}
             {d?.typ == "post" && (
@@ -917,7 +1087,7 @@ const PrivateChats = React.forwardRef(
                 <div className="">
                   <div className="group-hover:pr-2">
                     {d.status === "deleted" ? (
-                      <div className="italic">This Message was Deleted!</div>
+                      <div>This Message was Deleted!</div>
                     ) : (
                       <div>
                         {d?.content.type.startsWith("image") ? (
@@ -951,65 +1121,92 @@ const PrivateChats = React.forwardRef(
                       handleIconClick();
                     }}
                     ref={iconRef}
-                    className={`${
-                      data?.id === d?.sender?._id ? "right-0" : "left-0"
-                    } relative group-hover:absolute hidden bg-transparent group-hover:block   top-2 right-0`}
+                    className={` relative group-hover:absolute hidden bg-transparent rounded-2xl group-hover:block group-hover:shadow-2xl shadow-black top-2 right-0`}
                   >
-                    <BsThreeDotsVertical size={16} />
+                    <BsThreeDotsVertical size={16} className="" />
                   </div>
-                  {click && (
-                    <div
-                      className={`${
-                        popupPosition === "top" ? "bottom-20" : "top-4" // Dynamically set position based on popupPosition state
-                      } absolute z-40 ${
-                        data?.id === d?.sender?._id
-                          ? "right-0 bg-white"
-                          : "left-0 bg-[#f3f3f3]"
-                      }   shadow-2xl  text-black  
-                     rounded-lg py-2 w-[80px] h-[110px]  `}
-                    >
-                      {d?.hidden?.includes(data?.id) ? (
-                        <div
-                          onClick={() => UnhideChats(d?.mesId)}
-                          className="text-sm my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
-                        >
-                          Unhide
-                        </div>
-                      ) : (
-                        <div
-                          onClick={() => hideChats(d?.mesId)}
-                          className="text-sm my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
-                        >
-                          Hide
-                        </div>
-                      )}
-                      <div
-                        onClick={() => deletepopUp(d?.mesId)}
-                        className="text-sm my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
-                      >
-                        Delete
-                      </div>
-                      {showHiddenreply && (
-                        <div
-                          onClick={() => {
-                            dispatch(setType("reply"));
-                            dispatch(
-                              setReplyFunction({
-                                reply: "Post",
-                                replyId: d?.mesId,
-                              })
-                            );
-                          }}
-                          className="text-sm my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
-                        >
-                          Reply
-                        </div>
-                      )}
 
-                      {/* <div></div>
-				<div></div> */}
+                  <div
+                    className={`${
+                      popupPosition === "top" ? "bottom-0" : "top-4" // Dynamically set position based on popupPosition state
+                    } absolute z-40 ${
+                      data?.id === d?.sender?._id
+                        ? "right-0"
+                        : "left-0 bg-[#f3f3f3]"
+                    }   shadow-2xl  text-black  duration-100
+                      ${
+                        click === true
+                          ? "rounded-[15px] bg-white shadow-2xl  py-2 w-[80px] h-[110px]"
+                          : "rounded-[0px] bg-white shadow-0 py-0 w-[0px] h-[0px]"
+                      } `}
+                  >
+                    {d?.hidden?.includes(data?.id) ? (
+                      <div
+                        onClick={() => {
+                          UnhideChats(d?.mesId);
+                          setClick(false);
+                        }}
+                        className={`duration-100 ${
+                          click === true
+                            ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                            : "text-[0px] my-0 px-0"
+                        }`}
+                      >
+                        Unhide
+                      </div>
+                    ) : (
+                      <div
+                        onClick={() => {
+                          hideChats(d?.mesId);
+                          setClick(false);
+                        }}
+                        className={`duration-100 ${
+                          click === true
+                            ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                            : "text-[0px] my-0 px-0"
+                        }`}
+                      >
+                        Hide
+                      </div>
+                    )}
+                    <div
+                      onClick={() => {
+                        deletepopUp(d?.mesId);
+                        setClick(false);
+                      }}
+                      className={`duration-100 ${
+                        click === true
+                          ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          : "text-[0px] my-0 px-0"
+                      }`}
+                    >
+                      Delete
                     </div>
-                  )}
+                    {showHiddenreply && (
+                      <div
+                        onClick={() => {
+                          dispatch(setType("reply"));
+                          dispatch(
+                            setReplyFunction({
+                              reply: d?.text,
+                              replyId: d?.mesId,
+                            })
+                          );
+                          setClick(false);
+                        }}
+                        className={`duration-100 ${
+                          click === true
+                            ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                            : "text-[0px] my-0 px-0"
+                        }`}
+                      >
+                        Reply
+                      </div>
+                    )}
+
+                    {/* <div></div>
+				<div></div> */}
+                  </div>
                 </div>
                 <div className="h-[45px] sm:h-[40px] sm:w-[240px] w-[145px] rounded-2xl ">
                   {d?.text}
@@ -1042,7 +1239,7 @@ const PrivateChats = React.forwardRef(
                     }`}
                   >
                     {d.status === "deleted" ? (
-                      <div className="italic">This Message was Deleted!</div>
+                      <div>This Message was Deleted!</div>
                     ) : (
                       <div>
                         {d?.content.type.startsWith("image") ? (
@@ -1068,9 +1265,7 @@ const PrivateChats = React.forwardRef(
                       handleIconClick();
                     }}
                     ref={iconRef}
-                    className={`${
-                      data?.id === d?.sender?._id ? "right-0" : "left-0"
-                    } relative group-hover:absolute hidden bg-transparent group-hover:block   top-2 right-0`}
+                    className={` relative group-hover:absolute hidden bg-transparent group-hover:block   top-2 right-0`}
                   >
                     <BsThreeDotsVertical size={16} />
                   </div>
@@ -1087,21 +1282,30 @@ const PrivateChats = React.forwardRef(
                     >
                       {d?.hidden?.includes(data?.id) ? (
                         <div
-                          onClick={() => UnhideChats(d?.mesId)}
+                          onClick={() => {
+                            UnhideChats(d?.mesId);
+                            setClick(false);
+                          }}
                           className="text-sm my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
                         >
                           Unhide
                         </div>
                       ) : (
                         <div
-                          onClick={() => hideChats(d?.mesId)}
+                          onClick={() => {
+                            hideChats(d?.mesId);
+                            setClick(false);
+                          }}
                           className="text-sm my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
                         >
                           Hide
                         </div>
                       )}
                       <div
-                        onClick={() => deletepopUp(d?.mesId)}
+                        onClick={() => {
+                          deletepopUp(d?.mesId);
+                          setClick(false);
+                        }}
                         className="text-sm my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
                       >
                         Delete
@@ -1116,6 +1320,7 @@ const PrivateChats = React.forwardRef(
                                 replyId: d?.mesId,
                               })
                             );
+                            setClick(false);
                           }}
                           className="text-sm my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
                         >
@@ -1151,7 +1356,7 @@ const PrivateChats = React.forwardRef(
                 >
                   <div className="group-hover:pr-2">
                     {d.status === "deleted" ? (
-                      <div className="italic">This Message was Deleted!</div>
+                      <div>This Message was Deleted!</div>
                     ) : (
                       <div>
                         <img
@@ -1169,9 +1374,7 @@ const PrivateChats = React.forwardRef(
                       handleIconClick();
                     }}
                     ref={iconRef}
-                    className={`${
-                      data?.id === d?.sender?._id ? "right-0" : "left-0"
-                    } relative group-hover:absolute hidden bg-transparent group-hover:block   top-2 right-0`}
+                    className={` relative group-hover:absolute hidden bg-transparent group-hover:block   top-2 right-0`}
                   >
                     <BsThreeDotsVertical size={16} />
                   </div>
@@ -1188,21 +1391,30 @@ const PrivateChats = React.forwardRef(
                     >
                       {d?.hidden?.includes(data?.id) ? (
                         <div
-                          onClick={() => UnhideChats(d?.mesId)}
+                          onClick={() => {
+                            UnhideChats(d?.mesId);
+                            setClick(false);
+                          }}
                           className="text-sm my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
                         >
                           Unhide
                         </div>
                       ) : (
                         <div
-                          onClick={() => hideChats(d?.mesId)}
+                          onClick={() => {
+                            hideChats(d?.mesId);
+                            setClick(false);
+                          }}
                           className="text-sm my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
                         >
                           Hide
                         </div>
                       )}
                       <div
-                        onClick={() => deletepopUp(d?.mesId)}
+                        onClick={() => {
+                          deletepopUp(d?.mesId);
+                          setClick(false);
+                        }}
                         className="text-sm my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
                       >
                         Delete
@@ -1218,6 +1430,7 @@ const PrivateChats = React.forwardRef(
                                 replyId: d?.mesId,
                               })
                             );
+                            setClick(false);
                           }}
                           className="text-sm my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
                         >
@@ -1237,7 +1450,7 @@ const PrivateChats = React.forwardRef(
                 <div className="h-[35px]  relative w-[35px]  overflow-hidden bg-[#fff] rounded-[14px]">
                   <div
                     className={`${
-                      d?.readby.includes(receiverId)
+                      d?.readby?.includes(receiverId)
                         ? "hidden"
                         : "absolute top-0 left-0 bg-black/40 w-full h-full"
                     } `}

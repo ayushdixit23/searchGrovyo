@@ -31,6 +31,7 @@ import { IoReorderThreeOutline } from "react-icons/io5";
 import Link from "next/link";
 import { setConvId, setPreview } from "@/app/redux/slice/remember";
 import { RxCross2 } from "react-icons/rx";
+import { setData, setLastmsgs } from "@/app/redux/slice/lastMessage";
 
 const Components = () => {
   const { data } = useAuthContext();
@@ -675,7 +676,6 @@ const Components = () => {
 
     socket?.on("readconvs", (dat) => {
       console.log("readedconvs", dat);
-
       const updatedMessages = messages.map((f) => {
         console.log(dat?.mesId === f?.mesId, dat?.mesId, f?.mesId);
 
@@ -737,7 +737,7 @@ const Components = () => {
 
   return (
     <>
-      {optionType === "reports" && (
+      {/* {optionType === "reports" && (
         <div className="fixed inset-0 z-40 flex justify-center items-center w-screen h-screen">
           <div className="flex justify-center flex-col bg-white items-center h-full w-[40%]">
             <div className="text-xl">Reports</div>
@@ -831,7 +831,106 @@ const Components = () => {
             </div>
           </div>
         </div>
+      )} */}
+
+      {optionType === "reports" && (
+        <div className="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
+          <div className="bg-white dark:bg-bluedark rounded-lg shadow-lg w-11/12 md:w-1/3 p-6">
+            <div className="text-2xl font-semibold mb-4 text-center">
+              Reports
+            </div>
+            <div className="space-y-3 text-sm">
+              <div
+                onClick={() =>
+                  !reports.includes("CopyRight Infringement") &&
+                  setReports([...reports, "CopyRight Infringement"])
+                }
+                className="p-3 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-800 cursor-pointer"
+              >
+                CopyRight Infringement
+              </div>
+              <div
+                onClick={() =>
+                  !reports.includes("Harrassment") &&
+                  setReports([...reports, "Harrassment"])
+                }
+                className="p-3 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-800 cursor-pointer"
+              >
+                Harrassment
+              </div>
+              <div
+                onClick={() =>
+                  !reports.includes("Nudity") &&
+                  setReports([...reports, "Nudity"])
+                }
+                className="p-3 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-800 cursor-pointer"
+              >
+                Nudity
+              </div>
+              <div
+                onClick={() =>
+                  !reports.includes("Sexual Content") &&
+                  setReports([...reports, "Sexual Content"])
+                }
+                className="p-3 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-800 cursor-pointer"
+              >
+                Sexual Content
+              </div>
+              <div
+                onClick={() =>
+                  !reports.includes("Spam") && setReports([...reports, "Spam"])
+                }
+                className="p-3 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-800 cursor-pointer"
+              >
+                Spam
+              </div>
+              <div
+                onClick={() =>
+                  !reports.includes("Violence") &&
+                  setReports([...reports, "Violence"])
+                }
+                className="p-3 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-800 cursor-pointer"
+              >
+                Violence
+              </div>
+              <div
+                onClick={() =>
+                  !reports.includes("Hate Speech") &&
+                  setReports([...reports, "Hate Speech"])
+                }
+                className="p-3 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-800 cursor-pointer"
+              >
+                Hate Speech
+              </div>
+              <div
+                onClick={() =>
+                  !reports.includes("Other") &&
+                  setReports([...reports, "Other"])
+                }
+                className="p-3 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-800 cursor-pointer"
+              >
+                Other
+              </div>
+              <div className="flex justify-between mt-4">
+                <Link
+                  href={`/main/chat/${params?.id}/${params?.con}`}
+                  className="px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600"
+                >
+                  Cancel
+                </Link>
+                <Link
+                  onClick={handleReport}
+                  href={`/main/chat/${params?.id}/${params?.con}`}
+                  className="px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600"
+                >
+                  Submit
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
+
       <div
         onClick={() => setOptions(false)}
         className={`fixed inset-0 ${
@@ -841,7 +940,7 @@ const Components = () => {
       <div className="w-full h-[100vh] relative ">
         {/* header  */}
         <div
-          className="w-[100%] gap-2 bg-white dark:bg-bluelight dark:border-[#273142]  border-[#888]  justify-between items-center h-[8%] 
+          className="w-[100%] gap-2 bg-white shadow-md dark:bg-bluelight dark:border-[#273142]  border-[#888]  justify-between items-center h-[8%] 
         border-b-[0.5px] border-b-gray-200 px-4 flex flex-row "
         >
           <a
@@ -883,6 +982,7 @@ const Components = () => {
                 }`}
               >
                 <Link
+                  onClick={() => setOptions(false)}
                   href={`/main/chat/${params?.id}/${params?.con}?type=hiddenMsgs`}
                 >
                   Hidden Messages
@@ -927,7 +1027,7 @@ const Components = () => {
                 flexDirection: "column-reverse",
                 paddingLeft: 20,
               }}
-              className={`duration-75 relative overflow-y-scroll bg-red-900 dark:bg-bluedark ${
+              className={`duration-75 bg-chatbg bg-no-repeat bg-cover  relative overflow-y-scroll bg-white dark:bg-bluedark ${
                 reply && replyId ? "h-[80%] " : "h-[84%]"
               }`}
             >
@@ -1008,9 +1108,9 @@ const Components = () => {
                           </div>
                         )}
                         {type === "gif" && content && (
-                          <div className="h-full flex w-full justify-center items-center">
+                          <div className="h-full flex w-full bg-green-200 justify-center items-center">
                             <img
-                              className="max-h-[500px] max-w-[500px] flex"
+                              className="max-h-[500px] max-w-[500px] bg-red-300 flex"
                               src={
                                 typeof content === "string"
                                   ? content
@@ -1018,6 +1118,9 @@ const Components = () => {
                               }
                             />
                           </div>
+                        )}
+                        {type === "doc" && content && (
+                          <div className="h-full flex w-full bg-green-200 justify-center items-center"></div>
                         )}
                       </div>
                     </div>
@@ -1027,7 +1130,7 @@ const Components = () => {
             </div>
             {/* footer  */}
             <div
-              className={`bg-[#fff] duration-75 flex border-t-2 dark:bg-bluelight  bg-green-300  justify-center ${
+              className={`bg-[#fff] duration-75 flex border-t-2 dark:bg-bluelight justify-center ${
                 reply && replyId
                   ? "h-[12%] gap-2 space-y-2"
                   : "h-[8%] items-center"
@@ -1039,18 +1142,18 @@ const Components = () => {
 
                   {reply && replyId && (
                     <div className="flex justify-between p-1 px-2 rounded-[10px] m-1 bg-red-300 items-center text-black">
-                      <div    className={`${
-                reply && replyId
-                  ? "text-[14px]"
-                  : "text-[0px]"
-              }`} >{limitWords(reply, 65)}</div>
+                      <div
+                        className={`${
+                          reply && replyId ? "text-[14px]" : "text-[0px]"
+                        }`}
+                      >
+                        {limitWords(reply, 65)}
+                      </div>
                       <div>
                         <RxCross2
                           className={`dur${
-                            reply && replyId
-                              ? "text-[14px]"
-                              : "text-[0px]"
-                          }`} 
+                            reply && replyId ? "text-[14px]" : "text-[0px]"
+                          }`}
                           onClick={() => {
                             dispatch(setType(""));
                             dispatch(
