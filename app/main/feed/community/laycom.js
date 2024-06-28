@@ -354,52 +354,60 @@ export default function CommunityLayout({ children }) {
                     }
                     className=""
                   >
-                    <div className="bg-[#e4e4e4] dark:bg-graydark rounded-xl w-full flex flex-col justify-center items-center ">
-                      <>
+                    <div
+                      className={`bg-[#f4f4f4] lg:max-w-[360px] dark:bg-graydark rounded-xl ${d?.urls.length > 1
+                        ? "overflow-x-scroll no-scrollbar"
+                        : null
+                        } flex flex-col justify-center items-center `}
+                    >
+                      <div className="flex w-full">
                         {d?.urls.length > 1 ? (
                           <>
-                            {d?.urls.map((f) => (
-                              <div className="sm:h-[260px] h-[300px] w-full rounded-xl ">
+                            {d?.urls.map((f, i) => (
+                              <div className="sm:h-[260px] flex min-w-full lg:min-w-[360px] h-[300px] w-full rounded-xl ">
                                 {f?.type.startsWith("image") ? (
-                                  <div className="h-full w-full p-1">
+                                  <div className="h-full w-full relative p-1">
                                     <img
                                       src={f?.content}
                                       className="h-full object-contain bg-black rounded-2xl w-full"
                                     />
+                                    <div className="absolute top-3 right-2">
+                                      <div className="w-9  h-9 flex justify-center items-center text-sm font-medium dark:bg-graydark bg-white text-black rounded-full">
+                                        {i + 1}/{d?.urls.length}
+                                      </div>
+                                    </div>
                                   </div>
                                 ) : (
-                                  // <div className="p-1 h-full">
-                                  //   <div className=" rounded-2xl h-full relative overflow-hidden">
-                                  //     <div className="absolute z-10 h-[300px] sm:h-[260px] w-full"></div>
-                                  //     <MediaPlayer
-                                  //       src={f?.content}
-                                  //       onQualitiesChange={480}
-                                  //       className="z-0 h-[300px] sm:h-[260px]"
-                                  //     >
-                                  //       <MediaProvider />
-                                  //       <DefaultVideoLayout
-                                  //         thumbnails={f?.content}
-                                  //         icons={defaultLayoutIcons}
-                                  //       />
-                                  //     </MediaPlayer>
-                                  //   </div>
-                                  // </div>
-                                  <div className="flex w-full  h-full">
-                                    <VideoPlayer
-                                      key={i}
-                                      src={f?.content}
-                                      width={"100%"}
-                                      height={"h-full"}
-                                    />
+                                  <div className="p-1 h-full">
+                                    <div className=" rounded-2xl relative h-full overflow-hidden">
+                                      <div className="absolute z-10 h-[300px] sm:h-[260px] w-full"></div>
+
+                                      <VideoPlayer
+                                        key={i}
+                                        src={f?.content}
+                                        width={"100%"}
+                                        height={"h-full"}
+                                      />
+
+                                      {/* <video controls src={f?.content}></video> */}
+                                      <div className="absolute top-3 right-2">
+                                        <div
+                                          className="w-9 flex justify-center items-center text-sm font-medium h-9 
+                                                 text-black rounded-full"
+                                        >
+                                          {i + 1}/{d?.urls.length}
+                                        </div>
+                                      </div>
+                                    </div>
                                   </div>
                                 )}
                               </div>
                             ))}
                           </>
                         ) : (
-                          <>
-                            <div className="sm:h-[260px] h-[300px] w-full rounded-xl ">
-                              {d?.urls[0]?.type.startsWith("image") ? (
+                          <div className="sm:h-[260px] h-[300px] w-full rounded-xl ">
+                            {
+                              d?.urls[0]?.type.startsWith("image") ? (
                                 <div className="h-full w-full p-1">
                                   <img
                                     src={d?.urls[0]?.content}
@@ -407,38 +415,41 @@ export default function CommunityLayout({ children }) {
                                   />
                                 </div>
                               ) : (
-                                // <div className="p-1 h-full">
-                                //   <div className=" rounded-2xl h-full relative overflow-hidden">
-                                //     <div className="absolute z-10 h-[300px] sm:h-[260px] w-full "></div>
-                                //     <MediaPlayer
-                                //       src={d?.urls[0]?.content}
-                                //       onQualitiesChange={480}
-                                //       className="z-0 h-[300px] sm:h-[260px]"
-                                //     >
-                                //       <MediaProvider />
-                                //       <DefaultVideoLayout
-                                //         thumbnails={d?.urls[0]?.content}
-                                //         icons={defaultLayoutIcons}
-                                //       />
-                                //     </MediaPlayer>
-                                //   </div>
-                                // </div>
-                                <div className="flex w-full  h-full">
-                                  <VideoPlayer
-                                    key={i}
-                                    src={d?.urls[0]?.content}
-                                    width={"100%"}
-                                    height={"h-full"}
-                                  />
+                                <div className="p-1 h-full">
+                                  <div className=" rounded-2xl h-full overflow-hidden relative ">
+                                    <div className="absolute z-10 h-[300px] sm:h-[260px] w-full"></div>
+
+                                    {/* <MediaPlayer
+                                            src={d?.urls[0]?.content}
+                                            onQualitiesChange={480}
+                                            className=" z-0 h-[300px] sm:h-[260px]"
+                                          >
+                                            <MediaProvider />
+                                            <DefaultVideoLayout
+                                              thumbnails={d?.urls[0]?.content}
+                                              icons={defaultLayoutIcons}
+                                            />
+                                          </MediaPlayer> */}
+                                    <VideoPlayer
+                                      key={i}
+                                      src={d?.urls[0]?.content}
+                                      width={"100%"}
+                                      height={"h-full"}
+                                    />
+
+                                    {/* <video controls src={d?.urls[0]?.content}></video> */}
+                                  </div>
                                 </div>
-                              )}
-                            </div>
-                          </>
+                              )
+                              // <video src={f?.content} controls className="max-h-full" />
+                            }
+                          </div>
                         )}
-                      </>
+                      </div>
+
                       <div className="h-[20px] sm:h-[25px] px-2 w-[100%] flex flex-col">
                         <div className="text-[14px] pn:max-sm:text-[12px] dark:text-[#f5f5f5] text-black w-[100%] font-medium text-ellipsis overflow-hidden px-1">
-                          {d?.posts[0]?.title}
+                          {d?.posts.title}
                         </div>
                       </div>
                     </div>
@@ -483,11 +494,10 @@ export default function CommunityLayout({ children }) {
                     <div className="flex gap-2">
                       <div
                         onClick={() => handleLike(d?.posts[0]?._id, d?.liked)}
-                        className={`flex justify-center rounded-xl items-center gap-1 ${
-                          d?.liked
-                            ? "bg-[#bc7e36] dark:text-black dark:bg-yellow-300 text-white"
-                            : "bg-[#f4f4f4] dark:bg-bluedark"
-                        }  p-2`}
+                        className={`flex justify-center rounded-xl items-center gap-1 ${d?.liked
+                          ? "bg-[#bc7e36] dark:text-black dark:bg-yellow-300 text-white"
+                          : "bg-[#f4f4f4] dark:bg-bluedark"
+                          }  p-2`}
                       >
                         <PiHandsClapping />
                         <div className="text-[12px]">{d?.posts[0]?.likes}</div>
@@ -495,7 +505,7 @@ export default function CommunityLayout({ children }) {
                       <div
                         onClick={() => {
                           setShareValue(
-                            `http://localhost:3000/main/feed/newForYou/${d?.posts?.community?._id}#${d?.posts?._id}`
+                            `https://grovyo.com/main/feed/newForYou/${d?.posts?.community?._id}#${d?.posts?._id}`
                           );
                           setShare(true);
                         }}

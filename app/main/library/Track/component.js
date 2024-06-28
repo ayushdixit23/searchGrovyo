@@ -45,13 +45,13 @@ function page() {
   console.log(data?.length);
   return (
     <div className="md:flex h-[85.5vh]">
-      <div className="w-[520px]  px-4 overflow-y-auto scrollbar-hide dark:bg-[#171717] border-r-2 border-[#dcdcdc] flex items-center pt-6 flex-col">
+      <div className="md:min-w-[390px] md:max-w-[390px] px-4 overflow-y-auto scrollbar-hide dark:bg-bluedark border-r-2 border-[#dcdcdc] flex items-center pt-6 flex-col">
         <div className="text-[#27272A] dark:text-white text-[14px] font-semibold flex justify-start w-[100%] ">
           General info
         </div>
 
         {/* Order */}
-        <div className=" w-[100%]  rounded-lg flex flex-col bg-[#f4f4f4] mt-2">
+        <div className=" w-[100%]  rounded-lg flex flex-col bg-[#f4f4f4] dark:bg-bluelight mt-2">
           <div className="w-[100%] h-[50%] py-2 flex flex-row justify-between items-start px-2">
             {/* Order id */}
             <div className="text-[#27272A] dark:text-white text-[12px]  font-sans">
@@ -77,7 +77,7 @@ function page() {
           Shipping details
         </div>
 
-        <div className="py-1 w-[100%] rounded-lg flex flex-col bg-[#f4f4f4]">
+        <div className="py-1 w-[100%] rounded-lg flex flex-col dark:bg-bluelight bg-[#f4f4f4]">
           {/* from */}
           <div className="h-[50%] w-[100%]   flex flex-row justify-evenly items-center py-1">
             <div className="w-[10%] h-[80%] flex justify-center ">
@@ -85,8 +85,8 @@ function page() {
             </div>
             {/* Address */}
             <div className="w-[90%] h-[80%]  flex flex-col justify-evenly ">
-              <div className="text-[12px] text-[#2D2D2D] ">From store</div>
-              <div className="text-[11px] text-[#2D2D2D] py-0.5 font-bold">
+              <div className="text-[12px] text-[#2D2D2D] dark:text-white ">From store</div>
+              <div className="text-[11px] text-[#2D2D2D] dark:text-white py-0.5 font-bold">
                 13 Han Thuyen, D.1, HCM city
               </div>
             </div>
@@ -98,8 +98,8 @@ function page() {
             </div>
             {/* Address */}
             <div className="w-[90%] h-[80%]  flex flex-col justify-evenly">
-              <div className="text-[12px] text-[#2D2D2D] ">To</div>
-              <div className="text-[11px] text-[#2D2D2D] py-0.5 font-bold">
+              <div className="text-[12px] text-[#2D2D2D] dark:text-white ">To</div>
+              <div className="text-[11px] text-[#2D2D2D] dark:text-white py-0.5 font-bold">
                 13 Han Thuyen, D.1, HCM city
               </div>
             </div>
@@ -110,41 +110,12 @@ function page() {
           Product Details
         </div>
 
-        {/* Products */}
-        {/* <div className="w-[80%] py-1 rounded-lg bg-white dark:bg-[#000] mt-2 flex flex-row">
-          <img
-            src={data?.image}
-            alt="image"
-            className="bg-contain h-[90px] w-[90px] "
-          />
-          <div className="flex flex-col text-black bg-white px-2">
-            <div className="text-[14px]">{data?.c?.product?.brandname}</div>
-            <div className="text-[8px] py-1">{data?.c?.product?.name}</div>
-            <div className="flex flex-row justify-center items-center">
-              <div className="text-[14px]">
-                {data?.c?.product?.discountedprice}
-              </div>
-              <div className="text-[12px] text-[#A1A1A1] px-1">
-                {data?.c?.price}
-              </div>
-              <div className="text-[8px] text-[#A1A1A1] px-1">70% Off</div>
-            </div>
-            <div className="flex flex-row justify-between px-2 items-center rounded-lg bg-[#F6F6F6] h-[30px] w-[120px]">
-              <div className="bg-white text-black text-[30px] h-[20px] flex justify-center items-center w-[20px]">
-                -
-              </div>
-              <div className=" text-black text-[14px]">{data?.c?.quantity}</div>
-              <div className="bg-white text-black text-[24px] h-[20px] w-[20px] flex justify-center items-center">
-                +
-              </div>
-            </div>
-          </div>
-        </div> */}
+
 
         {orders.map((d, i) => (
           <div
             key={i}
-            className="py-1 w-[100%] rounded-lg  bg-[#f4f4f4] mb-4 dark:bg-[#000] mt-2 flex flex-row"
+            className="py-1 w-[100%] rounded-lg  bg-[#f4f4f4] mb-4 dark:bg-bluelight mt-2 flex flex-row"
           >
             <div className="w-[22%] h-[100%] flex items-center justify-center px-2">
               <img
@@ -154,7 +125,7 @@ function page() {
               />
             </div>
 
-            <div className="flex w-[78%] h-[100%] flex-col text-black px-2">
+            <div className="flex w-[78%] h-[100%] flex-col text-black dark:text-white px-2">
               <div className="text-[12px] truncate font-medium">
                 {d?.orders?.productId?.[0].name}
               </div>
@@ -174,22 +145,21 @@ function page() {
                 <div className="text-[8px] text-[#A1A1A1] px-1">70% Off</div>
               </div>
               <div className="flex flex-row  justify-between px-2 items-center rounded-lg  h-[30px] w-[100%]">
-                {/* <div className="bg-white text-black text-[30px] h-[20px] flex justify-center items-center w-[20px]">
+                {/* <div className="bg-white text-black dark:text-white text-[30px] h-[20px] flex justify-center items-center w-[20px]">
                     -
                   </div> */}
                 <div className="text-[14px] font-bold">₹{d?.orders?.total}</div>
-                <div className=" text-black text-[12px]">
+                <div className=" text-black dark:text-white text-[12px]">
                   Qty: {d?.orders?.quantity}
                 </div>
-                {/* <div className="bg-white text-black text-[24px] h-[20px] w-[20px] flex justify-center items-center">
+                {/* <div className="bg-white text-black dark:text-white text-[24px] h-[20px] w-[20px] flex justify-center items-center">
                     +
                   </div> */}
                 <div
-                  className={`text-[12px] bg-green-200 py-1 px-2 rounded-xl ${
-                    d?.orders?.currentStatus === "cancelled"
-                      ? "bg-red-500"
-                      : "bg-green-400"
-                  }`}
+                  className={`text-[12px] bg-green-200 py-1 px-2 rounded-xl ${d?.orders?.currentStatus === "cancelled"
+                    ? "bg-red-500"
+                    : "bg-green-400"
+                    }`}
                 >
                   Status: {d?.orders?.currentStatus}
                 </div>
@@ -199,22 +169,21 @@ function page() {
         ))}
       </div>
       {/* Right side */}
-      <div className=" bg-green pn:max-md:hidden w-[100%] h-[100%] flex space-y-10 flex-col items-center  ">
+      {/* <div className=" bg-green pn:max-md:hidden w-[100%] h-[100%] flex space-y-10 flex-col items-center  ">
         <div className="flex text-blue-500 text-[30px] font-semibold items-center space-x-2 ">
-          {" "}
+
           <div>Confirmed</div>
-          {/* <Image src={Tick} alt="tick" className="h-[30px] w-[30px]" /> */}
+
         </div>
         <div className="text-[30px] font-medium">THANK YOU FOR YOUR ORDER!</div>
         <div className="text-[20px] font-medium">Order Id: 56089</div>
-        {/* <Image alt="ill" src={Illustration} className="h-[200px] w-[400px]" /> */}
 
         <div className="text-[20px]">Estimated Delivery </div>
         <div className="text-[20px]">Monday, 09th January, 2023</div>
-        <div className="bg-[#171717] text-white py-3 px-40 rounded-2xl ">
+        <div className="bg-bluedark text-white py-3 px-40 rounded-2xl ">
           Continue Shopping
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

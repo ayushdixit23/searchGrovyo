@@ -558,96 +558,170 @@ function Components({ params }) {
   return (
     <>
       {optionType === "reports" && (
-        <div className="fixed inset-0 z-40 flex bg-green-300 justify-center items-center w-screen h-screen">
-          <div className="flex justify-center flex-col items-center h-full w-[40%]">
-            <div className="text-xl">Reports</div>
-            <div>
+        <div className="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
+          <div className="bg-white dark:bg-bluedark rounded-lg shadow-lg w-11/12 md:w-1/3 p-6">
+            <div className="text-2xl font-semibold mb-4 text-center">
+              Reports
+            </div>
+            <div className="space-y-3 text-sm">
               <div
-                onClick={() =>
-                  !reports.includes("CopyRight Infringment") &&
-                  setReports([...reports, "CopyRight Infringment"])
-                }
-                className="p-2 px-5 rounded-xl bg-black text-white"
+                onClick={() => {
+                  if (reports.includes("CopyRight Infringement")) {
+                    setReports(
+                      reports.filter(
+                        (report) => report !== "CopyRight Infringement"
+                      )
+                    );
+                  } else {
+                    setReports([...reports, "CopyRight Infringement"]);
+                  }
+                }}
+                className={`p-3 ${
+                  reports.includes("CopyRight Infringement")
+                    ? "bg-[#0077ff85]"
+                    : "bg-gray-200 dark:bg-[#323d4e]"
+                } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
-                CopyRight Infringment
+                CopyRight Infringement
               </div>
               <div
-                onClick={() =>
-                  !reports.includes("Harrasment") &&
-                  setReports([...reports, "Harrasment"])
-                }
-                className="p-2 px-5 rounded-xl bg-black text-white"
+                onClick={() => {
+                  if (reports.includes("Harrassment")) {
+                    setReports(
+                      reports.filter((report) => report !== "Harrassment")
+                    );
+                  } else {
+                    setReports([...reports, "Harrassment"]);
+                  }
+                }}
+                className={`p-3 ${
+                  reports.includes("Harrassment")
+                    ? "bg-[#0077ff85]"
+                    : "bg-gray-200 dark:bg-[#323d4e]"
+                } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
-                Harrasment
+                Harrassment
               </div>
               <div
-                onClick={() =>
-                  !reports.includes("Nudity") &&
-                  setReports([...reports, "Nudity"])
-                }
-                className="p-2 px-5 rounded-xl bg-black text-white"
+                onClick={() => {
+                  if (reports.includes("Nudity")) {
+                    setReports(reports.filter((report) => report !== "Nudity"));
+                  } else {
+                    setReports([...reports, "Nudity"]);
+                  }
+                }}
+                className={`p-3 ${
+                  reports.includes("Nudity")
+                    ? "bg-[#0077ff85]"
+                    : "bg-gray-200 dark:bg-[#323d4e]"
+                } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
                 Nudity
               </div>
               <div
-                onClick={() =>
-                  !reports.includes("Sexual Content") &&
-                  setReports([...reports, "Sexual Content"])
-                }
-                className="p-2 px-5 rounded-xl bg-black text-white"
+                onClick={() => {
+                  if (reports.includes("Sexual Content")) {
+                    setReports(
+                      reports.filter((report) => report !== "Sexual Content")
+                    );
+                  } else {
+                    setReports([...reports, "Sexual Content"]);
+                  }
+                }}
+                className={`p-3 ${
+                  reports.includes("Sexual Content")
+                    ? "bg-[#0077ff85]"
+                    : "bg-gray-200 dark:bg-[#323d4e]"
+                } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
                 Sexual Content
               </div>
               <div
-                onClick={() =>
-                  !reports.includes("Spam") && setReports([...reports, "Spam"])
-                }
-                className="p-2 px-5 rounded-xl bg-black text-white"
+                onClick={() => {
+                  if (reports.includes("Spam")) {
+                    setReports(reports.filter((report) => report !== "Spam"));
+                  } else {
+                    setReports([...reports, "Spam"]);
+                  }
+                }}
+                className={`p-3 ${
+                  reports.includes("Spam")
+                    ? "bg-[#0077ff85]"
+                    : "bg-gray-200 dark:bg-[#323d4e]"
+                } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
                 Spam
               </div>
               <div
-                onClick={() =>
-                  !reports.includes("Violence") &&
-                  setReports([...reports, "Violence"])
-                }
-                className="p-2 px-5 rounded-xl bg-black text-white"
+                onClick={() => {
+                  if (reports.includes("Violence")) {
+                    setReports(
+                      reports.filter((report) => report !== "Violence")
+                    );
+                  } else {
+                    setReports([...reports, "Violence"]);
+                  }
+                }}
+                className={`p-3 ${
+                  reports.includes("Violence")
+                    ? "bg-[#0077ff85]"
+                    : "bg-gray-200 dark:bg-[#323d4e]"
+                } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
                 Violence
               </div>
               <div
-                onClick={() =>
-                  !reports.includes("Hate Speech") &&
-                  setReports([...reports, "Hate Speech"])
-                }
-                className="p-2 px-5 rounded-xl bg-black text-white"
+                onClick={() => {
+                  if (reports.includes("Hate Speech")) {
+                    setReports(
+                      reports.filter((report) => report !== "Hate Speech")
+                    );
+                  } else {
+                    setReports([...reports, "Hate Speech"]);
+                  }
+                }}
+                className={`p-3 ${
+                  reports.includes("Hate Speech")
+                    ? "bg-[#0077ff85]"
+                    : "bg-gray-200 dark:bg-[#323d4e]"
+                } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
                 Hate Speech
               </div>
               <div
-                onClick={() =>
-                  !reports.includes("Other") &&
-                  setReports([...reports, "Other"])
-                }
-                className="p-2 px-5 rounded-xl bg-black text-white"
+                onClick={() => {
+                  if (reports.includes("Other")) {
+                    setReports(reports.filter((report) => report !== "Other"));
+                  } else {
+                    setReports([...reports, "Other"]);
+                  }
+                }}
+                className={`p-3 ${
+                  reports.includes("Other")
+                    ? "bg-[#0077ff85]"
+                    : "bg-gray-200 dark:bg-[#323d4e]"
+                } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
                 Other
               </div>
-
-              <Link
-                href={`/main/feed/newForYou/${params?.id}`}
-                className="p-2 px-5 rounded-xl bg-black text-white"
-              >
-                Cancel
-              </Link>
-
-              <Link
-                onClick={handleReport}
-                href={`/main/feed/newForYou/${params?.id}`}
-                className="p-2 px-5 rounded-xl bg-black text-white"
-              >
-                Submit
-              </Link>
+              <div className="flex justify-between mt-4">
+                <Link
+                  onClick={() => {
+                    setReports([]);
+                  }}
+                  href={`/main/feed/newForYou/${params?.id}`}
+                  className="px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600"
+                >
+                  Cancel
+                </Link>
+                <Link
+                  onClick={handleReport}
+                  href={`/main/feed/newForYou/${params?.id}`}
+                  className="px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600"
+                >
+                  Submit
+                </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -855,7 +929,11 @@ function Components({ params }) {
           {!optionType && (
             <div
               className={` w-full relative overflow-y-scroll ${
-                currentState === "chat" ? "h-[84%]" : "h-[92%]"
+                currentState === "chat"
+                  ? reply && replyId
+                    ? "h-[80%]"
+                    : "h-[84%]"
+                  : "h-[92%]"
               }`}
             >
               <div className="flex justify-center w-full items-center py-2">
@@ -868,8 +946,8 @@ function Components({ params }) {
                     <div
                       className={`flex items-center px-4 ${
                         tId === d?._id
-                          ? "bg-blue-600  text-white"
-                          : "bg-[#f2f2f2]  dark:text-black"
+                          ? "bg-blue-600 text-white"
+                          : "bg-[#f2f2f2] dark:text-black"
                       } rounded-lg `}
                     >
                       {d?.title}
@@ -996,9 +1074,9 @@ function Components({ params }) {
               }`}
             >
               {isTopicJoined && (
-                <div className="bg-[#efefef] flex items-center w-full dark:bg-bluelight justify-center h-[100%]">
+                <div className="bg-[#efefef] flex-col flex items-center w-full dark:bg-bluelight justify-center h-[100%]">
                   {reply && replyId && (
-                    <div className="flex justify-between items-center">
+                    <div className="flex justify-between w-full h-[40px] px-3 items-center">
                       <div>{reply}</div>
                       <div>
                         <RxCross2

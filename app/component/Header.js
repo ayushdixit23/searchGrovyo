@@ -9,9 +9,9 @@ import { useAuthContext } from "../utils/AuthWrapper";
 function Header() {
   const { data } = useAuthContext();
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
   return (
-    <div className="w-full h-[6vh] flex flex-row bg-white items-center py-1  ">
+    <div className="w-full h-[6vh] flex flex-row bg-white dark:bg-bluedark items-center py-1  ">
       <div className="w-[15%] h-[100%] flex justify-center items-center">
         <div className=" bg-[#f5f5f5] ring-1 rounded-xl ring-white shadow-sm">
           {/* <div className="h-[40px] w-[40px] rounded-2xl bg-[#f5f5f5] ring-1 ring-white shadow-sm animate-pulse "></div> */}

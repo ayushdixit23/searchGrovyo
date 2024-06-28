@@ -5,16 +5,17 @@ import { useRouter } from "next/navigation";
 import { useAuthContext } from "@/app/utils/AuthWrapper";
 import Cookies from "js-cookie";
 import { MdOutlineLogout } from "react-icons/md";
-import { ModeToggle } from "@/app/component/ModeToggle";
 import { FaCamera, FaPen } from "react-icons/fa";
 import Link from "next/link";
+import axios from "axios";
+import { API } from "@/Essentials";
+import toast from "react-hot-toast";
 
 const page = () => {
   const { data: user } = useAuthContext();
-
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
-  let data = {};
+  const [data, setData] = useState({})
   const [loading2, setLoading2] = useState(false);
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -62,10 +63,8 @@ const page = () => {
       data.append("image", profile.image);
       data.append("bio", profile.bio);
 
-      const response = await profileDetails({
-        id: id,
-        data: data,
-      });
+      const response = await axios.post(`${API}/webprofileinfo/${user?.id}`, data)
+
       if (response.data?.success) {
         await resetCookies(response.data);
         router.refresh();
@@ -84,21 +83,28 @@ const page = () => {
 
   const resetCookies = async (data) => {
     try {
-      // localStorage.removeItem(excktn);
-      // localStorage.removeItem(frhktn);
-
-      Cookies.remove("excktn");
-      Cookies.remove(frhktn);
+      Cookies.remove("access_token");
+      Cookies.remove("refresh_token");
 
       const expirationDate = new Date();
       expirationDate.setDate(expirationDate.getDate() + 7);
 
-      Cookies.set(excktn, data.access_token, { expires: expirationDate });
-      Cookies.set(frhktn, data.refresh_token, { expires: expirationDate });
+      Cookies.set("access_token", data.access_token, { expires: expirationDate });
+      Cookies.set("refresh_token", data.refresh_token, { expires: expirationDate });
     } catch (e) {
       console.log(e);
     }
   };
+
+  useEffect(() => {
+    if (user?.id) {
+      axios.get(`${API}/webgetprofileinfo/${user?.id}`).then((res) => {
+        setData(res.data)
+      }).catch((err) => {
+        console.log(err)
+      })
+    }
+  }, [user?.id])
 
   useEffect(() => {
     setLoading(true);
@@ -109,11 +115,11 @@ const page = () => {
       email: data?.data?.email,
       username: data?.data?.username,
       image: data?.data?.image,
-      date: formatDatetimereverse(data?.data?.date.toString()),
       bio: data?.data?.bio,
+      date: formatDatetimereverse(data?.data?.date?.toString()),
     });
     setLoading(false);
-  }, []);
+  }, [user?.id, data]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -156,12 +162,7 @@ const page = () => {
         <div className=" w-full font-medium text-[#4880FF]">Edit Profile</div>
         <div className="flex justify-end items-center gap-3 w-full flex-grow">
           <div className="flex justify-center items-center gap-2">
-            <div
-              className="flex  px-2  justify-center  
-           items-center"
-            >
-              <ModeToggle />
-            </div>
+
 
             <MdOutlineLogout
               onClick={() => setOpen(true)}

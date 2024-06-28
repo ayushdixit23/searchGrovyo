@@ -14,15 +14,10 @@ import { MdVerified } from "react-icons/md";
 export default function SettingLayout({ children }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isChildrenHidden, setIsChildrenHidden] = useState(false);
-  // const { image, firstname, data?.lastname, advertiserid } = getData()
   const { data, setAuth, setData } = useAuthContext();
 
   const router = useRouter();
-
-  const handleToggleChildren = () => {
-    setIsChildrenHidden(!isChildrenHidden);
-  };
-
+  
   const handleLogout = () => {
     setIsModalOpen(false);
 
@@ -46,7 +41,6 @@ export default function SettingLayout({ children }) {
       window.history.pushState
     ) {
       window.addEventListener("popstate", function () {
-        // Check if 'setIsChildrenHidden' is defined and is a function before calling it
         if (typeof setIsChildrenHidden === "function") {
           setIsChildrenHidden(false);
         }

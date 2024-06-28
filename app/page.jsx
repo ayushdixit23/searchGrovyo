@@ -172,9 +172,9 @@ function page() {
     <>
       <div
         onClick={() => setOpen(false)}
-        className={`duration-700 ${
-          open ? "right-0" : "-right-[1000px] "
-        } w-screen z-50 fixed h-screen `}
+        className={`duration-700  ${
+          open ? "right-0 z-50" : "-right-[1000px] -z-10"
+        } w-screen  fixed h-screen `}
       >
         {/* popup */}
         <div

@@ -825,10 +825,10 @@ const PrivateChats = React.forwardRef(
                     setReplyFunction({ reply: "Video", replyId: d?.mesId })
                   );
                 }}
-                className={`relative group ${
+                className={`relative max-w-[350px] max-h-[350px] group ${
                   data?.id === d?.sender?._id
-                    ? " bg-[#0075ff] text-white h-[145px] sm:w-[240px] mt-4 sm:h-[240px] w-[145px] flex justify-center items-center p-2 rounded-l-2xl rounded-br-2xl"
-                    : "bg-[#ffffff] dark:text-black dark:bg-gray-100 h-[145px] sm:w-[240px] mt-4 sm:h-[240px] w-[145px] flex justify-center items-center p-2 rounded-r-2xl rounded-bl-2xl"
+                    ? " bg-[#0075ff] text-white mt-4 flex justify-center items-center p-2 rounded-l-2xl rounded-br-2xl"
+                    : "bg-[#ffffff] dark:text-black dark:bg-gray-100 mt-4 flex justify-center items-center p-2 rounded-r-2xl rounded-bl-2xl"
                 }`}
               >
                 <div className="group-hover:pr-2">
@@ -947,7 +947,7 @@ const PrivateChats = React.forwardRef(
                 </div>
               </div>
             )}
-            
+
             {d?.typ == "glimpse" && (
               <div
                 onDoubleClick={() => {

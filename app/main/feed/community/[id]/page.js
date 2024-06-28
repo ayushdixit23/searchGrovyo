@@ -518,96 +518,162 @@ function Components({ params }) {
   return (
     <>
       {optionType === "reports" && (
-        <div className="fixed inset-0 z-40 flex justify-center items-center w-screen h-screen">
-          <div className="flex justify-center flex-col  items-center h-full w-[40%]">
-            <div className="text-xl">Reports</div>
-            <div>
+        <div className="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
+          <div className="bg-white dark:bg-bluedark rounded-lg shadow-lg w-11/12 md:w-1/3 p-6">
+            <div className="text-2xl font-semibold mb-4 text-center">
+              Reports
+            </div>
+            <div className="space-y-3 text-sm">
               <div
-                onClick={() =>
-                  !reports.includes("CopyRight Infringment") &&
-                  setReports([...reports, "CopyRight Infringment"])
-                }
-                className="p-2 px-5 rounded-xl bg-black text-white"
+                onClick={() => {
+                  if (reports.includes("CopyRight Infringement")) {
+                    setReports(
+                      reports.filter(
+                        (report) => report !== "CopyRight Infringement"
+                      )
+                    );
+                  } else {
+                    setReports([...reports, "CopyRight Infringement"]);
+                  }
+                }}
+                className={`p-3 ${reports.includes("CopyRight Infringement")
+                  ? "bg-[#0077ff85]"
+                  : "bg-gray-200 dark:bg-[#323d4e]"
+                  } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
-                CopyRight Infringment
+                CopyRight Infringement
               </div>
               <div
-                onClick={() =>
-                  !reports.includes("Harrasment") &&
-                  setReports([...reports, "Harrasment"])
-                }
-                className="p-2 px-5 rounded-xl bg-black text-white"
+                onClick={() => {
+                  if (reports.includes("Harrassment")) {
+                    setReports(
+                      reports.filter((report) => report !== "Harrassment")
+                    );
+                  } else {
+                    setReports([...reports, "Harrassment"]);
+                  }
+                }}
+                className={`p-3 ${reports.includes("Harrassment")
+                  ? "bg-[#0077ff85]"
+                  : "bg-gray-200 dark:bg-[#323d4e]"
+                  } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
-                Harrasment
+                Harrassment
               </div>
               <div
-                onClick={() =>
-                  !reports.includes("Nudity") &&
-                  setReports([...reports, "Nudity"])
-                }
-                className="p-2 px-5 rounded-xl bg-black text-white"
+                onClick={() => {
+                  if (reports.includes("Nudity")) {
+                    setReports(reports.filter((report) => report !== "Nudity"));
+                  } else {
+                    setReports([...reports, "Nudity"]);
+                  }
+                }}
+                className={`p-3 ${reports.includes("Nudity")
+                  ? "bg-[#0077ff85]"
+                  : "bg-gray-200 dark:bg-[#323d4e]"
+                  } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
                 Nudity
               </div>
               <div
-                onClick={() =>
-                  !reports.includes("Sexual Content") &&
-                  setReports([...reports, "Sexual Content"])
-                }
-                className="p-2 px-5 rounded-xl bg-black text-white"
+                onClick={() => {
+                  if (reports.includes("Sexual Content")) {
+                    setReports(
+                      reports.filter((report) => report !== "Sexual Content")
+                    );
+                  } else {
+                    setReports([...reports, "Sexual Content"]);
+                  }
+                }}
+                className={`p-3 ${reports.includes("Sexual Content")
+                  ? "bg-[#0077ff85]"
+                  : "bg-gray-200 dark:bg-[#323d4e]"
+                  } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
                 Sexual Content
               </div>
               <div
-                onClick={() =>
-                  !reports.includes("Spam") && setReports([...reports, "Spam"])
-                }
-                className="p-2 px-5 rounded-xl bg-black text-white"
+                onClick={() => {
+                  if (reports.includes("Spam")) {
+                    setReports(reports.filter((report) => report !== "Spam"));
+                  } else {
+                    setReports([...reports, "Spam"]);
+                  }
+                }}
+                className={`p-3 ${reports.includes("Spam")
+                  ? "bg-[#0077ff85]"
+                  : "bg-gray-200 dark:bg-[#323d4e]"
+                  } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
                 Spam
               </div>
               <div
-                onClick={() =>
-                  !reports.includes("Violence") &&
-                  setReports([...reports, "Violence"])
-                }
-                className="p-2 px-5 rounded-xl bg-black text-white"
+                onClick={() => {
+                  if (reports.includes("Violence")) {
+                    setReports(
+                      reports.filter((report) => report !== "Violence")
+                    );
+                  } else {
+                    setReports([...reports, "Violence"]);
+                  }
+                }}
+                className={`p-3 ${reports.includes("Violence")
+                  ? "bg-[#0077ff85]"
+                  : "bg-gray-200 dark:bg-[#323d4e]"
+                  } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
                 Violence
               </div>
               <div
-                onClick={() =>
-                  !reports.includes("Hate Speech") &&
-                  setReports([...reports, "Hate Speech"])
-                }
-                className="p-2 px-5 rounded-xl bg-black text-white"
+                onClick={() => {
+                  if (reports.includes("Hate Speech")) {
+                    setReports(
+                      reports.filter((report) => report !== "Hate Speech")
+                    );
+                  } else {
+                    setReports([...reports, "Hate Speech"]);
+                  }
+                }}
+                className={`p-3 ${reports.includes("Hate Speech")
+                  ? "bg-[#0077ff85]"
+                  : "bg-gray-200 dark:bg-[#323d4e]"
+                  } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
                 Hate Speech
               </div>
               <div
-                onClick={() =>
-                  !reports.includes("Other") &&
-                  setReports([...reports, "Other"])
-                }
-                className="p-2 px-5 rounded-xl bg-black text-white"
+                onClick={() => {
+                  if (reports.includes("Other")) {
+                    setReports(reports.filter((report) => report !== "Other"));
+                  } else {
+                    setReports([...reports, "Other"]);
+                  }
+                }}
+                className={`p-3 ${reports.includes("Other")
+                  ? "bg-[#0077ff85]"
+                  : "bg-gray-200 dark:bg-[#323d4e]"
+                  } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
                 Other
               </div>
-
-              <Link
-                href={`/main/feed/community/${params?.id}`}
-                className="p-2 px-5 rounded-xl bg-black text-white"
-              >
-                Cancel
-              </Link>
-
-              <Link
-                onClick={handleReport}
-                href={`/main/feed/community/${params?.id}`}
-                className="p-2 px-5 rounded-xl bg-black text-white"
-              >
-                Submit
-              </Link>
+              <div className="flex justify-between mt-4">
+                <Link
+                  onClick={() => {
+                    setReports([]);
+                  }}
+                  href={`/main/feed/community/${params?.id}`}
+                  className="px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600"
+                >
+                  Cancel
+                </Link>
+                <Link
+                  onClick={handleReport}
+                  href={`/main/feed/community/${params?.id}`}
+                  className="px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600"
+                >
+                  Submit
+                </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -746,56 +812,59 @@ function Components({ params }) {
               className="flex justify-center relative items-center text-3xl"
             >
               <IoReorderThreeOutline />
-              {options && (
-                <div className="absolute w-[200px] z-40 text-sm h-auto -left-[170px] p-3 top-7 text-white bg-black">
-                  <div className="flex flex-col gap-2 font-semibold h-full">
+
+              <div className={`absolute duration-100 ${options
+                ? "w-[200px] p-2 top-7 text-sm h-auto -left-[170px] "
+                : "w-0 h-0 text-[0px] top-0 left-0"
+                } z-40 rounded-lg dark:text-white text-[#6e6e6e] bg-white dark:bg-[#4c66ad]`}>
+                <div className="flex flex-col gap-2 font-semibold h-full">
+                  <Link
+                    href={`/main/feed/community/${params?.id}?type=members`}
+                  >
+                    Members
+                  </Link>
+                  {creatorId !== data?.id && (
                     <Link
-                      href={`/main/feed/community/${params?.id}?type=members`}
+                      href={`/main/feed/community/${params?.id}?type=reports`}
                     >
-                      Members
+                      Reports
                     </Link>
-                    {creatorId !== data?.id && (
-                      <Link
-                        href={`/main/feed/community/${params?.id}?type=reports`}
-                      >
-                        Reports
-                      </Link>
-                    )}
+                  )}
 
-                    {creatorId !== data?.id && (
-                      <div>
-                        {isMuted ? (
-                          <div onClick={handleMute}>Un Mute</div>
-                        ) : (
-                          <div onClick={handleMute}>Mute</div>
-                        )}
-                      </div>
-                    )}
+                  {creatorId !== data?.id && (
+                    <div>
+                      {isMuted ? (
+                        <div onClick={handleMute}>Un Mute</div>
+                      ) : (
+                        <div onClick={handleMute}>Mute</div>
+                      )}
+                    </div>
+                  )}
 
-                    {creatorId === data?.id ? (
-                      <div onClick={deleteCommunity}>Delete</div>
-                    ) : (
-                      <div>
-                        {isjoined ? (
-                          <div onClick={() => unjoinmembers()}>Leave</div>
-                        ) : (
-                          <div>Join</div>
-                        )}
-                      </div>
-                    )}
-                    {data?.id === creatorId && (
-                      <div>
-                        {comtype === "private" ? (
-                          <div onClick={changeComType}> set to public</div>
-                        ) : (
-                          <div onClick={changeComType}>set to private</div>
-                        )}
-                      </div>
-                    )}
-                    <div></div>
-                  </div>
+                  {creatorId === data?.id ? (
+                    <div onClick={deleteCommunity}>Delete</div>
+                  ) : (
+                    <div>
+                      {isjoined ? (
+                        <div onClick={() => unjoinmembers()}>Leave</div>
+                      ) : (
+                        <div>Join</div>
+                      )}
+                    </div>
+                  )}
+                  {data?.id === creatorId && (
+                    <div>
+                      {comtype === "private" ? (
+                        <div onClick={changeComType}> set to public</div>
+                      ) : (
+                        <div onClick={changeComType}>set to private</div>
+                      )}
+                    </div>
+                  )}
+                  <div></div>
                 </div>
-              )}
+              </div>
+
             </div>
           </div>
         </div>
@@ -806,11 +875,14 @@ function Components({ params }) {
 
         {!optionType && (
           <div
-            className={`${currentState === "chat"
-              ? "h-[84%] w-full relative overflow-y-scroll"
-              : "h-[92%] w-full relative overflow-y-scroll"
+            className={`w-full relative overflow-y-scroll ${currentState === "chat"
+              ? reply && replyId
+                ? "h-[80%]"
+                : "h-[84%]"
+              : "h-[92%]"
               }`}
           >
+
             <div
               className="flex justify-center z-10  w-full py-2
          items-center
@@ -1033,11 +1105,14 @@ function Components({ params }) {
         )}
 
         {currentState === "chat" && (
-          <div className="h-[8%]">
+          <div className={`bg-[#fff] duration-75 flex border-t-2 dark:bg-bluelight justify-center ${reply && replyId
+            ? "h-[12%] gap-2 space-y-2"
+            : "h-[8%] items-center"
+            }`}>
             {isTopicJoined && (
-              <div className="bg-[#efefef]  flex items-center w-full  justify-center h-[100%]">
+              <div className="bg-[#efefef] dark:bg-bluelight flex flex-col items-center w-full justify-center h-[100%]">
                 {reply && replyId && (
-                  <div className="flex justify-between items-center">
+                  <div className="flex justify-between w-full px-3 h-[40px] items-center">
                     <div>{reply}</div>
                     <div>
                       <RxCross2

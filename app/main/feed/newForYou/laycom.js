@@ -491,22 +491,7 @@ export default function NewforyouLayout({ children }) {
 																						/>
 																					</div>
 																				) : (
-																					// <div className=" h-full">
-																					//   <div className=" rounded-t-xl h-full overflow-hidden">
-																					//     <MediaPlayer
-																					//       src={f?.content}
-																					//       onQualitiesChange={480}
-																					//       className="h-[300px] sm:h-[260px]"
-																					//     >
-																					//       <MediaProvider />
-																					//       <DefaultVideoLayout
-																					//         thumbnails={f?.content}
-																					//         icons={defaultLayoutIcons}
-																					//       />
-																					//     </MediaPlayer>
-																					//   </div>
-																					// </div>
-																					// < video src={f?.content} controls className="max-h-full" />
+
 																					<VideoPlayer
 																						key={i}
 																						src={f?.content}
@@ -818,7 +803,7 @@ export default function NewforyouLayout({ children }) {
 															<div
 																onClick={() => {
 																	setShareValue(
-																		`http://localhost:3000/main/feed/newForYou/${d?.posts?.community?._id}#${d?.posts?._id}`
+																		`https://grovyo.com/main/feed/newForYou/${d?.posts?.community?._id}#${d?.posts?._id}`
 																	);
 																	setShare(true);
 																}}

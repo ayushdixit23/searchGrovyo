@@ -22,16 +22,16 @@ import {
 } from "../../../../redux/slice/messageSlice";
 // default
 
-import styles from "../../../../CustomScrollbarComponent.module.css";
+// import styles from "../../../../CustomScrollbarComponent.module.css";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { LuLoader2 } from "react-icons/lu";
 import PrivateChats from "../../../../component/PrivateChats";
 import Hidden from "../../../../component/Hidden";
-import { IoReorderThreeOutline } from "react-icons/io5";
+import { IoDocument, IoReorderThreeOutline } from "react-icons/io5";
 import Link from "next/link";
 import { setConvId, setPreview } from "@/app/redux/slice/remember";
 import { RxCross2 } from "react-icons/rx";
-import { setData, setLastmsgs } from "@/app/redux/slice/lastMessage";
+import Loader from "@/app/component/Loader";
 
 const Components = () => {
   const { data } = useAuthContext();
@@ -55,6 +55,7 @@ const Components = () => {
   const msg = useSelector((state) => state.message.message);
   const reply = useSelector((state) => state.message.reply);
   const replyId = useSelector((state) => state.message.replyId);
+  const [loading, setLoading] = useState(true);
   const messageRefs = useRef({});
   const [istyping, setIstyping] = useState(false);
 
@@ -87,6 +88,8 @@ const Components = () => {
       dispatch(setMessages(res.data.messages || []));
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -383,6 +386,7 @@ const Components = () => {
   };
 
   useEffect(() => {
+    setLoading(true);
     if (params?.id && params?.con && data?.id) {
       fetchChats();
     }
@@ -737,102 +741,6 @@ const Components = () => {
 
   return (
     <>
-      {/* {optionType === "reports" && (
-        <div className="fixed inset-0 z-40 flex justify-center items-center w-screen h-screen">
-          <div className="flex justify-center flex-col bg-white items-center h-full w-[40%]">
-            <div className="text-xl">Reports</div>
-            <div>
-              <div
-                onClick={() =>
-                  !reports.includes("CopyRight Infringment") &&
-                  setReports([...reports, "CopyRight Infringment"])
-                }
-                className="p-2 px-5 rounded-xl bg-black text-white"
-              >
-                CopyRight Infringement
-              </div>
-              <div
-                onClick={() =>
-                  !reports.includes("Harrasment") &&
-                  setReports([...reports, "Harrasment"])
-                }
-                className="p-2 px-5 rounded-xl bg-black text-white"
-              >
-                Harrassment
-              </div>
-              <div
-                onClick={() =>
-                  !reports.includes("Nudity") &&
-                  setReports([...reports, "Nudity"])
-                }
-                className="p-2 px-5 rounded-xl bg-black text-white"
-              >
-                Nudity
-              </div>
-              <div
-                onClick={() =>
-                  !reports.includes("Sexual Content") &&
-                  setReports([...reports, "Sexual Content"])
-                }
-                className="p-2 px-5 rounded-xl bg-black text-white"
-              >
-                Sexual Content
-              </div>
-              <div
-                onClick={() =>
-                  !reports.includes("Spam") && setReports([...reports, "Spam"])
-                }
-                className="p-2 px-5 rounded-xl bg-black text-white"
-              >
-                Spam
-              </div>
-              <div
-                onClick={() =>
-                  !reports.includes("Violence") &&
-                  setReports([...reports, "Violence"])
-                }
-                className="p-2 px-5 rounded-xl bg-black text-white"
-              >
-                Violence
-              </div>
-              <div
-                onClick={() =>
-                  !reports.includes("Hate Speech") &&
-                  setReports([...reports, "Hate Speech"])
-                }
-                className="p-2 px-5 rounded-xl bg-black text-white"
-              >
-                Hate Speech
-              </div>
-              <div
-                onClick={() =>
-                  !reports.includes("Other") &&
-                  setReports([...reports, "Other"])
-                }
-                className="p-2 px-5 rounded-xl bg-black text-white"
-              >
-                Other
-              </div>
-
-              <Link
-                href={`/main/chat/${params?.id}/${params?.con}`}
-                className="p-2 px-5 rounded-xl bg-black text-white"
-              >
-                Cancel
-              </Link>
-
-              <Link
-                onClick={handleReport}
-                href={`/main/chat/${params?.id}/${params?.con}`}
-                className="p-2 px-5 rounded-xl bg-black text-white"
-              >
-                Submit
-              </Link>
-            </div>
-          </div>
-        </div>
-      )} */}
-
       {optionType === "reports" && (
         <div className="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
           <div className="bg-white dark:bg-bluedark rounded-lg shadow-lg w-11/12 md:w-1/3 p-6">
@@ -841,78 +749,150 @@ const Components = () => {
             </div>
             <div className="space-y-3 text-sm">
               <div
-                onClick={() =>
-                  !reports.includes("CopyRight Infringement") &&
-                  setReports([...reports, "CopyRight Infringement"])
-                }
-                className="p-3 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-800 cursor-pointer"
+                onClick={() => {
+                  if (reports.includes("CopyRight Infringement")) {
+                    setReports(
+                      reports.filter(
+                        (report) => report !== "CopyRight Infringement"
+                      )
+                    );
+                  } else {
+                    setReports([...reports, "CopyRight Infringement"]);
+                  }
+                }}
+                className={`p-3 ${
+                  reports.includes("CopyRight Infringement")
+                    ? "bg-[#0077ff85]"
+                    : "bg-gray-200 dark:bg-[#323d4e]"
+                } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
                 CopyRight Infringement
               </div>
               <div
-                onClick={() =>
-                  !reports.includes("Harrassment") &&
-                  setReports([...reports, "Harrassment"])
-                }
-                className="p-3 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-800 cursor-pointer"
+                onClick={() => {
+                  if (reports.includes("Harrassment")) {
+                    setReports(
+                      reports.filter((report) => report !== "Harrassment")
+                    );
+                  } else {
+                    setReports([...reports, "Harrassment"]);
+                  }
+                }}
+                className={`p-3 ${
+                  reports.includes("Harrassment")
+                    ? "bg-[#0077ff85]"
+                    : "bg-gray-200 dark:bg-[#323d4e]"
+                } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
                 Harrassment
               </div>
               <div
-                onClick={() =>
-                  !reports.includes("Nudity") &&
-                  setReports([...reports, "Nudity"])
-                }
-                className="p-3 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-800 cursor-pointer"
+                onClick={() => {
+                  if (reports.includes("Nudity")) {
+                    setReports(reports.filter((report) => report !== "Nudity"));
+                  } else {
+                    setReports([...reports, "Nudity"]);
+                  }
+                }}
+                className={`p-3 ${
+                  reports.includes("Nudity")
+                    ? "bg-[#0077ff85]"
+                    : "bg-gray-200 dark:bg-[#323d4e]"
+                } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
                 Nudity
               </div>
               <div
-                onClick={() =>
-                  !reports.includes("Sexual Content") &&
-                  setReports([...reports, "Sexual Content"])
-                }
-                className="p-3 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-800 cursor-pointer"
+                onClick={() => {
+                  if (reports.includes("Sexual Content")) {
+                    setReports(
+                      reports.filter((report) => report !== "Sexual Content")
+                    );
+                  } else {
+                    setReports([...reports, "Sexual Content"]);
+                  }
+                }}
+                className={`p-3 ${
+                  reports.includes("Sexual Content")
+                    ? "bg-[#0077ff85]"
+                    : "bg-gray-200 dark:bg-[#323d4e]"
+                } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
                 Sexual Content
               </div>
               <div
-                onClick={() =>
-                  !reports.includes("Spam") && setReports([...reports, "Spam"])
-                }
-                className="p-3 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-800 cursor-pointer"
+                onClick={() => {
+                  if (reports.includes("Spam")) {
+                    setReports(reports.filter((report) => report !== "Spam"));
+                  } else {
+                    setReports([...reports, "Spam"]);
+                  }
+                }}
+                className={`p-3 ${
+                  reports.includes("Spam")
+                    ? "bg-[#0077ff85]"
+                    : "bg-gray-200 dark:bg-[#323d4e]"
+                } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
                 Spam
               </div>
               <div
-                onClick={() =>
-                  !reports.includes("Violence") &&
-                  setReports([...reports, "Violence"])
-                }
-                className="p-3 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-800 cursor-pointer"
+                onClick={() => {
+                  if (reports.includes("Violence")) {
+                    setReports(
+                      reports.filter((report) => report !== "Violence")
+                    );
+                  } else {
+                    setReports([...reports, "Violence"]);
+                  }
+                }}
+                className={`p-3 ${
+                  reports.includes("Violence")
+                    ? "bg-[#0077ff85]"
+                    : "bg-gray-200 dark:bg-[#323d4e]"
+                } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
                 Violence
               </div>
               <div
-                onClick={() =>
-                  !reports.includes("Hate Speech") &&
-                  setReports([...reports, "Hate Speech"])
-                }
-                className="p-3 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-800 cursor-pointer"
+                onClick={() => {
+                  if (reports.includes("Hate Speech")) {
+                    setReports(
+                      reports.filter((report) => report !== "Hate Speech")
+                    );
+                  } else {
+                    setReports([...reports, "Hate Speech"]);
+                  }
+                }}
+                className={`p-3 ${
+                  reports.includes("Hate Speech")
+                    ? "bg-[#0077ff85]"
+                    : "bg-gray-200 dark:bg-[#323d4e]"
+                } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
                 Hate Speech
               </div>
               <div
-                onClick={() =>
-                  !reports.includes("Other") &&
-                  setReports([...reports, "Other"])
-                }
-                className="p-3 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-800 cursor-pointer"
+                onClick={() => {
+                  if (reports.includes("Other")) {
+                    setReports(reports.filter((report) => report !== "Other"));
+                  } else {
+                    setReports([...reports, "Other"]);
+                  }
+                }}
+                className={`p-3 ${
+                  reports.includes("Other")
+                    ? "bg-[#0077ff85]"
+                    : "bg-gray-200 dark:bg-[#323d4e]"
+                } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
                 Other
               </div>
               <div className="flex justify-between mt-4">
                 <Link
+                  onClick={() => {
+                    setReports([]);
+                  }}
                   href={`/main/chat/${params?.id}/${params?.con}`}
                   className="px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600"
                 >
@@ -931,288 +911,307 @@ const Components = () => {
         </div>
       )}
 
-      <div
-        onClick={() => setOptions(false)}
-        className={`fixed inset-0 ${
-          options ? "z-40" : "-z-20"
-        } w-screen h-screen`}
-      ></div>
-      <div className="w-full h-[100vh] relative ">
-        {/* header  */}
-        <div
-          className="w-[100%] gap-2 bg-white shadow-md dark:bg-bluelight dark:border-[#273142]  border-[#888]  justify-between items-center h-[8%] 
-        border-b-[0.5px] border-b-gray-200 px-4 flex flex-row "
-        >
-          <a
-            target="_blank"
-            href={`https://grovyo.com/${user?.username}`}
-            className="flex flex-row items-center w-full h-full gap-2"
-          >
-            <div>
-              <img
-                src={user?.profilepic}
-                className="h-[45px] w-[45px] rounded-[20px] ring-1 dark:ring-[#273142] ring-white bg-white-300 "
-              />
-            </div>
-            <div>
-              <div className="text-[15px] font-medium">{user?.fullname}</div>
-              <div className="text-[14px]">{istyping ? "Typing..." : ""}</div>
-            </div>
-          </a>
-          {/* user.isverified */}
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
           <div
-            onClick={() => setOptions(true)}
-            className="flex justify-center relative items-center text-3xl"
-          >
-            <div className="">
-              <IoReorderThreeOutline />
-            </div>
+            onClick={() => setOptions(false)}
+            className={`fixed inset-0 ${
+              options ? "z-40" : "-z-20"
+            } w-screen h-screen`}
+          ></div>
+          <div className="w-full h-[100vh] relative ">
+            {/* header  */}
             <div
-              className={`duration-100 absolute shadow-xl ${
-                options
-                  ? " w-[200px] z-40 h-auto -left-[171px] p-3 top-7 dark:text-white text-black rounded-xl bg-white dark:bg-[#4c66ad]"
-                  : "w-0 h-0 p-0 top-0 right-0 z-0 "
-              }`}
+              className="w-[100%] gap-2 bg-white shadow-md dark:bg-bluelight dark:border-[#273142]  border-[#888]  justify-between items-center h-[8%] 
+        border-b-[0.5px] border-b-gray-200 px-4 flex flex-row "
             >
-              <div
-                className={`${
-                  options
-                    ? "flex flex-col gap-2 font-semibold h-full  text-sm"
-                    : "h-0 gap-0  text-[0px] "
-                }`}
+              <a
+                target="_blank"
+                href={`https://grovyo.com/${user?.username}`}
+                className="flex flex-row items-center w-full h-full gap-2"
               >
-                <Link
-                  onClick={() => setOptions(false)}
-                  href={`/main/chat/${params?.id}/${params?.con}?type=hiddenMsgs`}
-                >
-                  Hidden Messages
-                </Link>
-                <Link
-                  href={`/main/chat/${params?.id}/${params?.con}?type=reports`}
-                >
-                  Reports
-                </Link>
-                {canblock ? (
-                  <div className="text-red-300" onClick={handleBlock}>
-                    Block
-                  </div>
-                ) : (
-                  <div className="text-red-300" onClick={handleBlock}>
-                    UnBlock
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-        {/* chats  */}
-
-        {optionType === "hiddenMsgs" && (
-          <Hidden
-            id={data?.id}
-            user={user}
-            convId={params?.con}
-            socket={socket}
-            data={data}
-            dispatch={dispatch}
-          />
-        )}
-        {!optionType && (
-          <>
-            <div
-              id="scrollableDiv"
-              style={{
-                overflow: "auto",
-                display: "flex",
-                flexDirection: "column-reverse",
-                paddingLeft: 20,
-              }}
-              className={`duration-75 bg-chatbg bg-no-repeat bg-cover  relative overflow-y-scroll bg-white dark:bg-bluedark ${
-                reply && replyId ? "h-[80%] " : "h-[84%]"
-              }`}
-            >
-              {/*Put the scroll bar always on the bottom*/}
-              <InfiniteScroll
-                dataLength={messages?.length}
-                next={loadmore}
-                style={{
-                  display: "flex",
-                  flexDirection: "column-reverse",
-                }} //To put endMessage and loader to the top.
-                inverse={true} //
-                hasMore={end}
-                height={"100%"}
-                loader={
-                  <div className="flex justify-center items-center p-3">
-                    <div className="animate-spin ">
-                      <LuLoader2 />
-                    </div>
-                  </div>
-                }
-                scrollableTarget="scrollableDiv"
-              >
-                {preview === false && (
-                  <div>
-                    {messages.map((d, i) => (
-                      <PrivateChats
-                        d={d}
-                        ref={messageRefs.current[d.mesId]}
-                        messages={messages}
-                        handleScrollToMessage={handleScrollToMessage}
-                        receiverId={params?.id}
-                        convId={params?.con}
-                        key={d.mesId}
-                        socket={socket}
-                        data={data}
-                        dispatch={dispatch}
-                        i={i}
-                        user={user}
-                      />
-                    ))}
-                  </div>
-                )}
-
-                {preview && (
-                  <div className="w-full h-[70vh]">
-                    <div className="flex flex-col w-full justify-center items-center h-full ">
-                      <div
-                        onClick={() => {
-                          dispatch(setType(""));
-                          dispatch(setContent(""));
-                          dispatch(setPreview(false));
-                        }}
-                        className="flex justify-end items-end mr-7 w-full"
-                      >
-                        <RxCross2 className="text-2xl" />
-                      </div>
-                      <div className="h-full justify-center items-center flex">
-                        {type === "image" && content && (
-                          <div className="h-full flex w-full justify-center items-center">
-                            <img
-                              className="max-h-[500px] max-w-[500px] flex"
-                              src={
-                                typeof content === "string"
-                                  ? content
-                                  : URL.createObjectURL(content)
-                              }
-                            />
-                          </div>
-                        )}
-                        {type === "video" && content && (
-                          <div className="h-full flex w-full justify-center items-center">
-                            <video
-                              className="max-h-[500px] max-w-[500px] flex"
-                              src={URL.createObjectURL(content)}
-                              controls
-                            />
-                          </div>
-                        )}
-                        {type === "gif" && content && (
-                          <div className="h-full flex w-full bg-green-200 justify-center items-center">
-                            <img
-                              className="max-h-[500px] max-w-[500px] bg-red-300 flex"
-                              src={
-                                typeof content === "string"
-                                  ? content
-                                  : URL.createObjectURL(content)
-                              }
-                            />
-                          </div>
-                        )}
-                        {type === "doc" && content && (
-                          <div className="h-full flex w-full bg-green-200 justify-center items-center"></div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </InfiniteScroll>
-            </div>
-            {/* footer  */}
-            <div
-              className={`bg-[#fff] duration-75 flex border-t-2 dark:bg-bluelight justify-center ${
-                reply && replyId
-                  ? "h-[12%] gap-2 space-y-2"
-                  : "h-[8%] items-center"
-              }`}
-            >
-              {canblock === true && isBlocked === false && (
-                <div className="px-2 w-full dark:bg-bluelight   ">
-                  {/* <div onClick={() => loadmore()}>Load More</div> */}
-
-                  {reply && replyId && (
-                    <div className="flex justify-between p-1 px-2 rounded-[10px] m-1 bg-red-300 items-center text-black">
-                      <div
-                        className={`${
-                          reply && replyId ? "text-[14px]" : "text-[0px]"
-                        }`}
-                      >
-                        {limitWords(reply, 65)}
-                      </div>
-                      <div>
-                        <RxCross2
-                          className={`dur${
-                            reply && replyId ? "text-[14px]" : "text-[0px]"
-                          }`}
-                          onClick={() => {
-                            dispatch(setType(""));
-                            dispatch(
-                              setReplyFunction({
-                                reply: "",
-                                replyId: "",
-                              })
-                            );
-                          }}
-                        />
-                      </div>
-                    </div>
-                  )}
-                  <Input
-                    sendMessages={sendm}
-                    sendgif={sendgif}
-                    senderId={data?.id}
-                    sender_fullname={data?.fullname}
-                    convId={params?.con}
-                    recieverId={params?.id}
-                    handleSend={handleSend}
-                    setContent={setContent}
-                    reply={replyFunc}
-                    setMessages={setMessages}
-                    setincommsgs={setincommsgs}
-                    setMessage={setMessage}
-                    setType={setType}
-                    type={type}
-                    socket={socket}
-                    name={name}
-                    content={content}
-                    size={size}
-                    message={msg}
-                    dispatch={dispatch}
+                <div>
+                  <img
+                    src={user?.profilepic}
+                    className="h-[45px] w-[45px] rounded-[20px] ring-1 dark:ring-[#273142] ring-white bg-white-300 "
                   />
                 </div>
-              )}
-
-              {canblock === false && isBlocked != true && (
-                <div className="absolute bottom-0 bg-white w-full">
-                  You Have Block {user?.fullname}
+                <div>
+                  <div className="text-[15px] font-medium">
+                    {user?.fullname}
+                  </div>
+                  <div className="text-[14px]">
+                    {istyping ? "Typing..." : ""}
+                  </div>
                 </div>
-              )}
-
-              {isBlocked && canblock !== false && (
-                <div>You Have Been Blocked by {user?.fullname}</div>
-              )}
-
-              {canblock === false && isBlocked && (
-                <div>You Both Blocked Each other</div>
-              )}
+              </a>
+              {/* user.isverified */}
+              <div
+                onClick={() => setOptions(true)}
+                className="flex justify-center relative items-center text-3xl"
+              >
+                <div className="">
+                  <IoReorderThreeOutline />
+                </div>
+                <div
+                  className={`duration-100 absolute shadow-xl ${
+                    options
+                      ? " w-[200px] z-40 h-auto -left-[171px] p-3 top-7 dark:text-white text-black rounded-xl bg-white dark:bg-[#4c66ad]"
+                      : "w-0 h-0 p-0 top-0 right-0 z-0 "
+                  }`}
+                >
+                  <div
+                    className={`${
+                      options
+                        ? "flex flex-col gap-2 font-semibold h-full  text-sm"
+                        : "h-0 gap-0  text-[0px] "
+                    }`}
+                  >
+                    <Link
+                      onClick={() => setOptions(false)}
+                      href={`/main/chat/${params?.id}/${params?.con}?type=hiddenMsgs`}
+                    >
+                      Hidden Messages
+                    </Link>
+                    <Link
+                      href={`/main/chat/${params?.id}/${params?.con}?type=reports`}
+                    >
+                      Reports
+                    </Link>
+                    {canblock ? (
+                      <div className="text-red-300" onClick={handleBlock}>
+                        Block
+                      </div>
+                    ) : (
+                      <div className="text-red-300" onClick={handleBlock}>
+                        UnBlock
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
             </div>
-          </>
-        )}
+            {/* chats  */}
 
-        {/*
+            {optionType === "hiddenMsgs" && (
+              <Hidden
+                id={data?.id}
+                user={user}
+                convId={params?.con}
+                socket={socket}
+                data={data}
+                dispatch={dispatch}
+              />
+            )}
+            {!optionType && (
+              <>
+                <div
+                  id="scrollableDiv"
+                  style={{
+                    overflow: "auto",
+                    display: "flex",
+                    flexDirection: "column-reverse",
+                    paddingLeft: 20,
+                  }}
+                  className={`duration-75 bg-chatbg bg-no-repeat bg-cover  relative overflow-y-scroll bg-white dark:bg-bluedark ${
+                    reply && replyId ? "h-[80%] " : "h-[84%]"
+                  }`}
+                >
+                  {/*Put the scroll bar always on the bottom*/}
+                  <InfiniteScroll
+                    dataLength={messages?.length}
+                    next={loadmore}
+                    style={{
+                      display: "flex",
+                      flexDirection: "column-reverse",
+                    }} //To put endMessage and loader to the top.
+                    inverse={true} //
+                    hasMore={end}
+                    height={"100%"}
+                    loader={
+                      <div className="flex justify-center items-center p-3">
+                        <div className="animate-spin ">
+                          <LuLoader2 />
+                        </div>
+                      </div>
+                    }
+                    scrollableTarget="scrollableDiv"
+                  >
+                    {preview === false && (
+                      <div>
+                        {messages.map((d, i) => (
+                          <PrivateChats
+                            d={d}
+                            ref={messageRefs.current[d.mesId]}
+                            messages={messages}
+                            handleScrollToMessage={handleScrollToMessage}
+                            receiverId={params?.id}
+                            convId={params?.con}
+                            key={d.mesId}
+                            socket={socket}
+                            data={data}
+                            dispatch={dispatch}
+                            i={i}
+                            user={user}
+                          />
+                        ))}
+                      </div>
+                    )}
+
+                    {preview && (
+                      <div className="w-full h-[70vh]">
+                        <div className="flex flex-col w-full justify-center items-center h-full ">
+                          <div
+                            onClick={() => {
+                              dispatch(setType(""));
+                              dispatch(setContent(""));
+
+                              dispatch(setPreview(false));
+                            }}
+                            className="flex justify-end items-end mr-7 w-full"
+                          >
+                            <RxCross2 className="text-2xl" />
+                          </div>
+                          <div className="h-full justify-center items-center flex">
+                            {type === "image" && content && (
+                              <div className="h-full flex w-full justify-center items-center">
+                                <img
+                                  className="max-h-[500px] max-w-[500px] flex"
+                                  src={
+                                    typeof content === "string"
+                                      ? content
+                                      : URL.createObjectURL(content)
+                                  }
+                                />
+                              </div>
+                            )}
+                            {type === "video" && content && (
+                              <div className="h-full flex w-full justify-center items-center">
+                                <video
+                                  className="max-h-[500px] max-w-[500px] flex"
+                                  src={URL.createObjectURL(content)}
+                                  controls
+                                />
+                              </div>
+                            )}
+                            {type === "gif" && content && (
+                              <div className="h-full flex w-full bg-green-200 justify-center items-center">
+                                <img
+                                  className="max-h-[500px] max-w-[500px] bg-red-300 flex"
+                                  src={
+                                    typeof content === "string"
+                                      ? content
+                                      : URL.createObjectURL(content)
+                                  }
+                                />
+                              </div>
+                            )}
+                            {type === "doc" && content && (
+                              <div className="h-full flex gap-4 flex-col w-full justify-center items-center">
+                                <div className="flex gap-1 justify-center items-center">
+                                  <div className="">
+                                    <IoDocument className="w-[50px] h-[50px]" />
+                                  </div>
+                                  <div className="text-xl">{name}</div>
+                                </div>
+                                <div className="text-xl">
+                                  No Preview Available
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </InfiniteScroll>
+                </div>
+                {/* footer  */}
+                <div
+                  className={`bg-[#fff] duration-75 flex border-t-2 dark:bg-bluelight justify-center ${
+                    reply && replyId
+                      ? "h-[12%] gap-2 space-y-2"
+                      : "h-[8%] items-center"
+                  }`}
+                >
+                  {canblock === true && isBlocked === false && (
+                    <div className="px-2 w-full dark:bg-bluelight   ">
+                      {/* <div onClick={() => loadmore()}>Load More</div> */}
+
+                      {reply && replyId && (
+                        <div className="flex justify-between p-1 px-2 rounded-[10px] m-1 bg-red-300 items-center text-black">
+                          <div
+                            className={`${
+                              reply && replyId ? "text-[14px]" : "text-[0px]"
+                            }`}
+                          >
+                            {limitWords(reply, 65)}
+                          </div>
+                          <div>
+                            <RxCross2
+                              className={`dur${
+                                reply && replyId ? "text-[14px]" : "text-[0px]"
+                              }`}
+                              onClick={() => {
+                                dispatch(setType(""));
+                                dispatch(
+                                  setReplyFunction({
+                                    reply: "",
+                                    replyId: "",
+                                  })
+                                );
+                              }}
+                            />
+                          </div>
+                        </div>
+                      )}
+                      <Input
+                        sendMessages={sendm}
+                        sendgif={sendgif}
+                        senderId={data?.id}
+                        sender_fullname={data?.fullname}
+                        convId={params?.con}
+                        recieverId={params?.id}
+                        handleSend={handleSend}
+                        setContent={setContent}
+                        reply={replyFunc}
+                        setMessages={setMessages}
+                        setincommsgs={setincommsgs}
+                        setMessage={setMessage}
+                        setType={setType}
+                        type={type}
+                        socket={socket}
+                        name={name}
+                        content={content}
+                        size={size}
+                        message={msg}
+                        dispatch={dispatch}
+                      />
+                    </div>
+                  )}
+
+                  {canblock === false && isBlocked != true && (
+                    <div className="absolute bottom-3 flex justify-center items-center bg-white dark:bg-bluelight w-full">
+                      You Have Blocked {user?.fullname}
+                    </div>
+                  )}
+
+                  {isBlocked && canblock !== false && (
+                    <div>You Have Been Blocked by {user?.fullname}</div>
+                  )}
+
+                  {canblock === false && isBlocked && (
+                    <div>You Both Blocked Each other</div>
+                  )}
+                </div>
+              </>
+            )}
+
+            {/*
 			<SearchBar />
 			{/* <SuggestionBar /> */}
-        {/* 
+            {/* 
 			<Grid width={800} columns={3} gutter={6} onGifClick={(item, e) => {
 				e.preventDefault(); console.log(item, "item");
 
@@ -1220,7 +1219,9 @@ const Components = () => {
 				dispatch(setMessage(item?.images.downsized.url))
 				setUrl(item?.images.downsized.url);
 			}} fetchGifs={fetchGifs} key={searchKey} /> */}
-      </div>
+          </div>
+        </>
+      )}
     </>
   );
 };

@@ -456,6 +456,7 @@ const Component = ({
                       if (selectedFile) {
                         setShow(false);
                         dispatch(setType("doc"));
+                        dispatch(setPreview(true));
                         dispatch(
                           setContent({
                             content: e.target.files[0],

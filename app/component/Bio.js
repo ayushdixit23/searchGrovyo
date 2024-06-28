@@ -32,9 +32,7 @@ const Bio = ({ bio }) => {
     <>
 
       {bio?.isAbout && (
-        <div className="text-center w-full">
-          {console.log(bio)}
-
+        <div className="text-center dark:text-white w-full">
           <div className="flex w-[100%] pn:max-sm:flex-col mt-2 justify-center space-y-1 text-center">
             <div className="sm:w-[50%] w-[100%] flex flex-col justify-start items-start">
               <div className="text-[16px] pn:max-sm:text-[14px] font-semibold">Bio:</div>
@@ -54,8 +52,8 @@ const Bio = ({ bio }) => {
               ) ? null : (
                 <>
                   <div className="text-[16px] pn:max-sm:text-[14px] font-semibold">Links:</div>
-                  <div className="flex w-full text-black items-center flex-wrap">
-                    <div className="flex w-full text-black items-center flex-wrap">
+                  <div className="flex w-full text-black dark:text-white items-center flex-wrap">
+                    <div className="flex w-full text-black dark:text-white items-center flex-wrap">
                       {bio?.links.yt != "undefined" && (
                         <a
                           target="_blank"

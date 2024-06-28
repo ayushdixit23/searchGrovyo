@@ -36,9 +36,9 @@ function Store(props) {
           {productt.map((d, i) => (
             <div
               key={i}
-              className="flex flex-col justify-center border-[2px] border-[#f9f9f9] rounded-xl w-full sm:max-w-[220px] p-2 "
+              className="flex flex-col justify-center border-[2px] dark:border-[#323d4e] light:border-[#f9f9f9] rounded-xl w-full sm:max-w-[220px] p-2 "
             >
-              <div className="bg-[#f9f9f9] flex-wrap flex justify-center items-center rounded-lg py-3">
+              <div className="bg-[#f9f9f9] dark:bg-bluedark dark:text-white flex-wrap flex justify-center items-center rounded-lg py-3">
                 <div className="h-[170px] w-[200px] flex justify-center items-center ">
                   <img
                     src={`${d?.dp}`}
@@ -48,16 +48,16 @@ function Store(props) {
                 </div>
               </div>
               <div className="flex flex-col gap-2 my-2 text-lg font-medium">
-                <div className="text-base font-semibold sm:h-[20px] ">
+                <div className="text-base dark:text-white font-semibold sm:h-[20px] ">
                   {d?.name.length > 20 ? `${d?.name.slice(0, 20)}...` : d?.name}
                 </div>
                 {/* <div className="text-[#737373] text-[14px]">
                   sold by {d?.brandname}
                 </div> */}
-                <div className="text-[17px] flex gap-1 items-center font-bold">
+                <div className="text-[17px] dark:text-white flex gap-1 items-center font-bold">
                   <div>₹ {d?.isvariant ? d?.variants[0].category[0].discountedprice : d?.discountedprice}</div>
                   {d?.isvariant ?
-                    <span className="text-sm font-semibold text-[#5585FF]">
+                    <span className="text-sm dark:text-white font-semibold text-[#5585FF]">
                       {calculateDif(d?.variants[0].category[0].discountedprice, d?.variants[0].category[0].price)}% off
                     </span> :
                     <span className="text-sm font-semibold text-[#5585FF]">
@@ -65,7 +65,7 @@ function Store(props) {
                     </span>
                   }
                 </div>
-                <div className="font-semibold text-sm">
+                <div className="font-semibold dark:text-white text-sm">
                   M.R.P:
                   <del className="font-medium p-2 text-[#FF0000]">
                     ₹{d?.isvariant ? d?.variants[0].category[0].price : d?.price}

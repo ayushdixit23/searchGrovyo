@@ -100,11 +100,11 @@ export default function LibraryLayout({ children }) {
   // };
 
   return (
-    <div className="flex flex-row bg-white dark:bg-[#000] h-[100%] w-[100%]">
+    <div className="flex flex-row bg-white dark:bg-bluedark h-[100%] w-[100%]">
       {/* chats */}
       <div className="h-[100vh] pn:max-md:h-[100vh] select-none pn:max-sm:w-[100%] w-[100%] flex flex-col items-start  md:border-r-2 border-[#f7f7f7]  ">
         {/* header */}
-        <div className="md:h-[15vh] py-2 border-b-2 bg-white border-r-2 dark:bg-[#171717] dark:border-[#3e3e3e] dark:border-r-2 dark:text-[#fff] bg-rink-300 pn:max-sm:fixed top-14 md:min-w-[390px]  pn:max-md:w-[100%] flex flex-col pn:max-md:z-10">
+        <div className="md:h-[15vh] py-2 border-b-2 bg-white border-r-2 dark:bg-bluedark dark:border-[#3e3e3e] dark:border-r-2 dark:text-[#fff] bg-rink-300 pn:max-sm:fixed top-14 md:min-w-[390px]  pn:max-md:w-[100%] flex flex-col pn:max-md:z-10">
           <div
             className="h-[50%] w-[100%] 
            flex flex-col  text-[20px] font-bold px-4 py-2 justify-end"
@@ -119,11 +119,10 @@ export default function LibraryLayout({ children }) {
               onClick={() => {
                 setValue(1);
               }}
-              className={`font-medium ${
-                value === 1
-                  ? "flex justify-center items-center py-2 bg-[#0075FF] text-white rounded-2xl text-[12px] px-4"
-                  : "flex justify-center text-[#3e3e3e] items-center py-2 bg-[#f9f9f9] dark:bg-[#3e3e3e] dark:text-[#fff] rounded-2xl text-[12px] px-4"
-              }`}
+              className={`font-medium ${value === 1
+                ? "flex justify-center items-center py-2 bg-[#0075FF] text-white rounded-2xl text-[12px] px-4"
+                : "flex justify-center text-[#3e3e3e] items-center py-2 bg-[#f9f9f9] dark:bg-[#323d4e] dark:text-[#fff] rounded-2xl text-[12px] px-4"
+                }`}
             >
               Cart
             </Link>
@@ -134,11 +133,10 @@ export default function LibraryLayout({ children }) {
               onClick={() => {
                 setValue(2);
               }}
-              className={`font-medium ${
-                value === 2
-                  ? "flex justify-center items-center py-2 bg-[#0075FF] text-white rounded-2xl text-[12px] px-4"
-                  : "flex justify-center text-[#3e3e3e] items-center py-2 bg-[#f9f9f9] dark:bg-[#3e3e3e] dark:text-[#fff] rounded-2xl text-[12px] px-4"
-              }`}
+              className={`font-medium ${value === 2
+                ? "flex justify-center items-center py-2 bg-[#0075FF] text-white rounded-2xl text-[12px] px-4"
+                : "flex justify-center text-[#3e3e3e] items-center py-2 bg-[#f9f9f9] dark:bg-[#323d4e] dark:text-[#fff] rounded-2xl text-[12px] px-4"
+                }`}
             >
               Track Order
             </Link>
@@ -147,11 +145,10 @@ export default function LibraryLayout({ children }) {
               onClick={() => {
                 setValue(3);
               }}
-              className={`font-medium ${
-                value === 3
-                  ? "flex justify-center items-center py-2 bg-[#0075FF] text-white  rounded-2xl text-[12px] px-4"
-                  : "flex justify-center text-[#3e3e3e] items-center py-2 bg-[#f9f9f9] dark:bg-[#3e3e3e] dark:text-[#fff] rounded-2xl text-[12px] px-4"
-              }`}
+              className={`font-medium ${value === 3
+                ? "flex justify-center items-center py-2 bg-[#0075FF] text-white  rounded-2xl text-[12px] px-4"
+                : "flex justify-center text-[#3e3e3e] items-center py-2 bg-[#f9f9f9] dark:bg-[#323d4e] dark:text-[#fff] rounded-2xl text-[12px] px-4"
+                }`}
             >
               Subscription
             </Link>
@@ -163,7 +160,7 @@ export default function LibraryLayout({ children }) {
               className={`font-medium ${
                 value === 3
                   ? "flex justify-center items-center py-2 bg-[#0075FF] text-white  rounded-2xl text-[12px] px-4"
-                  : "flex justify-center text-[#3e3e3e] items-center py-2 bg-[#f9f9f9] dark:bg-[#3e3e3e] dark:text-[#fff] rounded-2xl text-[12px] px-4"
+                  : "flex justify-center text-[#3e3e3e] items-center py-2 bg-[#f9f9f9] dark:bg-[#323d4e] dark:text-[#fff] rounded-2xl text-[12px] px-4"
               }`}
             >
               Order History

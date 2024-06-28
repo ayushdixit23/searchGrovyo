@@ -45,7 +45,7 @@ function Community(props) {
               <>
                 <div className="flex w-full gap-10 flex-col  sm:flex-row justify-center items-center">
                   <div
-                    className="flex flex-col flex-grow   h-[300px] pp:w-[400px] w-full bg-[#fefefe] border-[1px] md:max-lg:w-[400px] hover:shadow-md hover:border-0 duration-75 px-3  border-[#f5f5f5] rounded-3xl py-3"
+                    className="flex flex-col flex-grow h-[300px] pp:w-[400px] w-full bg-[#fefefe] dark:bg-bluedark dark:text-white border-[1px] md:max-lg:w-[400px] hover:shadow-md hover:border-0 duration-75 px-3 border-[#f5f5f5] rounded-3xl py-3"
                     key={i}
                   >
                     <div className="h-[75px] w-[75px] bg-[#f9f9f9] rounded-[34px] shadow-md ring-1 ring-white">
