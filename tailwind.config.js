@@ -22,7 +22,8 @@ module.exports = {
     },
     extend: {
       backgroundImage: {
-        chatbg: "url('./assets/chatbg.png')",
+        chats: "url('./assets/Header.png')",
+        mobilechats: "url('./assets/mobilechat.png')",
       },
       colors: {
         border: "hsl(var(--border))",
