@@ -27,6 +27,7 @@ import { useAuthContext } from "../utils/AuthWrapper";
 import { useSocketContext, socketemitfunc } from "../utils/SocketWrapper";
 import { API } from "@/Essentials";
 import Input from "./Input";
+import Loader from "./Loader";
 
 function CommunityFeed({ id }) {
   const { data } = useAuthContext();
@@ -55,6 +56,7 @@ function CommunityFeed({ id }) {
   const name = useSelector((state) => state.comChat.name);
   const content = useSelector((state) => state.comChat.content);
   const size = useSelector((state) => state.comChat.size);
+  const [load, setLoad] = useState(true);
   const msgs = useSelector((state) => state.comChat.message);
   const [reports, setReports] = useState([]);
   const [comtype, setComtype] = useState("");
@@ -66,15 +68,19 @@ function CommunityFeed({ id }) {
 
   const fetchCommunity = async () => {
     try {
-      const res = await axios.get(`${API}/compostfeed/${data?.id}/${id}`);  
+      setLoad(true);
+      const res = await axios.get(`${API}/compostfeed/${data?.id}/${id}`);
       setMemcount(res?.data?.community?.memberscount);
       setTitle(res.data.community.title);
       setTopics(res.data.community.topics);
       setDp(res.data?.dp);
       setComtype(res.data?.community?.type);
       setCreatorId(res.data?.community?.creator._id);
+      setLoad(false);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoad(false);
     }
   };
 
@@ -695,228 +701,232 @@ function CommunityFeed({ id }) {
         </div>
       )}
 
-      <div className=" relative">
-        <div className="flex items-center h-[60px] absolute top-0 z-20 w-full  bg-[#f4f4f4]">
-          <div>
-            <img
-              src={dp}
-              className="h-[45px] w-[45px] rounded-[19px] bg-yellow-300 "
-            />
-          </div>
-          <div className="flex justify-between w-full items-center gap-2 px-4">
-            <div className="flex gap-1 flex-col">
-              <div>{title}</div>
-              <div className="text-[12px]">
-                {memcount} {memcount > 1 ? "Members" : "Member"}
+      {load ? (
+        <Loader />
+      ) : (
+        <div className=" relative">
+          <div className="flex items-center h-[60px] absolute top-0 z-20 w-full  bg-[#f4f4f4]">
+            <div>
+              <img
+                src={dp}
+                className="h-[45px] w-[45px] rounded-[19px] bg-yellow-300 "
+              />
+            </div>
+            <div className="flex justify-between w-full items-center gap-2 px-4">
+              <div className="flex gap-1 flex-col">
+                <div>{title}</div>
+                <div className="text-[12px]">
+                  {memcount} {memcount > 1 ? "Members" : "Member"}
+                </div>
               </div>
-            </div>
-            <div
-              onClick={() => setOptions(!options)}
-              className="flex justify-center relative items-center text-3xl"
-            >
-              <IoReorderThreeOutline />
-              {options && (
-                <div className="absolute w-[200px] z-40 text-sm h-auto -left-[170px] p-3 top-7 text-white bg-black">
-                  <div className="flex flex-col gap-2 font-semibold h-full">
-                    <Link href={`/main/feed/community/${id}?type=members`}>
-                      Members
-                    </Link>
-                    {creatorId !== data?.id && (
-                      <Link href={`/main/feed/community/${id}?type=reports`}>
-                        Reports
+              <div
+                onClick={() => setOptions(!options)}
+                className="flex justify-center relative items-center text-3xl"
+              >
+                <IoReorderThreeOutline />
+                {options && (
+                  <div className="absolute w-[200px] z-40 text-sm h-auto -left-[170px] p-3 top-7 text-white bg-black">
+                    <div className="flex flex-col gap-2 font-semibold h-full">
+                      <Link href={`/main/feed/community/${id}?type=members`}>
+                        Members
                       </Link>
-                    )}
+                      {creatorId !== data?.id && (
+                        <Link href={`/main/feed/community/${id}?type=reports`}>
+                          Reports
+                        </Link>
+                      )}
 
-                    {creatorId !== data?.id && (
-                      <div>
-                        {isMuted ? (
-                          <div onClick={handleMute}>Un Mute</div>
-                        ) : (
-                          <div onClick={handleMute}>Mute</div>
-                        )}
-                      </div>
-                    )}
+                      {creatorId !== data?.id && (
+                        <div>
+                          {isMuted ? (
+                            <div onClick={handleMute}>Un Mute</div>
+                          ) : (
+                            <div onClick={handleMute}>Mute</div>
+                          )}
+                        </div>
+                      )}
 
-                    {creatorId === data?.id ? (
-                      <div onClick={deleteCommunity}>Delete</div>
-                    ) : (
-                      <div>
-                        {isjoined ? (
-                          <div onClick={() => unjoinmembers()}>Leave</div>
-                        ) : (
-                          <div>Join</div>
-                        )}
-                      </div>
-                    )}
-                    {data?.id === creatorId && (
-                      <div>
-                        {comtype === "private" ? (
-                          <div onClick={changeComType}> set to public</div>
-                        ) : (
-                          <div onClick={changeComType}>set to private</div>
-                        )}
-                      </div>
-                    )}
-                    <div></div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {optionType === "members" && <Members id={data?.id} comId={id} />}
-
-        {!optionType && (
-          <div className="h-[100%] bg-[#f7f7f7] z-10 pt-[60px] w-full relative overflow-y-scroll">
-            <div
-              className="flex justify-center z-10  w-full py-2
-         items-center
-         "
-            >
-              {topics.map((d, i) => (
-                <div
-                  onClick={() => handleFetch(d?._id, d?.nature)}
-                  key={i}
-                  className="w-full flex justify-center"
-                >
-                  <div className="flex items-center bg-[#f2f2f2] px-4 rounded-lg ">
-                    {d?.title}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {currentState === "post" && (
-              <>
-                {isTopicJoined ? (
-                  <div>
-                    {com.map((d, i) => (
-                      <CommunityPost
-                        id={`${d?.posts?._id}`}
-                        key={`${d?.posts?._id}`}
-                        d={d}
-                        i={i}
-                        title={title}
-                        setShare={setShare}
-                        data={data}
-                        setShareValue={setShareValue}
-                      />
-                    ))}
-                  </div>
-                ) : (
-                  <div className="flex justify-center h-full items-end ">
-                    <div
-                      onClick={() => handleTopicPurchase()}
-                      className="bg-blue-600 flex justify-center items-center text-white w-full p-2 px-5 rounded-lg"
-                    >
-                      {" "}
-                      Unlock Topic at ₹{topicData?.price}/month
+                      {creatorId === data?.id ? (
+                        <div onClick={deleteCommunity}>Delete</div>
+                      ) : (
+                        <div>
+                          {isjoined ? (
+                            <div onClick={() => unjoinmembers()}>Leave</div>
+                          ) : (
+                            <div>Join</div>
+                          )}
+                        </div>
+                      )}
+                      {data?.id === creatorId && (
+                        <div>
+                          {comtype === "private" ? (
+                            <div onClick={changeComType}> set to public</div>
+                          ) : (
+                            <div onClick={changeComType}>set to private</div>
+                          )}
+                        </div>
+                      )}
+                      <div></div>
                     </div>
                   </div>
                 )}
-              </>
-            )}
-
-            <div className="w-full relative ">
-              {currentState === "chat" && (
-                <div
-                  id="scrollableDiv"
-                  style={{
-                    overflow: "auto",
-                    display: "flex",
-                    flexDirection: "column-reverse",
-                  }}
-                  className="relative"
-                >
-                  {/*Put the scroll bar always on the bottom*/}
-                  <InfiniteScroll
-                    dataLength={messages.length}
-                    // next={fetchTopics}
-                    style={{
-                      display: "flex",
-                      flexDirection: "column-reverse",
-                      position: "relative",
-                    }}
-                    loader={<h4>Loading...</h4>}
-                    scrollableTarget="scrollableDiv"
-                  >
-                    <div className="relative h-full w-full">
-                      {messages?.map((d, i) => (
-                        <CommunityChat
-                          d={d}
-                          data={data}
-                          i={i}
-                          dispatch={dispatch}
-                          tId={tId}
-                          socket={socket}
-                          messages={messages}
-                        />
-                      ))}
-
-                      <div className="h-full">
-                        {isTopicJoined && (
-                          <div className="bg-pink-300 sticky bottom-0 left-0 h-full">
-                            {reply && replyId && (
-                              <div className="flex justify-between px-4 items-center">
-                                <div>{reply}</div>
-                                <div>
-                                  <RxCross2
-                                    onClick={() => {
-                                      dispatch(setType(""));
-                                      dispatch(
-                                        setReplyFunction({
-                                          reply: "",
-                                          replyId: "",
-                                        })
-                                      );
-                                    }}
-                                  />
-                                </div>
-                              </div>
-                            )}
-                            <Input
-                              sendMessages={sendMessage}
-                              sendgif={sendgif}
-                              senderId={data?.id}
-                              sender_fullname={data?.fullname}
-                              handleSend={handleSend}
-                              dispatch={dispatch}
-                              setContent={setContent}
-                              setMessage={setMessage}
-                              image={data?.dp}
-                              setType={setType}
-                              setincommsgs={setincommsgs}
-                              type={type}
-                              reply={replyFunc}
-                              name={name}
-                              setMessages={setMessages}
-                              content={content}
-                              size={size}
-                              message={msgs}
-                            />
-                          </div>
-                        )}
-                        {!isTopicJoined && (
-                          <div className="flex justify-center h-full items-end ">
-                            <div
-                              onClick={() => handleTopicPurchase()}
-                              className="bg-blue-600 flex justify-center items-center text-white w-full p-2 px-5 rounded-lg"
-                            >
-                              {" "}
-                              Unlock Topic at ₹{topicData?.price}/month
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </InfiniteScroll>
-                </div>
-              )}
+              </div>
             </div>
           </div>
-        )}
-      </div>
+
+          {optionType === "members" && <Members id={data?.id} comId={id} />}
+
+          {!optionType && (
+            <div className="h-[100%] bg-[#f7f7f7] z-10 pt-[60px] w-full relative overflow-y-scroll">
+              <div
+                className="flex justify-center z-10  w-full py-2
+         items-center
+         "
+              >
+                {topics.map((d, i) => (
+                  <div
+                    onClick={() => handleFetch(d?._id, d?.nature)}
+                    key={i}
+                    className="w-full flex justify-center"
+                  >
+                    <div className="flex items-center bg-[#f2f2f2] px-4 rounded-lg ">
+                      {d?.title}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {currentState === "post" && (
+                <>
+                  {isTopicJoined ? (
+                    <div>
+                      {com.map((d, i) => (
+                        <CommunityPost
+                          id={`${d?.posts?._id}`}
+                          key={`${d?.posts?._id}`}
+                          d={d}
+                          i={i}
+                          title={title}
+                          setShare={setShare}
+                          data={data}
+                          setShareValue={setShareValue}
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="flex justify-center h-full items-end ">
+                      <div
+                        onClick={() => handleTopicPurchase()}
+                        className="bg-blue-600 flex justify-center items-center text-white w-full p-2 px-5 rounded-lg"
+                      >
+                        {" "}
+                        Unlock Topic at ₹{topicData?.price}/month
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
+
+              <div className="w-full relative ">
+                {currentState === "chat" && (
+                  <div
+                    id="scrollableDiv"
+                    style={{
+                      overflow: "auto",
+                      display: "flex",
+                      flexDirection: "column-reverse",
+                    }}
+                    className="relative"
+                  >
+                    {/*Put the scroll bar always on the bottom*/}
+                    <InfiniteScroll
+                      dataLength={messages.length}
+                      // next={fetchTopics}
+                      style={{
+                        display: "flex",
+                        flexDirection: "column-reverse",
+                        position: "relative",
+                      }}
+                      loader={<h4>Loading...</h4>}
+                      scrollableTarget="scrollableDiv"
+                    >
+                      <div className="relative h-full w-full">
+                        {messages?.map((d, i) => (
+                          <CommunityChat
+                            d={d}
+                            data={data}
+                            i={i}
+                            dispatch={dispatch}
+                            tId={tId}
+                            socket={socket}
+                            messages={messages}
+                          />
+                        ))}
+
+                        <div className="h-full">
+                          {isTopicJoined && (
+                            <div className="bg-pink-300 sticky bottom-0 left-0 h-full">
+                              {reply && replyId && (
+                                <div className="flex justify-between px-4 items-center">
+                                  <div>{reply}</div>
+                                  <div>
+                                    <RxCross2
+                                      onClick={() => {
+                                        dispatch(setType(""));
+                                        dispatch(
+                                          setReplyFunction({
+                                            reply: "",
+                                            replyId: "",
+                                          })
+                                        );
+                                      }}
+                                    />
+                                  </div>
+                                </div>
+                              )}
+                              <Input
+                                sendMessages={sendMessage}
+                                sendgif={sendgif}
+                                senderId={data?.id}
+                                sender_fullname={data?.fullname}
+                                handleSend={handleSend}
+                                dispatch={dispatch}
+                                setContent={setContent}
+                                setMessage={setMessage}
+                                image={data?.dp}
+                                setType={setType}
+                                setincommsgs={setincommsgs}
+                                type={type}
+                                reply={replyFunc}
+                                name={name}
+                                setMessages={setMessages}
+                                content={content}
+                                size={size}
+                                message={msgs}
+                              />
+                            </div>
+                          )}
+                          {!isTopicJoined && (
+                            <div className="flex justify-center h-full items-end ">
+                              <div
+                                onClick={() => handleTopicPurchase()}
+                                className="bg-blue-600 flex justify-center items-center text-white w-full p-2 px-5 rounded-lg"
+                              >
+                                {" "}
+                                Unlock Topic at ₹{topicData?.price}/month
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </InfiniteScroll>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
     </>
   );
 }

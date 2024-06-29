@@ -20,6 +20,16 @@ function page({ params }) {
   const [isLoading, setIsLoading] = useState(true);
   const [state, setState] = useState("");
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Prosite',
+    name: bio?.fullname,
+    image: bio?.dp,
+    username: bio?.username,
+    url: `https://grovyo.com/${params?.id}`, // Add your website URL here if relevant
+  }
+
+
   const fetchData = async () => {
     try {
       setIsLoading(true);
@@ -78,6 +88,8 @@ function page({ params }) {
 
   return (
     <div className="h-screen w-screen flex flex-col items-center justify-center no-scrollbar overflow-auto">
+      <script type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className=" text-black overflow-auto no-scrollbar relative w-full h-full">
 
         {/* Header */}

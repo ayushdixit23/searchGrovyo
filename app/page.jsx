@@ -21,6 +21,7 @@ import Car from "./assets/Car.png";
 import Contact from "./assets/Contact.png";
 import { key } from "./utils/key";
 import { MdVerified } from "react-icons/md";
+// import { VideoCall } from "./component/VideoCall";
 
 function page() {
   const [text, setText] = useState("");
@@ -258,7 +259,7 @@ function page() {
             </div>
             <div
               className="flex p-1 ml-36 bg-[#f9f9f9] px-4 rounded-full relative pn:max-sm:hidden text-white shadow-lg shadow-white-500/5 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 ring-1 ring-[#f4f4f452] py-2
-"
+  "
             >
               <div
                 onClick={() => {
@@ -342,19 +343,19 @@ function page() {
                 ></div>
               </div>
               {/* <a
-                target="_blank"
-                href={`https://app.grovyo.com/login`}
-                className={`flex flex-col cursor-pointer justify-center items-center w-[100px] `}
-              >
-                <div
-                  className={`
-                   text-[#8C96A8] shadow-white
-                  `}
+                  target="_blank"
+                  href={`https://app.grovyo.com/login`}
+                  className={`flex flex-col cursor-pointer justify-center items-center w-[100px] `}
                 >
-                  Web App
-                </div>
+                  <div
+                    className={`
+                     text-[#8C96A8] shadow-white
+                    `}
+                  >
+                    Web App
+                  </div>
 
-              </a> */}
+                </a> */}
             </div>
             <div className="flex justify-center items-center px-5 gap-2 sm:gap-4">
               <a
@@ -455,24 +456,24 @@ function page() {
 
             {/* Tag */}
             {/* <div className="mt-4 w-[49%] flex text-white items-center">
-<div className="font-semibold  select-none">Top Search:</div>
-<div className="ring-2 p-2 flex text-[14px] m-2 ring-white rounded-full">
-  <div className="select-none">Best Community</div>
-  <Image src={Arrow} className="w-[20px]" />
-</div>
-<div className="ring-2 p-2 flex text-[14px] m-2 ring-white rounded-full">
-  <div className="select-none">Best Community</div>
-  <Image src={Arrow} className="w-[20px]" />
-</div>
-<div className="ring-2 p-2 flex text-[14px] m-2 ring-white rounded-full">
-  <div className="select-none">Best Community</div>
-  <Image src={Arrow} className="w-[20px]" />
-</div>
-<div className="ring-2 p-2 flex text-[14px] m-2 ring-white rounded-full">
-  <div className="select-none">Best Community</div>
-  <Image src={Arrow} className="w-[20px]" />
-</div>
-</div> */}
+  <div className="font-semibold  select-none">Top Search:</div>
+  <div className="ring-2 p-2 flex text-[14px] m-2 ring-white rounded-full">
+    <div className="select-none">Best Community</div>
+    <Image src={Arrow} className="w-[20px]" />
+  </div>
+  <div className="ring-2 p-2 flex text-[14px] m-2 ring-white rounded-full">
+    <div className="select-none">Best Community</div>
+    <Image src={Arrow} className="w-[20px]" />
+  </div>
+  <div className="ring-2 p-2 flex text-[14px] m-2 ring-white rounded-full">
+    <div className="select-none">Best Community</div>
+    <Image src={Arrow} className="w-[20px]" />
+  </div>
+  <div className="ring-2 p-2 flex text-[14px] m-2 ring-white rounded-full">
+    <div className="select-none">Best Community</div>
+    <Image src={Arrow} className="w-[20px]" />
+  </div>
+  </div> */}
             {/* Resent */}
             {recentSearch.length > 0 && (
               <div className=" md:w-[49%] max-w-full mt-2 flex flex-col pn:max-sm:w-full text-white flex-wrap ">
@@ -532,8 +533,8 @@ function page() {
               <div className="w-full animate-popup text-black z-50 relative py-2 justify-center items-center text-sm px-3 flex">
                 <div className="bg-white flex justify-between items-center w-full py-4 rounded-xl px-3 h-full">
                   {/* <a href="https://web.grovyo.com/login" target="_blank" className="font-medium">
-                      Web App !
-                    </a> */}
+                        Web App !
+                      </a> */}
                   <div>
                     <div className="font-semibold text-lg">Web App</div>
 
@@ -552,8 +553,8 @@ function page() {
                 </div>
 
                 {/* <div className="absolute right-12 top-0  flex items-center h-full">
-                    <RxCross2 className="text-xl" onClick={() => { setPopup(false); console.log("cli") }} />
-                  </div> */}
+                      <RxCross2 className="text-xl" onClick={() => { setPopup(false); console.log("cli") }} />
+                    </div> */}
               </div>
             </div>
             {/* } */}
@@ -774,7 +775,7 @@ function page() {
         <div className="h-[50px] w-full flex z-40 justify-between sm:hidden items-center bottom-0 fixed ">
           <div
             className="flex p-1 bg-[#f9f9f9] w-full justify-center items-center px-4 rounded-t-2xl text-white shadow-lg shadow-white-500/5
-    bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 ring-1 ring-[#f4f4f452] py-2"
+      bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 ring-1 ring-[#f4f4f452] py-2"
           >
             <div
               onClick={() => {
@@ -862,6 +863,12 @@ function page() {
       </div>
     </>
   );
+
+  // return (
+  //   <>
+  //     <VideoCall />
+  //   </>
+  // );
 }
 
 export default page;

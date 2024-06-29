@@ -6,7 +6,7 @@ import Providers from "./redux/Providers";
 import { Toaster } from "react-hot-toast";
 import { ThemeProvider } from "@/components/theme-provider";
 import Script from "next/script";
-
+// import AgoraRTCProviders from "./component/client";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -15,6 +15,9 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  // In the video call scenario, set mode to "rtc"
+
+
   return (
     <html lang="en">
       <head>
@@ -43,6 +46,7 @@ export default function RootLayout({ children }) {
             <Providers>
               <SocketContextProvider>
                 <Toaster />
+                {/* <AgoraRTCProviders>{children}</AgoraRTCProviders> */}
                 {children}
               </SocketContextProvider>
             </Providers>
