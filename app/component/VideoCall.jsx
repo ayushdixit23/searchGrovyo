@@ -13,7 +13,7 @@ import React, { useState } from "react";
 
 import "../video.css";
 
-export const VideoCall = () => {
+const VideoCall = () => {
   const [calling, setCalling] = useState(false);
   const isConnected = useIsConnected();
   const [appId, setAppId] = useState("9ef3de8dca0c4e83884ded1b98e67efd");
@@ -114,3 +114,5 @@ export const VideoCall = () => {
     </>
   );
 };
+
+export default VideoCall;

@@ -2,14 +2,12 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import Logo from "./assets/Logo.png";
-import Search from "./assets/Search.png";
 import axios from "axios";
 import Link from "next/link";
 import aesjs from "aes-js";
 import { MdOutlineClose } from "react-icons/md";
-import { RxCross2, RxHamburgerMenu } from "react-icons/rx";
+import { RxHamburgerMenu } from "react-icons/rx";
 import { BiSearchAlt } from "react-icons/bi";
-import FullLogo from "./assets/FullLogo.png";
 import Commu from "./assets/Commu.png";
 import Chat from "./assets/Chat.png";
 import Prosit from "./assets/Prosit.png";
@@ -21,6 +19,8 @@ import Car from "./assets/Car.png";
 import Contact from "./assets/Contact.png";
 import { key } from "./utils/key";
 import { MdVerified } from "react-icons/md";
+import dynamic from "next/dynamic";
+const VideoCall = dynamic(() => import("./component/VideoCall"));
 // import { VideoCall } from "./component/VideoCall";
 
 function page() {
