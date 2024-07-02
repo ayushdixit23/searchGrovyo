@@ -30,8 +30,10 @@ function page() {
   const [come, setCome] = useState(0);
   const { f } = useAuthContext();
   const [change, setChange] = useState(1);
-  const [email, setEmail] = useState("memerdevgamer23@gmail.com");
-  const [pass, setPass] = useState("12345678");
+  const [email, setEmail] = useState("");
+  const [pass, setPass] = useState("");
+  // const [email, setEmail] = useState("memerdevgamer23@gmail.com");
+  // const [pass, setPass] = useState("12345678");
   const [load, setLoad] = useState(false);
   const [loadingqr, setLoadingqr] = useState(false);
   const [qrCodeValue, setQRCodeValue] = useState("");
