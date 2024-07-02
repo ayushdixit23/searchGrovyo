@@ -1,4 +1,11 @@
-import { Inter } from "next/font/google";
+import { Plus_Jakarta_Sans } from 'next/font/google'
+
+const plus_jakarta_sans = Plus_Jakarta_Sans({
+  weight: '400',
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-plus_jakarta_sans',
+})
 import "./globals.css";
 import { AuthContextProvider } from "./utils/AuthWrapper";
 import { SocketContextProvider } from "./utils/SocketWrapper";
@@ -7,7 +14,6 @@ import { Toaster } from "react-hot-toast";
 import { ThemeProvider } from "@/components/theme-provider";
 import Script from "next/script";
 // import AgoraRTCProviders from "./component/client";
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Grovyo",
@@ -15,9 +21,6 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  // In the video call scenario, set mode to "rtc"
-
-
   return (
     <html lang="en">
       <head>
@@ -35,7 +38,7 @@ export default function RootLayout({ children }) {
 
 
       </head>
-      <body className={inter.className}>
+      <body className={`${plus_jakarta_sans.className}`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

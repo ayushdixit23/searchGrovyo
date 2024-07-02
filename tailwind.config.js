@@ -24,6 +24,16 @@ module.exports = {
       backgroundImage: {
         chats: "url('./assets/Header.png')",
         mobilechats: "url('./assets/mobilechat.png')",
+        loginbg: "url('./assets/backlogin.png')",
+        piclogin: "url('./assets/piclogin.png')",
+        lightlogin: "url('./assets/lightlogin.png')",
+        lightpiclogin: "url('./assets/lightpiclogin.png')"
+      },
+      boxShadow: {
+        'custom-lg': '0 10px 15px -3px rgba(255, 255, 255, 0.07), 0 4px 6px -2px rgba(255, 255, 255, 0.07)',
+      },
+      fontFamily: {
+        plus_jakarta_sans: ['var(--font-plus_jakarta_sans)'],
       },
       colors: {
         border: "hsl(var(--border))",

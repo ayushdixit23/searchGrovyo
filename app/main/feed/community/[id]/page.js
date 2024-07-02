@@ -20,14 +20,20 @@ import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import toast from "react-hot-toast";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import VideoPlayer from "@/app/component/VideoPlayer";
 import CommunityChat from "@/app/component/CommunityChat";
 import { RxCross2 } from "react-icons/rx";
-import { IoReorderThreeOutline } from "react-icons/io5";
 import Members from "@/app/component/Members";
 import Link from "next/link";
 import CommunityPost from "@/app/component/CommunityPost";
 import Loader from "@/app/component/Loader";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import Image from "next/image";
+import reportspic from "../../../../assets/reports.png";
+import mutepic from "../../../../assets/mute.png";
+import logout from "../../../../assets/logout.png";
+import unmutepic from "../../../../assets/unmute.png";
+import memberspic from "../../../../assets/members.png";
+import { MdOutlineArrowBackIosNew } from "react-icons/md";
 
 function Components({ params }) {
   const { data } = useAuthContext();
@@ -38,6 +44,7 @@ function Components({ params }) {
   const [topics, setTopics] = useState([]);
   const [tId, setTId] = useState("");
   // const [messages, setMessages] = useState([]);
+  const [members, setMembers] = useState([]);
   const [shareValue, setShareValue] = useState("");
   const [share, setShare] = useState(false);
   const [currentState, setCurrentState] = useState("post");
@@ -74,13 +81,14 @@ function Components({ params }) {
       );
       if (res.data.success) {
         setMemcount(res?.data?.community?.memberscount);
-        setIsMuted(res.data.muted[0].muted);
-        setTitle(res.data.community.title);
-        setTId(res.data.community.topics[0]._id);
+        setIsMuted(res.data?.muted[0]?.muted);
+        setMembers(res.data?.members);
+        setTitle(res.data?.community?.title);
+        setTId(res.data?.community?.topics[0]._id);
         setComtype(res.data?.community?.type);
         setCreatorId(res.data?.community?.creator._id);
-        setTopics(res.data.community.topics);
-        setIsjoined(res.data.subs);
+        setTopics(res.data?.community.topics);
+        setIsjoined(res.data?.subs);
         setDp(res.data?.dp);
         setLoad(false)
       }
@@ -111,6 +119,21 @@ function Components({ params }) {
     try {
       setIsjoined(!isjoined);
       await axios.post(`${API}/unjoinmember/${data?.id}/${params?.id}`);
+      router.push("/main/feed/community")
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const joinmembers = async () => {
+    try {
+      const res = await axios.post(
+        `${API}/joinmember/${data?.id}/${params?.id}`
+      );
+      if (res.data.success) {
+        await fetchCommunity();
+        await fetchallPosts();
+      }
     } catch (error) {
       console.log(error);
     }
@@ -777,12 +800,17 @@ function Components({ params }) {
       {
         load ? <Loader /> :
           <div className="h-screen relative">
-            <div className="flex items-center h-[8%] z-20 w-full pl-2  bg-[#f4f4f4] dark:bg-bluedark">
-              <div>
-                <img
-                  src={dp}
-                  className="h-[40px] w-[40px] rounded-[19px] bg-white dark:bg-graydark "
-                />
+            <div className="flex items-center h-[10%] z-20 w-full pl-2  bg-[#f4f4f4] dark:bg-bluedark">
+              <div className="flex items-center gap-2 justify-center">
+                <div>
+                  <MdOutlineArrowBackIosNew className="text-2xl" />
+                </div>
+                <div>
+                  <img
+                    src={dp}
+                    className="h-[45px] w-[45px] rounded-[14px] bg-slate-300 "
+                  />
+                </div>
               </div>
               <div className="flex justify-between w-full items-center gap-2 px-4">
                 <div className="flex gap-1 flex-col">
@@ -791,7 +819,7 @@ function Components({ params }) {
                     {memcount} {memcount > 1 ? "Members" : "Member"}
                   </div>
                 </div>
-                <div
+                {/* <div
                   onClick={() => setOptions(!options)}
                   className="flex justify-center relative items-center text-3xl"
                 >
@@ -849,6 +877,153 @@ function Components({ params }) {
                     </div>
                   </div>
 
+                </div> */}
+
+                <div className="flex justify-center items-center  gap-2">
+                  <div className="flex justify-center items-center ">
+                    {members?.map((m, y) => (
+                      <div
+                        style={{
+                          marginLeft: `-${y + 10}px`,
+                          zIndex: `${y}`,
+                        }}
+                        key={y}
+                        className="w-[32px] h-[32px]"
+                      >
+                        <img
+                          src={m?.dp}
+                          className="h-full object-contain rounded-[22px] w-full"
+                        />
+                      </div>
+                    ))}
+                    <div
+                      style={{
+                        marginLeft: `-${members.length + 10}px`,
+                      }}
+                      className="h-[32px] z-10 flex justify-center items-center text-[10px] text-[#686B6E] rounded-[22px] bg-[#1A1D21] w-[32px]"
+                    >
+                      <div>+</div>
+                      <div>{memcount - members.length}</div>
+                    </div>
+                  </div>
+                  <div
+                    onClick={() => setOptions(!options)}
+                    className="flex justify-center relative gap-2 items-center "
+                  >
+
+                    <BsThreeDotsVertical />
+                    <div
+                      className={`absolute duration-100 ${options
+                        ? "w-auto p-2 px-4 top-7 text-sm h-auto -left-[140px] "
+                        : "w-0 h-0 text-[0px] top-0 left-0"
+                        } z-40 rounded-lg dark:text-white text-[#6e6e6e] bg-white shadow-custom-lg dark:bg-[#0D0F10]`}
+                    >
+                      {" "}
+                      <div className="flex flex-col font-semibold h-full">
+                        <Link
+                          className="rounded-lg flex items-center justify-start"
+                          href={`/main/feed/community/${params?.id}?type=members`}
+                        >
+                          <div className="flex justify-center  items-center">
+                            <Image
+                              src={memberspic}
+                              className={`relative top-2 max-w-[40px] max-h-[40px] flex justify-center items-center h-full ${options ? "" : "hidden"
+                                } `}
+                            />
+                          </div>
+                          <div className="">Members</div>
+                        </Link>
+                        {creatorId !== data?.id && (
+                          <Link
+                            className="flex items-center justify-start"
+                            href={`/main/feed/community/${params?.id}?type=reports`}
+                          >
+                            <div className="flex justify-center  items-center">
+                              <Image
+                                src={reportspic}
+                                className={`relative top-2 max-w-[40px] max-h-[40px] flex justify-center items-center h-full ${options ? "" : "hidden"
+                                  } `}
+                              />
+                            </div>
+                            <div>Reports</div>
+                          </Link>
+                        )}
+
+                        {creatorId !== data?.id && (
+                          <div className="">
+                            {isMuted ? (
+                              <div
+                                onClick={handleMute}
+                                className="flex items-center justify-start"
+                              >
+                                <div className="flex justify-center items-center">
+                                  <Image
+                                    src={unmutepic}
+                                    className={`relative top-2 max-w-[40px] max-h-[40px] flex justify-center items-center h-full ${options ? "" : "hidden"
+                                      } `}
+                                  />
+                                </div>
+                                <div>Un Mute</div>
+                              </div>
+                            ) : (
+                              <div
+                                onClick={handleMute}
+                                className="flex items-center justify-start"
+                              >
+                                <div className="flex justify-center  items-center">
+                                  <Image
+                                    src={mutepic}
+                                    className={`relative top-2 max-w-[40px] max-h-[40px] flex justify-center items-center h-full ${options ? "" : "hidden"
+                                      } `}
+                                  />
+                                </div>
+                                <div>Mute</div>
+                              </div>
+                            )}
+                          </div>
+                        )}
+
+                        {creatorId === data?.id ? (
+                          <div onClick={deleteCommunity}>Delete</div>
+                        ) : (
+                          <div>
+                            {isjoined ? (
+                              <div
+                                className="flex items-center justify-start"
+                                onClick={() => unjoinmembers()}
+                              >
+                                <div className="flex justify-center  items-center">
+                                  <Image
+                                    src={logout}
+                                    className={`relative top-2 max-w-[40px] max-h-[40px] flex justify-center items-center h-full ${options ? "" : "hidden"
+                                      } `}
+                                  />
+                                </div>
+                                <div>Leave</div>
+                              </div>
+                            ) : (
+                              <div onClick={() => joinmembers()}>Join</div>
+                            )}
+                          </div>
+                        )}
+                        {data?.id === creatorId && (
+                          <div>
+                            {comtype === "private" ? (
+                              <div onClick={changeComType}>
+                                {" "}
+                                set to public
+                              </div>
+                            ) : (
+                              <div onClick={changeComType}>
+                                set to private
+                              </div>
+                            )}
+                          </div>
+                        )}
+                        <div></div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -861,32 +1036,33 @@ function Components({ params }) {
               <div
                 className={`w-full relative overflow-y-scroll ${currentState === "chat"
                   ? reply && replyId
-                    ? "h-[80%]"
-                    : "h-[84%]"
-                  : "h-[92%]"
+                    ? "h-[78%]"
+                    : "h-[82%]"
+                  : "h-[90%]"
                   }`}
               >
 
-                <div
-                  className="flex justify-center z-10  w-full py-2
-         items-center
-         "
-                >
-                  {topics.map((d, i) => (
-                    <div
-                      onClick={() => handleFetch(d?._id, d?.nature)}
-                      key={i}
-                      className="w-full flex justify-center"
-                    >
-                      <div className={`flex items-center px-4 ${tId === d?._id
-                        ? "bg-blue-600  text-white"
-                        : "bg-[#f2f2f2] dark:text-black"
-                        } rounded-lg `}>
-                        {d?.title}
+                <div className="flex gap-2  border-b border-[#131619]">
+                  <div className="flex gap-6 ml-4 text-sm">
+                    {topics.map((d, i) => (
+                      <div
+                        onClick={() => handleFetch(d?._id, d?.nature)}
+                        key={i}
+                        className="flex "
+                      >
+                        <div
+                          className={`flex cursor-pointer items-center px-4 py-4 ${tId === d?._id
+                            ? " text-white border-b font-semibold border-[#0077FF]"
+                            : " "
+                            }  `}
+                        >
+                          {d?.title}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
+
 
                 {currentState === "post" && (
                   <>
@@ -1018,7 +1194,7 @@ function Components({ params }) {
             )} */}
 
                 {currentState === "chat" && (
-                  <div className=" w-full ">
+                  <div className=" w-full px-2">
                     {messages?.map((d, i) => (
                       <CommunityChat
                         d={d}

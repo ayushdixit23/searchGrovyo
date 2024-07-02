@@ -292,7 +292,7 @@ const Component = ({
         </div>
       </div>
 
-      <div className="bg-grey-lighter flex z-20 items-center">
+      <div className="bg-grey-lighter flex h-full z-20 items-center">
         <div className=" flex justify-center gap-2 items-center">
           {showEmoji ? (
             <RxCross2
@@ -491,9 +491,10 @@ const Component = ({
           </div>
         </div>
 
-        <div className="flex-1 mx-2 border-2 dark:bg-[#354259] dark:border-[#464e59] rounded-lg border-[#f2f2f2]">
+        <div className="flex-1 mx-2 border border-[#1A1D21] rounded-lg">
           {!d ? (
             <input
+              placeholder="Type your message here..."
               value={message}
               onKeyDown={handleKeyDown}
               onChange={(e) => {
@@ -502,7 +503,7 @@ const Component = ({
                   dispatch(setType("text"));
                 }
               }}
-              className="w-full  dark:bg-[#354259] rounded-lg   outline-none px-2 py-2"
+              className="w-full  dark:bg-[#0D0F10] rounded-lg placeholder:text-[#686B6E] placeholder:text-sm outline-none px-2 py-2"
               type="text"
             />
           ) : (
@@ -524,9 +525,9 @@ const Component = ({
           onClick={() => {
             mainSendingFunction();
           }}
-          className="bg-[#0075ff] p-2 rounded-xl"
+          className="bg-[#1A1D21] h-full p-2 rounded-xl"
         >
-          <IoSend className="text-2xl text-white" />
+          <IoSend className="text-xl text-white" />
         </div>
       </div>
     </>

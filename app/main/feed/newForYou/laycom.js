@@ -301,7 +301,7 @@ export default function NewforyouLayout({ children }) {
 			)}
 
 			{!id && (
-				<div className="w-[100%] h-[100vh] bg-white dark:bg-graydark flex pn:max-md:justify-center ">
+				<div className="w-[100%] h-[100vh] bg-white dark:bg-[#0D0D0D] flex pn:max-md:justify-center ">
 					<div className=" pn:max-md:h-[96vh] h-screen overflow-auto scrollbar-hide select-none md:min-w-[390px] dark:border:[#273142] lg:w-[360px] flex flex-col items-center md:border-r-2 border-[#f7f7f7] self-end ">
 						{/* post 1*/}
 						<div className="h-[8vh]"></div>
@@ -428,7 +428,7 @@ export default function NewforyouLayout({ children }) {
 										<>
 											{/* ads */}
 											{d?.posts?.kind === "ad" ? (
-												<div className="bg-white dark:bg-graydark pn:max-md:rounded-2xl ">
+												<div className="bg-white dark:bg-[#0d0d0d] pn:max-md:rounded-2xl ">
 													<div className="w-[100%] bg-white dark:bg-graydark flex px-1 justify-between items-center ">
 														<div className="h-[55px] pn:max-sm:h-[50px] flex flex-row items-center ">
 															<div className=" flex object-scale-down items-center h-[100%] ">
@@ -556,7 +556,7 @@ export default function NewforyouLayout({ children }) {
 												// normal posts
 												<div
 													key={i}
-													className="bg-slate-50 dark:bg-graydark pn:max-md:rounded-2xl"
+													className="bg-slate-50 dark:bg-transparent pn:max-md:rounded-2xl"
 												>
 													<Link
 														onClick={() => {
@@ -569,7 +569,7 @@ export default function NewforyouLayout({ children }) {
 																? `/main/feed/newForYou?id=${d?.posts?.community?._id}`
 																: `/main/feed/newForYou/${d?.posts?.community._id}`
 														}
-														className="w-[100%] bg-white dark:bg-graydark flex px-1 justify-between items-center "
+														className="w-[100%] bg-white dark:bg-transparent flex px-1 justify-between items-center "
 													>
 														<div className="h-[55px] pn:max-sm:h-[50px] flex flex-row items-center ">
 															<div className=" flex object-scale-down items-center h-[100%] ">
@@ -631,7 +631,7 @@ export default function NewforyouLayout({ children }) {
 														className=""
 													>
 														<div
-															className={`bg-[#f4f4f4] dark:bg-graydark rounded-xl w-full ${d?.urls.length > 1
+															className={`bg-[#f4f4f4] dark:bg-[#121212] rounded-xl w-full ${d?.urls.length > 1
 																? "overflow-x-scroll no-scrollbar"
 																: null
 																} flex flex-col justify-center items-center `}

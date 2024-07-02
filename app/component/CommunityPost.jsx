@@ -7,6 +7,7 @@ import Comments from "./Comments";
 const CommunityPost = forwardRef(
   ({ d, i, title, handleLike, data, setShareValue, setShare }, ref) => {
     const [showComments, setShowComments] = useState(false);
+
     return (
       <>
         {showComments && (
@@ -21,7 +22,7 @@ const CommunityPost = forwardRef(
         )}
         <div ref={ref} className="pt-2 pn:max-sm:p-3 p-4 pn:max-md:rounded-2xl">
           {/* POst */}
-          <div className="bg-white dark:bg-bluedark p-2 max-w-[360px] rounded-xl">
+          <div className="bg-white dark:bg-[#121212] p-2 max-w-[360px] rounded-xl">
             {/* header */}
             <div className="w-[100%] rounded-2xl flex flex-col items-center ">
               <div className=" w-[100%]  rounded-2xl flex flex-row items-center ">

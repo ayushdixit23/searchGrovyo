@@ -43,20 +43,8 @@ function Sidebar() {
     },
   ];
 
-  // useEffect(() => {
-  //   // Wrap the sessionStorage code in a client-side useEffect hook.
-  //   const storedColor =
-  //     JSON.parse(sessionStorage.getItem("selectedColor")) || 1;
-  //   setColor(storedColor);
-  // }, []); // This should run only in the browser.
-
-  // const handleColor = (i) => {
-  //   setColor(i);
-  //   sessionStorage.setItem("selectedColor", JSON.stringify(i));
-  // };
-
   return (
-    <div className="h-screen w-[60px] bg-[#ffffff] dark:bg-bluedark flex flex-col justify-center items-start">
+    <div className="h-screen w-[60px] bg-[#ffffff] dark:bg-[#0D0F10] flex flex-col justify-center items-start">
       {/* Image */}
       <div className="h-screen w-[60px] ring-[#f5f5f5] bg-[#f2f2f2] dark:bg-bluedark dark:border-[#273142] border-[#d4d4d4] 
       border-r-2 absolute flex flex-col justify-evenly items-center">
@@ -75,7 +63,6 @@ function Sidebar() {
         <div className="flex flex-col py-28 w-[100%] h-[80%] justify-between items-center md:max-sm:hidden">
 
           <Link
-
             onClick={() => {
               setSear(false);
 
@@ -91,7 +78,7 @@ function Sidebar() {
             </div>
             <div
               className={`font-medium ${path.startsWith("/main/feed/newForYou") || path.startsWith("/main/feed/community")
-                ? "text-[10px] dark:text-white  text-[#569FF5]"
+                ? "text-[10px] dark:text-[#569FF5] text-[#569FF5]"
                 : "text-[10px] dark:text-white  text-[#333]"
                 }`}
             >
@@ -113,7 +100,7 @@ function Sidebar() {
             </div>
             <div
               className={`font-medium ${path.startsWith("/main/chat")
-                ? "text-[10px] dark:text-white  text-[#569FF5]"
+                ? "text-[10px] dark:text-[#569FF5] text-[#569FF5]"
                 : "text-[10px] dark:text-white  text-[#333]"
                 }`}
             >
@@ -136,7 +123,7 @@ function Sidebar() {
             </div>
             <div
               className={`font-medium ${path.startsWith("/main/library")
-                ? "text-[10px] dark:text-white  text-[#569FF5]"
+                ? "text-[10px]  text-[#569FF5]"
                 : "text-[10px] dark:text-white  text-[#333]"
                 }`}
             >Library
@@ -158,7 +145,7 @@ function Sidebar() {
             </div>
             <div
               className={`font-medium ${color === 4
-                ? "text-[10px] dark:text-white text-[#569FF5]"
+                ? "text-[10px] text-[#569FF5]"
                 : "text-[10px] dark:text-white text-[#333]"
                 }`}
             >
@@ -179,7 +166,7 @@ function Sidebar() {
             <Setting color={path.startsWith("/main/settings") ? 5 : 0} />
             <div
               className={`font-medium ${path.startsWith("/main/settings")
-                ? "text-[10px] dark:text-white text-blue-300 "
+                ? "text-[10px] text-blue-300 "
                 : "text-[10px] dark:text-white text-[#333]  "
                 }`}
             >
