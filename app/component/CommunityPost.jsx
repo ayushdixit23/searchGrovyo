@@ -17,7 +17,7 @@ const CommunityPost = forwardRef(
           {/* POst */}
           <div
             className="bg-white 
-          dark:bg-[#121212] border border-[#DEE1E5] p-3  rounded-xl"
+          dark:bg-[#121212] border dark:border-none border-[#DEE1E5] p-3  rounded-xl"
           >
             {/* header */}
             <div className="w-[100%] rounded-2xl flex flex-col items-center ">
