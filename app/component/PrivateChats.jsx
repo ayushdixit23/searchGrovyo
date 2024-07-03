@@ -836,11 +836,6 @@ const PrivateChats = React.forwardRef(
                     <div>This Message was Deleted!</div>
                   ) : (
                     <div className="rounded-2xl ">
-                      {/* <video
-                        src={d?.url}
-                        className="h-[145px] w-[145px] rounded-2xl bg-yellow-300"
-                        controls
-                      /> */}
                       <VideoPlayer
                         width={"100%"}
                         height={"h-full"}

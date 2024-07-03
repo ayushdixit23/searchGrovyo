@@ -34,6 +34,8 @@ import logout from "../../../../assets/logout.png";
 import unmutepic from "../../../../assets/unmute.png";
 import memberspic from "../../../../assets/members.png";
 import { MdOutlineArrowBackIosNew } from "react-icons/md";
+import { setPreview } from "@/app/redux/slice/remember";
+import { IoDocument } from "react-icons/io5";
 
 function Components({ params }) {
   const { data } = useAuthContext();
@@ -65,6 +67,7 @@ function Components({ params }) {
   const name = useSelector((state) => state.comChat.name);
   const content = useSelector((state) => state.comChat.content);
   const size = useSelector((state) => state.comChat.size);
+  const preview = useSelector((state) => state.remember.preview);
   const msgs = useSelector((state) => state.comChat.message);
   const [reports, setReports] = useState([]);
   const [comtype, setComtype] = useState("");
@@ -543,7 +546,7 @@ function Components({ params }) {
                 }}
                 className={`p-3 ${reports.includes("CopyRight Infringement")
                   ? "bg-[#0077ff85]"
-                  : "bg-gray-200 dark:bg-[#323d4e]"
+                  : "bg-gray-200 dark:bg-[#1A1D21]"
                   } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
                 CopyRight Infringement
@@ -560,7 +563,7 @@ function Components({ params }) {
                 }}
                 className={`p-3 ${reports.includes("Harrassment")
                   ? "bg-[#0077ff85]"
-                  : "bg-gray-200 dark:bg-[#323d4e]"
+                  : "bg-gray-200 dark:bg-[#1A1D21]"
                   } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
                 Harrassment
@@ -575,7 +578,7 @@ function Components({ params }) {
                 }}
                 className={`p-3 ${reports.includes("Nudity")
                   ? "bg-[#0077ff85]"
-                  : "bg-gray-200 dark:bg-[#323d4e]"
+                  : "bg-gray-200 dark:bg-[#1A1D21]"
                   } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
                 Nudity
@@ -592,7 +595,7 @@ function Components({ params }) {
                 }}
                 className={`p-3 ${reports.includes("Sexual Content")
                   ? "bg-[#0077ff85]"
-                  : "bg-gray-200 dark:bg-[#323d4e]"
+                  : "bg-gray-200 dark:bg-[#1A1D21]"
                   } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
                 Sexual Content
@@ -607,7 +610,7 @@ function Components({ params }) {
                 }}
                 className={`p-3 ${reports.includes("Spam")
                   ? "bg-[#0077ff85]"
-                  : "bg-gray-200 dark:bg-[#323d4e]"
+                  : "bg-gray-200 dark:bg-[#1A1D21]"
                   } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
                 Spam
@@ -624,7 +627,7 @@ function Components({ params }) {
                 }}
                 className={`p-3 ${reports.includes("Violence")
                   ? "bg-[#0077ff85]"
-                  : "bg-gray-200 dark:bg-[#323d4e]"
+                  : "bg-gray-200 dark:bg-[#1A1D21]"
                   } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
                 Violence
@@ -641,7 +644,7 @@ function Components({ params }) {
                 }}
                 className={`p-3 ${reports.includes("Hate Speech")
                   ? "bg-[#0077ff85]"
-                  : "bg-gray-200 dark:bg-[#323d4e]"
+                  : "bg-gray-200 dark:bg-[#1A1D21]"
                   } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
                 Hate Speech
@@ -656,7 +659,7 @@ function Components({ params }) {
                 }}
                 className={`p-3 ${reports.includes("Other")
                   ? "bg-[#0077ff85]"
-                  : "bg-gray-200 dark:bg-[#323d4e]"
+                  : "bg-gray-200 dark:bg-[#1A1D21]"
                   } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
                 Other
@@ -692,13 +695,13 @@ function Components({ params }) {
           className="fixed inset-0 z-50 bg-black/70 flex justify-center items-center w-screen md:inset-0 h-screen max-h-full"
         >
           <div className="relative p-4 flex justify-center items-center w-full max-w-lg max-h-full">
-            <div className="relative bg-white dark:bg-bluelight rounded-lg shadow ">
+            <div className="relative bg-white dark:bg-[#1A1D21] rounded-lg shadow ">
               <div className="flex items-center justify-between p-4 md:p-5">
                 <h3 className="text-lg text-gray-500 dark:text-white">Share course</h3>
                 <button
                   type="button"
                   onClick={() => setShare(false)}
-                  className="text-gray-400 hover:text-gray-900  hover:dark:bg-gray-400  hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center"
+                  className="text-gray-400  hover:dark:bg-gray-400  hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center"
                   data-modal-toggle="course-modal"
                 >
                   <svg
@@ -800,11 +803,11 @@ function Components({ params }) {
       {
         load ? <Loader /> :
           <div className="h-screen relative">
-            <div className="flex items-center h-[10%] z-20 w-full pl-2  bg-[#f4f4f4] dark:bg-bluedark">
+            <div className="flex items-center h-[10%] z-20 w-full pl-2  bg-white dark:border-none border-b-[1px] dark:bg-bluedark">
               <div className="flex items-center gap-2 justify-center">
-                <div>
+                {/* <div>
                   <MdOutlineArrowBackIosNew className="text-2xl" />
-                </div>
+                </div> */}
                 <div>
                   <img
                     src={dp}
@@ -814,7 +817,7 @@ function Components({ params }) {
               </div>
               <div className="flex justify-between w-full items-center gap-2 px-4">
                 <div className="flex gap-1 flex-col">
-                  <div>{title}</div>
+                  <div className="font-bold">{title}</div>
                   <div className="text-[12px]">
                     {memcount} {memcount > 1 ? "Members" : "Member"}
                   </div>
@@ -1028,11 +1031,23 @@ function Components({ params }) {
               </div>
             </div>
 
-            {optionType === "members" && (
-              <Members id={data?.id} comId={params?.id} />
-            )}
+            <div
+              className={`z-40 duration-200 flex justify-end items-end h-[100vh] top-0 w-full absolute ${optionType === "members" ? "" : "hidden"
+                }`}
+            >
+              <div
+                className={`pn:max-md:w-[100%] dark:shadow-custom-lg shadow-lg duration-200 max-h-[90%] ${optionType === "members" ? "" : "hidden"
+                  } overflow-y-scroll  md:min-w-[340px] md:max-w-[340px] flex-col`}
+              >
+                <Members
+                  id={data?.id}
+                  comId={params?.id}
+                  dash={"community"}
+                />
+              </div>
+            </div>
 
-            {!optionType && (
+            {(!optionType || optionType === "members") && (
               <div
                 className={`w-full relative overflow-y-scroll ${currentState === "chat"
                   ? reply && replyId
@@ -1042,7 +1057,7 @@ function Components({ params }) {
                   }`}
               >
 
-                <div className="flex gap-2  border-b border-[#131619]">
+                <div className="flex gap-2  border-b dark:border-[#131619]">
                   <div className="flex gap-6 ml-4 text-sm">
                     {topics.map((d, i) => (
                       <div
@@ -1052,8 +1067,8 @@ function Components({ params }) {
                       >
                         <div
                           className={`flex cursor-pointer items-center px-4 py-4 ${tId === d?._id
-                            ? " text-white border-b font-semibold border-[#0077FF]"
-                            : " "
+                            ? " dark:text-white border-b font-semibold border-[#0077FF]"
+                            : "text-[#9B9C9E] "
                             }  `}
                         >
                           {d?.title}
@@ -1074,6 +1089,7 @@ function Components({ params }) {
                             key={`${d?.posts?._id}`}
                             d={d}
                             i={i}
+                            comId={params?.id}
                             title={title}
                             setShare={setShare}
                             data={data}
@@ -1195,17 +1211,88 @@ function Components({ params }) {
 
                 {currentState === "chat" && (
                   <div className=" w-full px-2">
-                    {messages?.map((d, i) => (
-                      <CommunityChat
-                        d={d}
-                        data={data}
-                        i={i}
-                        dispatch={dispatch}
-                        tId={tId}
-                        socket={socket}
-                        messages={messages}
-                      />
-                    ))}
+                    {preview === false && <>
+                      {messages?.map((d, i) => (
+                        <CommunityChat
+                          d={d}
+                          data={data}
+                          i={i}
+                          dispatch={dispatch}
+                          tId={tId}
+                          socket={socket}
+                          messages={messages}
+                        />
+                      ))}
+
+                    </>}
+
+
+                    {preview && (
+                      <div className="w-full h-[70vh]">
+                        <div className="flex flex-col w-full justify-center items-center h-full ">
+                          <div
+                            onClick={() => {
+                              dispatch(setType(""));
+                              dispatch(setContent(""));
+
+                              dispatch(setPreview(false));
+                            }}
+                            className="flex justify-end items-end mr-7 w-full"
+                          >
+                            <RxCross2 className="text-2xl" />
+                          </div>
+                          <div className="h-full justify-center items-center flex">
+                            {type === "image" && content && (
+                              <div className="h-full flex w-full justify-center items-center">
+                                <img
+                                  className="max-h-[500px] max-w-[500px] flex"
+                                  src={
+                                    typeof content === "string"
+                                      ? content
+                                      : URL.createObjectURL(content)
+                                  }
+                                />
+                              </div>
+                            )}
+                            {type === "video" && content && (
+                              <div className="h-full flex w-full justify-center items-center">
+                                <video
+                                  className="max-h-[500px] max-w-[500px] flex"
+                                  src={URL.createObjectURL(content)}
+                                  controls
+                                />
+                              </div>
+                            )}
+                            {type === "gif" && content && (
+                              <div className="h-full flex w-full bg-green-200 justify-center items-center">
+                                <img
+                                  className="max-h-[500px] max-w-[500px] bg-red-300 flex"
+                                  src={
+                                    typeof content === "string"
+                                      ? content
+                                      : URL.createObjectURL(content)
+                                  }
+                                />
+                              </div>
+                            )}
+                            {type === "doc" && content && (
+                              <div className="h-full flex gap-4 flex-col w-full justify-center items-center">
+                                <div className="flex gap-1 justify-center items-center">
+                                  <div className="">
+                                    <IoDocument className="w-[50px] h-[50px]" />
+                                  </div>
+                                  <div className="text-xl">{name}</div>
+                                </div>
+                                <div className="text-xl">
+                                  No Preview Available
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
                     {/* {isTopicJoined && (
                     <div className="bg-pink-300 absolute mt-[60px]">
                       {reply && replyId && (
@@ -1270,7 +1357,7 @@ function Components({ params }) {
                 : "h-[8%] items-center"
                 }`}>
                 {isTopicJoined && (
-                  <div className="bg-[#efefef] dark:bg-bluelight flex flex-col items-center w-full justify-center h-[100%]">
+                  <div className="bg-white dark:bg-bluelight flex flex-col items-center w-full justify-center h-[100%]">
                     {reply && replyId && (
                       <div className="flex justify-between w-full px-3 h-[40px] items-center">
                         <div>{reply}</div>
@@ -1316,7 +1403,7 @@ function Components({ params }) {
                 )}
               </div>
             )}
-          </div>
+          </div >
       }
     </>
   );

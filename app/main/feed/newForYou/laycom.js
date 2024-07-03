@@ -300,11 +300,13 @@ export default function NewforyouLayout({ children }) {
 				</div>
 			)}
 
+			{/* lg:w-[360px] md:min-w-[390px]  */}
+
 			{!id && (
-				<div className="w-[100%] h-[100vh] bg-white dark:bg-[#0D0D0D] flex pn:max-md:justify-center ">
-					<div className=" pn:max-md:h-[96vh] h-screen overflow-auto scrollbar-hide select-none md:min-w-[390px] dark:border:[#273142] lg:w-[360px] flex flex-col items-center md:border-r-2 border-[#f7f7f7] self-end ">
+				<div className="w-[100%] h-[100vh]  bg-white dark:bg-[#0D0D0D] flex pn:max-md:justify-center ">
+					<div className=" pn:max-md:h-[96vh] w-[27%] h-screen overflow-auto scrollbar-hide select-none dark:border:[#273142] flex flex-col items-center md:border-r-2 border-[#f7f7f7] dark:border-[#131619] self-end ">
 						{/* post 1*/}
-						<div className="h-[8vh]"></div>
+						<div className="h-[10vh]"></div>
 						<div
 							id="scrollableDiv"
 							style={{
@@ -823,7 +825,7 @@ export default function NewforyouLayout({ children }) {
 						</div>
 					</div>
 
-					<div className="w-full pn:max-sm:hidden"> {children}</div>
+					<div className="w-[73%] pn:max-sm:hidden"> {children}</div>
 				</div>
 			)}
 			{id && <Newforyou id={id} />}

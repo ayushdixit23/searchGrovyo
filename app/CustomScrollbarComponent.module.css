@@ -1,15 +1,31 @@
-@media screen and (min-width: 720px) {
+
+
+@media (prefers-color-scheme: light) {
   .customScrollbar::-webkit-scrollbar-track {
-    background-color: #f6f6f6;
+    background-color: var(--scrollbar-track-color-light);
   }
 
+  .customScrollbar::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb-color-light);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .customScrollbar::-webkit-scrollbar-track {
+    background-color: var(--scrollbar-track-color-dark);
+  }
+
+  .customScrollbar::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb-color-dark);
+  }
+}
+
+@media screen and (min-width: 720px) {
   .customScrollbar::-webkit-scrollbar {
     width: 0.5rem;
   }
 
   .customScrollbar::-webkit-scrollbar-thumb {
-    background: #dfdfdf;
-    /* border-radius: 8px; */
     border: 2px solid transparent;
     background-clip: content-box;
     width: 4px;

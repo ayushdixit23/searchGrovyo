@@ -135,7 +135,7 @@ const CommunityChat = ({ d, i, data, dispatch, tId, socket, messages }) => {
 
       <div
         key={i}
-        className={`flex gap-2 my-2 ${
+        className={`flex gap-2 my-5 ${
           data?.id === d?.sender?._id ? "justify-end" : "justify-start"
         }  w-full items-start`}
       >
@@ -150,7 +150,9 @@ const CommunityChat = ({ d, i, data, dispatch, tId, socket, messages }) => {
             <div className="text-[14px] mt-1">{d?.timestamp}</div>
           </div>
         )}
-        <div className="flex items-centers ">
+        <div className="flex flex-col gap-2 items-centers ">
+          <div>{d?.sender?.fullname}</div>
+
           {d?.typ === "message" && (
             <div
               onDoubleClick={() => {
@@ -161,10 +163,10 @@ const CommunityChat = ({ d, i, data, dispatch, tId, socket, messages }) => {
                   );
                 }
               }}
-              className={`relative group h-auto flex justify-start items-center mt-6 ${
+              className={`relative group w-auto h-auto flex justify-start items-center ${
                 data?.id === d?.sender?._id
-                  ? "bg-[#0075ff] text-white p-2 px-4 md:text-[14px]  rounded-l-2xl pn:max-sm:text-[14px] max-w-[650px] rounded-br-2xl "
-                  : "bg-[#ffffff] dark:text-black dark:bg-gray-100 p-2 px-4 rounded-r-2xl md:text-[14px] pn:max-sm:text-[14px] max-w-[650px] rounded-bl-2xl"
+                  ? "bg-[#5585FF] text-white p-2 px-4 md:text-[14px]  rounded-l-2xl pn:max-sm:text-[14px] max-w-[650px] rounded-br-2xl "
+                  : "bg-[#ffffff] text-[#9B9C9E] font-medium border border-[#DEE1E5]  dark:bg-[#1A1D21] p-2 px-4 rounded-r-2xl md:text-[14px] pn:max-sm:text-[14px] max-w-[650px] rounded-bl-2xl"
               } `}
               style={{
                 overflowWrap: "break-word",
@@ -174,9 +176,7 @@ const CommunityChat = ({ d, i, data, dispatch, tId, socket, messages }) => {
             >
               <div className="">
                 {d.status === "deleted" ? (
-                  <div className="italic text-[14px] font-semibold px-2">
-                    This Message was Deleted!
-                  </div>
+                  <div className="italic px-2">This Message was Deleted!</div>
                 ) : (
                   <>
                     {d?.text?.match(/https:\/\/[^\s]+/g)
@@ -296,10 +296,10 @@ const CommunityChat = ({ d, i, data, dispatch, tId, socket, messages }) => {
                   );
                 }
               }}
-              className={`relative group h-auto  flex justify-center items-center mt-6 ${
+              className={`relative group h-auto  flex justify-center items-center ${
                 data?.id === d?.sender?._id
-                  ? "bg-[#0075ff]  text-white  rounded-l-2xl pn:max-sm:text-[14px] max-w-[320px] rounded-br-2xl "
-                  : "bg-[#ffffff] dark:text-black dark:bg-gray-100 p-2 rounded-r-2xl pn:max-sm:text-[14px] max-w-[320px] rounded-bl-2xl"
+                  ? "bg-[#5585FF]  text-white  rounded-l-2xl pn:max-sm:text-[14px] max-w-[320px] rounded-br-2xl "
+                  : "bg-[#ffffff] text-[#9B9C9E] font-medium border border-[#DEE1E5] dark:bg-[#1A1D21] p-2 rounded-r-2xl pn:max-sm:text-[14px] max-w-[320px] rounded-bl-2xl"
               }`}
             >
               <div className="p-2">
@@ -349,7 +349,7 @@ const CommunityChat = ({ d, i, data, dispatch, tId, socket, messages }) => {
                           className={` ${
                             data?.id === d?.sender?._id
                               ? "bg-[#0058e5] text-white  border-r-4 border-[#fff] "
-                              : "bg-[#f9fafb] text-black border-l-4 border-[#0075ff] "
+                              : "bg-[#f9fafb] text-black border-l-4 border-[#5585FF] "
                           }  px-2  p-1 rounded-lg md:text-[12px] pn:max-sm:text-[12px] `}
                           style={{
                             overflowWrap: "break-word",
@@ -451,8 +451,8 @@ const CommunityChat = ({ d, i, data, dispatch, tId, socket, messages }) => {
               }}
               className={`relative max-w-[240px] group ${
                 data?.id === d?.sender?._id
-                  ? "bg-[#0075ff] text-white p-2  rounded-l-2xl mt-4 rounded-br-2xl "
-                  : "bg-[#ffffff] dark:text-black dark:bg-gray-100 p-2 rounded-r-2xl mt-4 rounded-bl-2xl"
+                  ? "bg-[#5585FF] text-white p-2  rounded-l-2xl mt-4 rounded-br-2xl "
+                  : "bg-[#ffffff] text-[#9B9C9E] font-medium border border-[#DEE1E5] dark:bg-[#1A1D21] p-2 rounded-r-2xl mt-4 rounded-bl-2xl"
               }`}
             >
               <div
@@ -468,7 +468,7 @@ const CommunityChat = ({ d, i, data, dispatch, tId, socket, messages }) => {
                   <div className="">
                     <img
                       src={d?.url}
-                      className="h-[145px]  sm:w-[240px] sm:h-[240px] w-[145px] rounded-2xl  bg-white "
+                      className="h-[145px] sm:w-[240px] sm:h-[240px] w-[145px] rounded-2xl  bg-white "
                     />
                     {d?.text && (
                       <div
@@ -556,143 +556,6 @@ const CommunityChat = ({ d, i, data, dispatch, tId, socket, messages }) => {
             </div>
           )}
 
-          {/* {d?.typ == "video" && (
-            <div
-              onDoubleClick={() => {
-                dispatch(setType("reply"));
-                dispatch(
-                  setReplyFunction({ reply: d?.text, replyId: d?.mesId })
-                );
-              }}
-              className={`relative group ${
-                data?.id === d?.sender?._id
-                  ? " bg-[#0075ff] text-white h-[145px] sm:w-[240px] mt-4 sm:h-[240px] w-[145px] flex justify-center items-center p-2 rounded-l-2xl rounded-br-2xl"
-                  : "bg-[#ffffff] h-[145px] sm:w-[240px] mt-4 sm:h-[240px] w-[145px] flex justify-center items-center p-2 rounded-r-2xl rounded-bl-2xl"
-              }`}
-            >
-              <div className="group-hover:pr-2">
-                {d.status === "deleted" ? (
-                  <div className="italic">This Message was Deleted!</div>
-                ) : (
-                  <div>
-                    <VideoPlayer
-                      src={d?.url}
-                      width={"100%"}
-                      height={"h-full"}
-                    />
-                    {d?.text && <div>{d?.text}</div>}
-                  </div>
-                )}
-              </div>
-
-              <div
-                onClick={() => setClick(true)}
-                className={` absolute  hidden bg-transparent group-hover:block bg-sky-950 top-3 right-0`}
-              >
-                <HiOutlineDotsVertical />
-              </div>
-              {click && (
-                <div
-                  className={` absolute z-40 bg-black text-white top-8 rounded-md p-3 -left-[40px] w-[100px] h-auto`}
-                >
-                  <div
-                    onClick={() => deletepopUp(d?.mesId)}
-                    className="text-sm"
-                  >
-                    Delete msg
-                  </div>
-                  <div
-                    onClick={() => {
-                      dispatch(setType("reply"));
-                      dispatch(
-                        setReplyFunction({ reply: "Video", replyId: d?.mesId })
-                      );
-                    }}
-                    className="text-sm"
-                  >
-                    Reply msg
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-
-          {d?.typ == "gif" && (
-            <div
-              onDoubleClick={() => {
-                dispatch(setType("reply"));
-                dispatch(
-                  setReplyFunction({ reply: d?.text, replyId: d?.mesId })
-                );
-              }}
-            >
-              <div
-                className={`relative group  ${
-                  data?.id === d?.sender?._id
-                    ? "bg-[#0075ff] text-white p-2 mt-4 rounded-l-2xl rounded-br-2xl"
-                    : "bg-[#ffffff] p-2 mt-4 rounded-r-2xl rounded-bl-2xl"
-                }`}
-              >
-                <div className="group-hover:pr-2">
-                  {d.status === "deleted" ? (
-                    <div className="italic">This Message was Deleted!</div>
-                  ) : (
-                    <img
-                      className="h-full w-full object-contain"
-                      src={d?.url}
-                      alt="gif"
-                    />
-                  )}
-                </div>
-                <div
-                  onClick={() => setClick(true)}
-                  className={` absolute  hidden bg-transparent group-hover:block bg-sky-950 top-3 right-0`}
-                >
-                  <HiOutlineDotsVertical />
-                </div>
-                {click && (
-                  <div
-                    className={` absolute z-40 bg-black text-white top-8 rounded-md p-3 -left-[40px] w-[100px] h-auto`}
-                  >
-                    {d?.hidden?.includes(data?.id) ? (
-                      <div
-                        onClick={() => UnhideChats(d?.mesId)}
-                        className="text-sm"
-                      >
-                        Un Hide msg
-                      </div>
-                    ) : (
-                      <div
-                        onClick={() => hideChats(d?.mesId)}
-                        className="text-sm"
-                      >
-                        Hide msg
-                      </div>
-                    )}
-                    <div
-                      onClick={() => deletepopUp(d?.mesId)}
-                      className="text-sm"
-                    >
-                      Delete msg
-                    </div>
-
-                    <div
-                      onClick={() => {
-                        dispatch(setType("reply"));
-                        dispatch(
-                          setReplyFunction({ reply: "Gif", replyId: d?.mesId })
-                        );
-                      }}
-                      className="text-sm"
-                    >
-                      Reply msg
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          )} */}
-
           {d?.typ == "video" && (
             <div
               onDoubleClick={() => {
@@ -703,10 +566,10 @@ const CommunityChat = ({ d, i, data, dispatch, tId, socket, messages }) => {
                   );
                 }
               }}
-              className={`relative group ${
+              className={`relative max-w-[250px] max-h-[250px] group ${
                 data?.id === d?.sender?._id
-                  ? " bg-[#0075ff] text-white h-[145px] sm:w-[240px] mt-4 sm:h-[240px] w-[145px] flex justify-center items-center p-2 rounded-l-2xl rounded-br-2xl"
-                  : "bg-[#ffffff] dark:text-black dark:bg-gray-100 h-[145px] sm:w-[240px] mt-4 sm:h-[240px] w-[145px] flex justify-center items-center p-2 rounded-r-2xl rounded-bl-2xl"
+                  ? " bg-[#5585FF] text-white mt-4 flex justify-center items-center p-2 rounded-l-2xl rounded-br-2xl"
+                  : "bg-[#ffffff] dark:text-black border border-[#DEE1E5] dark:bg-gray-100 mt-4 flex justify-center items-center p-2 rounded-r-2xl rounded-bl-2xl"
               }`}
             >
               <div className="group-hover:pr-2">
@@ -714,11 +577,6 @@ const CommunityChat = ({ d, i, data, dispatch, tId, socket, messages }) => {
                   <div>This Message was Deleted!</div>
                 ) : (
                   <div className="rounded-2xl ">
-                    {/* <video
-                        src={d?.url}
-                        className="h-[145px] w-[145px] rounded-2xl bg-yellow-300"
-                        controls
-                      /> */}
                     <VideoPlayer
                       width={"100%"}
                       height={"h-full"}
@@ -810,8 +668,8 @@ const CommunityChat = ({ d, i, data, dispatch, tId, socket, messages }) => {
               <div
                 className={`relative group  ${
                   data?.id === d?.sender?._id
-                    ? "bg-[#0075ff] text-white p-2 mt-4 rounded-l-2xl rounded-br-2xl"
-                    : "bg-[#ffffff] dark:text-black dark:bg-gray-100 p-2 mt-4 rounded-r-2xl rounded-bl-2xl"
+                    ? "bg-[#5585FF] text-white p-2 mt-4 rounded-l-2xl rounded-br-2xl"
+                    : "bg-[#ffffff] text-[#9B9C9E] font-medium border border-[#DEE1E5] dark:bg-[#1A1D21] p-2 mt-4 rounded-r-2xl rounded-bl-2xl"
                 }`}
               >
                 <div className="group-hover:pr-2">

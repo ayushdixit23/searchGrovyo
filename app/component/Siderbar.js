@@ -46,7 +46,7 @@ function Sidebar() {
   return (
     <div className="h-screen w-[60px] bg-[#ffffff] dark:bg-[#0D0F10] flex flex-col justify-center items-start">
       {/* Image */}
-      <div className="h-screen w-[60px] ring-[#f5f5f5] bg-[#f2f2f2] dark:bg-bluedark dark:border-[#273142] border-[#d4d4d4] 
+      <div className="h-screen w-[60px] ring-[#f5f5f5] bg-[#f2f2f2] dark:bg-bluedark border-[#f7f7f7] dark:border-[#131619]
       border-r-2 absolute flex flex-col justify-evenly items-center">
         {data?.dp !== null ? (
           <Link href="/prosite">

@@ -264,8 +264,8 @@ export default function CommunityLayout({ children }) {
       {/*if no data*/}
       {!id && (
         <div className="w-[100%] h-screen bg-white dark:bg-graydark flex pn:max-md:justify-center ">
-          <div className=" select-none md:min-w-[390px] lg:w-[360px] flex flex-col items-center md:border-r-2 border-[#f7f7f7] self-end ">
-            <div className="h-[8vh] pn:max-sm:h-[16vh]"></div>
+          <div className=" select-none w-[27%] flex flex-col items-center md:border-r-2 border-[#f7f7f7] dark:border-[#131619] self-end ">
+            <div className="h-[10vh] pn:max-sm:h-[16vh]"></div>
 
             <div
               className={`h-[92vh] pn:max-sm:h-[87vh] ${styles.customScrollbar} overflow-auto `}
@@ -523,7 +523,7 @@ export default function CommunityLayout({ children }) {
             {/* POst */}
           </div>
 
-          <div className="w-full pn:max-sm:hidden"> {children}</div>
+          <div className=" w-[73%] pn:max-sm:hidden"> {children}</div>
         </div>
       )}
       {id && <CommunityFeed id={id} />}

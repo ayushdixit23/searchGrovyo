@@ -13,7 +13,7 @@ export default function PostLayout({ children }) {
       )}
 
       {/* Header */}
-      <div className="w-[100%] h-[100vh] z-0 flex">{children}</div>
+      <div className="w-[100%] h-[100vh]  z-0 flex">{children}</div>
 
       {/*Posts*/}
     </div>

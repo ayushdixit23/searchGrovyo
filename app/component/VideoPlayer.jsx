@@ -19,7 +19,7 @@ const VideoPlayer = ({ src, adSrc, width, height }) => {
   const containerRef = useRef();
   const [isplaying, setIsplaying] = useState(false);
   const [currentTime, setCurrentTime] = useState([0, 0]);
-  const [isMuted, setIsMuted] = useState(true);
+  const [isMuted, setIsMuted] = useState(false);
   const [volume, setVolume] = useState(0);
   const [currentTimeSec, setCurrentTimeSec] = useState(0);
   const [duration, setDuration] = useState([0, 0]);

@@ -9,20 +9,20 @@ export default function MainLayout({ children }) {
   const hide = useSelector((state) => state.remember.hide);
 
   return (
-    <div className="flex flex-row pn:max-sm:flex-col">
-      <div className="pn:max-sm:hidden z-10  ">
+    <div className="flex flex-row w-[100%] pn:max-sm:flex-col">
+      <div className="pn:max-sm:hidden bg-red-800 w-[60px] z-10  ">
         <Siderbar />
       </div>
       {hide === false && (
         <div
-          className={` ${
-            visible ? "z-10 top-0 sm:hidden w-full fixed" : "hidden"
-          }  `}
+          className={` ${visible ? "z-10 top-0 sm:hidden w-full fixed" : "hidden"
+            }  `}
         >
           <Header />
         </div>
       )}
-      <div className="h-screen z-0 pn:max-md:w-full w-screen">{children}</div>
+      <div style={{ width: 'calc(100% - 60px)' }
+    } className="h-screen z-0 pn:max-md:w-full">{children}</div>
       {hide === false && (
         <div className={`${visible ? "md:hidden bg-gray-200" : "hidden"} `}>
           <Tabbar />

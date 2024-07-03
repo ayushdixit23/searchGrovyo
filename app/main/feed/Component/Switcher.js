@@ -8,8 +8,8 @@ function Switcher() {
   const path = usePathname()
 
   return (
-    <div className="pn:max-sm:h-[6vh] h-[8vh] bg-white dark:bg-[#0D0F10] shadow-sm z-10 pn:max-sm:items-center 
-     pn:max-sm:w-[100%] pn:max-sm:mt-[6vh] sm:max-md:px-1 sm:max-md:rounded-r-3xl md:w-[388px] pn:max-md:justify-start absolute md:fixed flex flex-row items-center">
+    <div className="pn:max-sm:h-[6vh] h-[10vh] bg-white dark:bg-[#0D0F10] shadow-sm z-10 pn:max-sm:items-center 
+     pn:max-sm:w-[100%] pn:max-sm:mt-[6vh] overflow-hidden sm:max-md:rounded-r-3xl w-[25.8%] px-2 pn:max-md:justify-start absolute md:fixed flex flex-row items-center">
       {/* // New for you */}
       <motion.div
         //initial={{ opacity: 0, y: -10 }}

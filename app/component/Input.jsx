@@ -1,14 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { IoDocumentSharp, IoSend } from "react-icons/io5";
+import { IoSend } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import moment from "moment";
-import {
-  MdOutlineEmojiEmotions,
-  MdOutlineGif,
-  MdOutlineOndemandVideo,
-  MdPermMedia,
-} from "react-icons/md";
-import { TfiImage } from "react-icons/tfi";
+import { MdGifBox, MdOutlineEmojiEmotions } from "react-icons/md";
+import camera from "../assets/camera.png";
+import video from "../assets/video.png";
+import documentpic from "../assets/document.png";
 import {
   Grid,
   SearchBar,
@@ -19,6 +16,8 @@ import {
 import { setPreview } from "../redux/slice/remember";
 import EmojiPicker from "emoji-picker-react";
 import { socketemitfunc } from "../utils/SocketWrapper";
+import Image from "next/image";
+import { useTheme } from "next-themes";
 
 const Input = ({
   sendMessages,
@@ -96,6 +95,7 @@ const Component = ({
   const [show, setShow] = useState(false);
   const [showEmoji, setShowEmoji] = useState(false);
   const [emoji, setEmoji] = useState("");
+  const { theme } = useTheme();
   const { fetchGifs, searchKey } = useContext(SearchContext);
 
   const mainSendingFunction = () => {
@@ -241,6 +241,7 @@ const Component = ({
             width={"100%"}
             allowExpandReactions={true}
             disableAutoFocus={true}
+            theme={theme}
             reactionsDefaultOpen={true}
             onEmojiClick={(emo) => {
               setEmoji((emoji) => emoji + emo.emoji);
@@ -292,7 +293,7 @@ const Component = ({
         </div>
       </div>
 
-      <div className="bg-grey-lighter flex h-full z-20 items-center">
+      <div className="bg-grey-lighter  flex h-full z-20 items-center">
         <div className=" flex justify-center gap-2 items-center">
           {showEmoji ? (
             <RxCross2
@@ -318,43 +319,20 @@ const Component = ({
           <div
             className={` ${
               show
-                ? "absolute left-5 z-40 bottom-12 rounded-[12px]"
+                ? "absolute left-5  z-40 bottom-12 rounded-[12px]"
                 : " -z-10 absolute left-0 bottom-0 rounded-[0px] "
             } `}
           >
             <div
               className={`duration-75  ${
                 show === true
-                  ? "flex flex-col bg-red-300 shadow-xl rounded-[12px] gap-1 p-1 justify-center items-center h-full"
+                  ? "flex flex-col min-w-[150px] px-3 dark:bg-[#0D0F10] shadow-custom-lg rounded-[12px] gap-1 p-1 items-center h-full"
                   : "gap-0 py-0 h-0"
               }`}
             >
-              {/* gif  */}
-              <div
-                onClick={() => {
-                  setShow(false);
-                  setShowgif(true);
-                }}
-                className="flex items-center py-2 duration-75 rounded-xl hover:bg-slate-50"
-              >
-                <MdOutlineGif
-                  className={`duration-75 ${
-                    show === true ? "w-[25px] h-[25px]" : "h-[0px] w-[0px]"
-                  }`}
-                />
-                <div
-                  className={`duration-75 ${
-                    show === true
-                      ? "w-[100px] text-start pl-2"
-                      : "w-[0px] text-[0px] pl-0"
-                  }`}
-                >
-                  GIF
-                </div>
-              </div>
               {/* image  */}
-              <label htmlFor="image">
-                <div className="flex items-center py-2 duration-75 rounded-xl hover:bg-slate-50">
+              <label className="w-full" htmlFor="image">
+                <div className="flex w-full  justify-start items-center py-2 duration-75 rounded-xl ">
                   <div>
                     <input
                       id="image"
@@ -381,26 +359,34 @@ const Component = ({
                       className="hidden"
                     />
 
-                    <TfiImage
+                    {/* <TfiImage
                       className={`duration-75 ${
                         show === true ? "w-[30px] h-[30px]" : "h-[0px] w-[0px]"
+                      }`}
+                    /> */}
+                    <Image
+                      src={camera}
+                      className={`duration-75 ${
+                        show === true ? "w-[22px] h-[20px]" : "h-[0px] w-[0px]"
                       }`}
                     />
                   </div>
                   <div
                     className={`duration-75 ${
                       show === true
-                        ? "w-[100px] text-start pl-2"
+                        ? "w-auto text-start font-medium  text-sm pl-2"
                         : "w-[0px] text-[0px] pl-0"
                     }`}
                   >
-                    {" "}
-                    Image{" "}
+                    Image
                   </div>
                 </div>
               </label>
               {/* video  */}
-              <div className="flex items-center py-2 duration-75 rounded-xl hover:bg-slate-50">
+              <label
+                htmlFor="video"
+                className="flex w-full justify-start items-center py-2 duration-75 rounded-xl "
+              >
                 <div>
                   <input
                     id="video"
@@ -425,9 +411,10 @@ const Component = ({
                     className="hidden"
                   />
                   <label htmlFor="video">
-                    <MdOutlineOndemandVideo
+                    <Image
+                      src={video}
                       className={`duration-75 ${
-                        show === true ? "w-[30px] h-[30px]" : "h-[0px] w-[0px]"
+                        show === true ? "w-[22px] h-[20px]" : "h-[0px] w-[0px]"
                       }`}
                     />
                   </label>
@@ -435,16 +422,16 @@ const Component = ({
                 <div
                   className={`duration-75 ${
                     show === true
-                      ? "w-[100px] text-start pl-2"
+                      ? "w-auto text-start font-medium  text-sm pl-2"
                       : "w-[0px] text-[0px] pl-0"
                   }`}
                 >
-                  {" "}
-                  Video{" "}
+                  Video
                 </div>
-              </div>
+              </label>
+
               {/* document  */}
-              <div className="flex items-center py-2 duration-75 rounded-xl hover:bg-slate-50">
+              <div className="flex items-center justify-start w-full py-2 duration-75 rounded-xl ">
                 <div className="">
                   <input
                     id="document"
@@ -469,29 +456,59 @@ const Component = ({
                     className="hidden"
                   />
                   <label htmlFor="document">
-                    <IoDocumentSharp
+                    {/* <IoDocumentSharp
                       className={`duration-75 ${
                         show === true ? "w-[30px] h-[30px]" : "h-[0px] w-[0px]"
+                      }`}
+                    /> */}
+                    <Image
+                      src={documentpic}
+                      className={`duration-75 ${
+                        show === true ? "w-[22px] h-[20px]" : "h-[0px] w-[0px]"
                       }`}
                     />
                   </label>
                 </div>
-                <div
+                <label
+                  htmlFor="document"
                   className={`duration-75 ${
                     show === true
-                      ? "w-[100px] text-start pl-2"
+                      ? "w-auto text-start font-medium text-sm pl-2"
                       : "w-[0px] text-[0px] pl-0"
                   }`}
                 >
-                  {" "}
-                  Document{" "}
+                  Document
+                </label>
+              </div>
+              {/* gif  */}
+              <div
+                onClick={() => {
+                  setShow(false);
+                  setShowgif(true);
+                }}
+                className="flex items-center justify-start w-full py-2 duration-75 rounded-xl"
+              >
+                <MdGifBox
+                  className={`duration-75 text-[#686B6E] ${
+                    show === true ? "w-[20px] h-[20px]" : "h-[0px] w-[0px]"
+                  }`}
+                />
+                {/* <Image /> */}
+                <div
+                  className={`duration-75 ${
+                    show === true
+                      ? "w-auto  font-medium text-sm text-start pl-2"
+                      : "w-[0px] text-[0px] pl-0"
+                  }`}
+                >
+                  GIF
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="flex-1 mx-2 border border-[#1A1D21] rounded-lg">
+        <div className="flex-1 mx-2 border border-[#DEE1E5] dark:border-[#1A1D21] rounded-lg">
           {!d ? (
             <input
               placeholder="Type your message here..."
@@ -525,7 +542,7 @@ const Component = ({
           onClick={() => {
             mainSendingFunction();
           }}
-          className="bg-[#1A1D21] h-full p-2 rounded-xl"
+          className="dark:bg-[#1A1D21] bg-[#686B6E] h-full p-2 rounded-xl"
         >
           <IoSend className="text-xl text-white" />
         </div>
