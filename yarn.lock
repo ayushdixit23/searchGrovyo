@@ -3368,6 +3368,11 @@ optionator@^0.9.3:
     prelude-ls "^1.2.1"
     type-check "^0.4.0"
 
+otp-input-react@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/otp-input-react/-/otp-input-react-0.3.0.tgz#47ad3485b923ea00cf0d4758b74dfeffb3d73cf8"
+  integrity sha512-6HDgAUp+biz18cfeX8189g6sOqA5UGmTeqkREz1MI8x92N8kU/M8YtwLtl60j3pbGkMVbrm3f4n4wtXPeVpMmg==
+
 p-limit@^3.0.2:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/p-limit/-/p-limit-3.1.0.tgz#e1daccbe78d0d1388ca18c64fea38e3e57e3706b"

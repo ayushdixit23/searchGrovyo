@@ -33,7 +33,6 @@ import mutepic from "../../../../assets/mute.png";
 import logout from "../../../../assets/logout.png";
 import unmutepic from "../../../../assets/unmute.png";
 import memberspic from "../../../../assets/members.png";
-import { MdOutlineArrowBackIosNew } from "react-icons/md";
 import { setPreview } from "@/app/redux/slice/remember";
 import { IoDocument } from "react-icons/io5";
 

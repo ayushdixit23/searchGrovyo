@@ -326,7 +326,7 @@ const Component = ({
             <div
               className={`duration-75  ${
                 show === true
-                  ? "flex flex-col min-w-[150px] px-3 dark:bg-[#0D0F10] shadow-custom-lg rounded-[12px] gap-1 p-1 items-center h-full"
+                  ? "flex flex-col min-w-[150px] px-3 bg-white shadow-md dark:bg-[#0D0F10] dark:shadow-custom-lg rounded-[12px] gap-1 p-1 items-center h-full"
                   : "gap-0 py-0 h-0"
               }`}
             >

@@ -15,20 +15,23 @@ import { RiLoader4Line, RiLockPasswordLine } from "react-icons/ri";
 import { decryptaes } from "@/app/utils/useful";
 import { FaPhoneAlt } from "react-icons/fa";
 import { MdEmail, MdOutlineMailOutline } from "react-icons/md";
+import dynamic from "next/dynamic";
+const DynamicOtpInput = dynamic(() => import("otp-input-react"), {
+  ssr: false,
+});
 
 function page() {
-  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
-  const otpInputRefs = Array.from({ length: 6 }, () => React.createRef());
+  const [otp, setOtp] = useState("");
   const otpElementRef = useRef(null);
   const router = useRouter();
   const [number, setNumber] = useState("");
-  const [OTP, setOTP] = useState();
   const [loading, setLoading] = useState(false);
   const [showOTP, setShowOTP] = useState(false);
   const [seconds, setSeconds] = useState(30);
   const [isActive, setIsActive] = useState(true);
   const [come, setCome] = useState(0);
   const { f } = useAuthContext();
+  const otpInputRef = useRef(null);
   const [change, setChange] = useState(1);
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
@@ -40,6 +43,42 @@ function page() {
   const newRandomString = generateRandomString(17);
   const starCountRef = ref(database, `/qr/`);
   const strignref = useRef(null);
+
+  const handleOtpChange = (otp) => {
+    try {
+      setOtp(otp);
+    } catch (error) {
+      toast.error("Something Went Wrong!");
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    let interval;
+    if (seconds === 0) {
+      setSeconds(0);
+      setIsActive(true);
+      setCome(come + 1);
+    }
+    if (isActive) {
+      interval = setInterval(() => {
+        setSeconds((prevSeconds) => prevSeconds - 1);
+      }, 1000);
+      if (seconds === 0) {
+        setSeconds(0);
+        setCome(1);
+      }
+    } else if (!isActive && seconds !== 0) {
+      clearInterval(interval);
+    }
+
+    return () => clearInterval(interval);
+  }, [isActive, seconds]);
+
+  const toggleTimer = () => {
+    onSignup();
+    setSeconds(30);
+  };
 
   function generateRandomString(length) {
     const characters = "0123456789abcdefghijklmnopqrstuvwxyz";
@@ -105,66 +144,6 @@ function page() {
     };
   }, []);
 
-  const handleInputChange = (event, index) => {
-    const { value } = event.target;
-    setOtp((prevOTP) => {
-      const newOTP = [...prevOTP];
-      newOTP[index] = value;
-      return newOTP;
-    });
-
-    if (value === "" && index > 0) {
-      otpInputRefs[index - 1].current.focus();
-    } else if (value !== "" && index < 5) {
-      otpInputRefs[index + 1].current.focus();
-    }
-  };
-
-  useEffect(() => {
-    const finalOTP = otp.join("");
-    setOTP(finalOTP);
-    const otpElement = otpElementRef.current;
-
-    if (otpElement) {
-      otpElement.innerText = finalOTP;
-
-      if (finalOTP.length === 6) {
-        otpElement.classList.replace("_notok", "_ok");
-      } else {
-        otpElement.classList.replace("_ok", "_notok");
-      }
-    }
-  }, [otp]);
-
-  useEffect(() => {
-    let interval;
-
-    if (seconds === 0) {
-      setSeconds(0);
-      setIsActive(true);
-      setCome(come + 1);
-    }
-    if (isActive) {
-      interval = setInterval(() => {
-        setSeconds((prevSeconds) => prevSeconds - 1);
-      }, 1000);
-      if (seconds === 0) {
-        setSeconds(0);
-        setCome(1);
-      }
-    } else if (!isActive && seconds !== 0) {
-      clearInterval(interval);
-    }
-
-    return () => clearInterval(interval);
-  }, [isActive, seconds]);
-
-  const toggleTimer = () => {
-    onSignup();
-    setSeconds(30);
-    //setIsActive(!isActive);
-  };
-
   const cookiesSetter = async (res) => {
     try {
       const expirationDate = new Date();
@@ -218,10 +197,7 @@ function page() {
           callback: (response) => {
             onSignup();
           },
-          "expired-callback": () => {
-            // Response expired. Ask the user to solve reCAPTCHA again.
-            // ...
-          },
+          "expired-callback": () => {},
         }
       );
     }
@@ -250,7 +226,7 @@ function page() {
   function onOTPVerify() {
     setLoading(true);
     window.confirmationResult
-      .confirm(OTP)
+      .confirm(otp)
       .then(async (res) => {
         setLoading(false);
         fetchid();
@@ -284,6 +260,49 @@ function page() {
     }
     setLoad(false);
   };
+
+  useEffect(() => {
+    let otpCapture = document.getElementById("send-otp");
+    const handleKeyPress = (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        if (number.length === 10) {
+          onSignup();
+        }
+      }
+    };
+
+    if (otpCapture) {
+      otpCapture.addEventListener("keypress", handleKeyPress);
+    }
+    return () => {
+      if (otpCapture) {
+        otpCapture.removeEventListener("keypress", handleKeyPress);
+      }
+    };
+  }, [number]);
+
+  useEffect(() => {
+    const verifyOtp = otpInputRef.current;
+    const handleKeyPress = (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        if (otp.length === 6) {
+          onOTPVerify();
+        }
+      }
+    };
+
+    if (verifyOtp) {
+      verifyOtp.addEventListener("keypress", handleKeyPress);
+    }
+
+    return () => {
+      if (verifyOtp) {
+        verifyOtp.removeEventListener("keypress", handleKeyPress);
+      }
+    };
+  }, [otp, otpInputRef]);
 
   return (
     <div
@@ -365,36 +384,27 @@ function page() {
 
               <div className="flex flex-col justify-center items-center gap-2 w-full sm:w-[90%]">
                 {/* phone */}
-                <div
-                  className={`${
-                    change === 1
-                      ? "flex justify-start flex-col w-full mt-2 items-start  py-4"
-                      : "hidden"
-                  }`}
-                >
-                  <div className="w-full dark:bg-[#1A1D21] bg-[#DEE1E5] flex items-center rounded-2xl">
-                    <div className="dark:text-white pl-2">+91</div>
-                    <div className="h-[20px] ml-2 border-r border-[#acafb2]" />
-                    <input
-                      onKeyPress={(e) => {
-                        if (e.key === "Enter") {
-                          // onSignup();
-                          fetchid();
-                        }
-                      }}
-                      type="tel"
-                      value={number}
-                      onChange={(e) => setNumber(e.target.value)}
-                      placeholder="Phone no."
-                      className="h-[50px] w-full text-black dark:text-[#fff] outline-none dark:bg-[#1A1D21] bg-[#DEE1E5] rounded-r-2xl px-2 p-2 "
-                    />
-                  </div>
-                  <div
-                    className={`w-full ${change === 1 ? "py-3" : "hidden"} `}
-                  >
+
+                {showOTP ? (
+                  <div className="mt-2 w-full flex flex-col gap-4 justify-center  items-center">
+                    <div
+                      ref={otpInputRef}
+                      className=" w-full flex gap-4 ml-[20px] justify-center   items-center"
+                    >
+                      <DynamicOtpInput
+                        value={otp}
+                        onChange={handleOtpChange}
+                        OTPLength={6}
+                        otpType="number"
+                        // ref={otpInputRef}
+                        disabled={false}
+                        autoFocus
+                        className="opt-container sm:mt-3"
+                      ></DynamicOtpInput>
+                    </div>
                     <div
                       //onClick={onSignup}
-                      onClick={fetchid}
+                      onClick={onOTPVerify}
                       className="h-[50px] w-full select-none cursor-pointer bg-[#0066ff] flex items-center justify-center rounded-2xl text-white "
                     >
                       {loading && (
@@ -405,7 +415,48 @@ function page() {
                       </span>
                     </div>
                   </div>
-                </div>
+                ) : (
+                  <div
+                    className={`${
+                      change === 1
+                        ? "flex justify-start flex-col w-full mt-2 items-start  py-4"
+                        : "hidden"
+                    }`}
+                  >
+                    <div className="w-full dark:bg-[#1A1D21] bg-[#DEE1E5] flex items-center rounded-2xl">
+                      <div className="dark:text-white pl-2">+91</div>
+                      <div className="h-[20px] ml-2 border-r border-[#acafb2]" />
+                      <input
+                        onKeyPress={(e) => {
+                          if (e.key === "Enter") {
+                            onSignup();
+                          }
+                        }}
+                        type="tel"
+                        value={number}
+                        onChange={(e) => setNumber(e.target.value)}
+                        placeholder="Phone no."
+                        className="h-[50px] w-full text-black dark:text-[#fff] outline-none dark:bg-[#1A1D21] bg-[#DEE1E5] rounded-r-2xl px-2 p-2 "
+                      />
+                    </div>
+                    <div
+                      className={`w-full ${change === 1 ? "py-3" : "hidden"} `}
+                    >
+                      <div
+                        onClick={onSignup}
+                        // onClick={fetchid}
+                        className="h-[50px] w-full select-none cursor-pointer bg-[#0066ff] flex items-center justify-center rounded-2xl text-white "
+                      >
+                        {loading && (
+                          <CgSpinner size={20} className="m-1 animate-spin" />
+                        )}
+                        <span className={`${loading ? "hidden" : ""} `}>
+                          Continue
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 {/* email */}
                 <div

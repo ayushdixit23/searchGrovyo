@@ -21,8 +21,13 @@ import {
   setincommsgs,
 } from "../../../../redux/slice/messageSlice";
 // default
-
-// import styles from "../../../../CustomScrollbarComponent.module.css";
+import mutepic from "../../../../assets/mute.png";
+import hidden from "../../../../assets/hidden.png";
+import hiddenlight from "../../../../assets/lighthidden.png";
+import blockpic from "../../../../assets/block.png";
+import unmutepic from "../../../../assets/unmute.png";
+import styles from "../../../../CustomScrollbarComponent.module.css";
+import reportspic from "../../../../assets/reports.png";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { LuLoader2 } from "react-icons/lu";
 import PrivateChats from "../../../../component/PrivateChats";
@@ -32,6 +37,9 @@ import Link from "next/link";
 import { setConvId, setPreview } from "@/app/redux/slice/remember";
 import { RxCross2 } from "react-icons/rx";
 import Loader from "@/app/component/Loader";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import Image from "next/image";
+import { useTheme } from "next-themes";
 
 const Components = () => {
   const { data } = useAuthContext();
@@ -57,6 +65,7 @@ const Components = () => {
   const replyId = useSelector((state) => state.message.replyId);
   const [loading, setLoading] = useState(true);
   const messageRefs = useRef({});
+  const { theme } = useTheme();
   const [istyping, setIstyping] = useState(false);
 
   useEffect(() => {
@@ -71,6 +80,7 @@ const Components = () => {
       targetRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
+
   const limitWords = (text, wordLimit) => {
     // const words = text.split(" ");
     return text.length > wordLimit ? text.slice(0, wordLimit) + ".." : text;
@@ -924,18 +934,18 @@ const Components = () => {
           <div className="w-full h-[100vh] relative ">
             {/* header  */}
             <div
-              className="w-[100%] gap-2 bg-white shadow-md dark:bg-bluelight dark:border-[#273142]  border-[#888]  justify-between items-center h-[8%] 
-        border-b-[0.5px] border-b-gray-200 px-4 flex flex-row "
+              className="w-[100%] gap-2 bg-white shadow-md dark:bg-[#0D0F10] dark:border-[#131619]  border-[#888] justify-between items-center h-[10%] 
+        border-b-[0.5px] border-b-gray-200 px-4 flex flex-row"
             >
               <a
                 target="_blank"
                 href={`https://grovyo.com/${user?.username}`}
                 className="flex flex-row items-center w-full h-full gap-2"
               >
-                <div>
+                <div className="h-[45px] w-[45px]">
                   <img
                     src={user?.profilepic}
-                    className="h-[45px] w-[45px] rounded-[20px] ring-1 dark:ring-[#273142] ring-white bg-white-300 "
+                    className="w-full h-full object-cover rounded-[20px] ring-1 dark:ring-[#273142] ring-white bg-white-300 "
                   />
                 </div>
                 <div>
@@ -948,7 +958,131 @@ const Components = () => {
                 </div>
               </a>
               {/* user.isverified */}
+
               <div
+                onClick={() => setOptions(!options)}
+                className="flex justify-center relative gap-2 items-center "
+              >
+                <BsThreeDotsVertical />
+                <div
+                  className={`absolute duration-100 ${
+                    options
+                      ? "w-auto min-w-[180px] p-2 px-4 top-7 text-xs h-auto -left-[170px] "
+                      : "w-0 h-0 text-[0px] top-0 left-0"
+                  } z-40 rounded-lg dark:text-white dark:bg-[#0D0F10] text-[#6e6e6e] bg-white shadow-custom-lg `}
+                >
+                  {" "}
+                  <div className="flex flex-col font-semibold h-full">
+                    <Link
+                      className="rounded-lg flex items-center justify-start"
+                      href={`/main/chat/${params?.id}/${params?.con}?type=hiddenMsgs`}
+                    >
+                      <div className="flex justify-center  items-center">
+                        {theme === "dark" ? (
+                          <Image
+                            src={hidden}
+                            className={`relative top-2 max-w-[40px] max-h-[40px] flex justify-center items-center h-full ${
+                              options ? "" : "hidden"
+                            } `}
+                          />
+                        ) : (
+                          <Image
+                            src={hiddenlight}
+                            className={`relative top-2 max-w-[40px] max-h-[40px] flex justify-center items-center h-full ${
+                              options ? "" : "hidden"
+                            } `}
+                          />
+                        )}
+                      </div>
+                      <div className="">Hidden Message</div>
+                    </Link>
+
+                    <Link
+                      className="flex items-center justify-start"
+                      href={`/main/chat/${params?.id}/${params?.con}?type=reports`}
+                    >
+                      <div className="flex justify-center  items-center">
+                        <Image
+                          src={reportspic}
+                          className={`relative top-2 max-w-[40px] max-h-[40px] flex justify-center items-center h-full ${
+                            options ? "" : "hidden"
+                          } `}
+                        />
+                      </div>
+                      <div>Reports</div>
+                    </Link>
+
+                    {/* <div className="">
+                      {isMuted ? (
+                        <div
+                          onClick={handleMute}
+                          className="flex items-center justify-start"
+                        >
+                          <div className="flex justify-center items-center">
+                            <Image
+                              src={unmutepic}
+                              className={`relative top-2 max-w-[40px] max-h-[40px] flex justify-center items-center h-full ${
+                                options ? "" : "hidden"
+                              } `}
+                            />
+                          </div>
+                          <div>Un Mute</div>
+                        </div>
+                      ) : (
+                        <div
+                          onClick={handleMute}
+                          className="flex items-center justify-start"
+                        >
+                          <div className="flex justify-center  items-center">
+                            <Image
+                              src={mutepic}
+                              className={`relative top-2 max-w-[40px] max-h-[40px] flex justify-center items-center h-full ${
+                                options ? "" : "hidden"
+                              } `}
+                            />
+                          </div>
+                          <div>Mute</div>
+                        </div>
+                      )}
+                    </div> */}
+
+                    {canblock ? (
+                      <div
+                        onClick={handleBlock}
+                        className="rounded-lg flex items-center justify-start"
+                      >
+                        <div className="flex justify-center  items-center">
+                          <Image
+                            src={blockpic}
+                            className={`relative top-2 max-w-[40px] max-h-[40px] flex justify-center items-center h-full ${
+                              options ? "" : "hidden"
+                            } `}
+                          />
+                        </div>
+                        <div className="">Block</div>
+                      </div>
+                    ) : (
+                      <div
+                        onClick={handleBlock}
+                        className="rounded-lg flex items-center justify-start"
+                      >
+                        <div className="flex justify-center  items-center">
+                          <Image
+                            src={blockpic}
+                            className={`relative top-2 max-w-[40px] max-h-[40px] flex justify-center items-center h-full ${
+                              options ? "" : "hidden"
+                            } `}
+                          />
+                        </div>
+                        <div className="">UnBlock</div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* change krna hai */}
+              {/* <div
                 onClick={() => setOptions(true)}
                 className="flex justify-center relative items-center text-3xl"
               >
@@ -991,7 +1125,7 @@ const Components = () => {
                     )}
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
             {/* chats  */}
 
@@ -1013,10 +1147,13 @@ const Components = () => {
                     overflow: "auto",
                     display: "flex",
                     flexDirection: "column-reverse",
-                    paddingLeft: 20,
+
+                    padding: 10,
                   }}
-                  className={`duration-75 bg-chatbg bg-no-repeat bg-cover  relative overflow-y-scroll bg-white dark:bg-bluedark ${
-                    reply && replyId ? "h-[80%] " : "h-[84%]"
+                  className={`duration-75 bg-chatslightbg dark:bg-chatsdarkbg bg-cover bg-no-repeat ${
+                    styles.customScrollbar
+                  } relative overflow-y-scroll bg-white dark:bg-bluedark ${
+                    reply && replyId ? "h-[76%]" : "h-[80%]"
                   }`}
                 >
                   {/*Put the scroll bar always on the bottom*/}
@@ -1040,7 +1177,7 @@ const Components = () => {
                     scrollableTarget="scrollableDiv"
                   >
                     {preview === false && (
-                      <div>
+                      <div className="flex flex-col gap-3">
                         {messages.map((d, i) => (
                           <PrivateChats
                             d={d}
@@ -1067,7 +1204,6 @@ const Components = () => {
                             onClick={() => {
                               dispatch(setType(""));
                               dispatch(setContent(""));
-
                               dispatch(setPreview(false));
                             }}
                             className="flex justify-end items-end mr-7 w-full"
@@ -1129,18 +1265,22 @@ const Components = () => {
                 </div>
                 {/* footer  */}
                 <div
-                  className={`bg-[#fff] duration-75 flex border-t-2 dark:bg-bluelight justify-center ${
+                  className={`bg-[#fff] duration-75 flex border-t-2 dark:border-[#131619] dark:bg-bluelight justify-center ${
                     reply && replyId
                       ? "h-[12%] gap-2 space-y-2"
-                      : "h-[8%] items-center"
+                      : "h-[10%] items-center"
                   }`}
                 >
                   {canblock === true && isBlocked === false && (
-                    <div className="px-2 w-full dark:bg-bluelight   ">
+                    <div
+                      className={`duration-100 px-2 ${
+                        reply && replyId ? "" : "-mt-2"
+                      }  w-full dark:bg-bluelight`}
+                    >
                       {/* <div onClick={() => loadmore()}>Load More</div> */}
 
                       {reply && replyId && (
-                        <div className="flex justify-between p-1 px-2 rounded-[10px] m-1 bg-red-300 items-center text-black">
+                        <div className="flex justify-between p-1 px-2 rounded-[10px] m-1 items-center dark:text-white text-black">
                           <div
                             className={`${
                               reply && replyId ? "text-[14px]" : "text-[0px]"
@@ -1192,33 +1332,25 @@ const Components = () => {
                   )}
 
                   {canblock === false && isBlocked != true && (
-                    <div className="absolute bottom-3 flex justify-center items-center bg-white dark:bg-bluelight w-full">
+                    <div className="absolute bottom-5 flex justify-center items-center text-red-600 font-semibold  bg-white dark:bg-bluelight w-full">
                       You Have Blocked {user?.fullname}
                     </div>
                   )}
 
                   {isBlocked && canblock !== false && (
-                    <div>You Have Been Blocked by {user?.fullname}</div>
+                    <div className="absolute bottom-6 flex justify-center items-center text-red-600 font-semibold  bg-white dark:bg-bluelight w-full">
+                      You Have Been Blocked by {user?.fullname}
+                    </div>
                   )}
 
                   {canblock === false && isBlocked && (
-                    <div>You Both Blocked Each other</div>
+                    <div className="absolute bottom-6 flex justify-center items-center text-red-600 font-semibold  bg-white dark:bg-bluelight w-full">
+                      You Both Blocked Each other
+                    </div>
                   )}
                 </div>
               </>
             )}
-
-            {/*
-			<SearchBar />
-			{/* <SuggestionBar /> */}
-            {/* 
-			<Grid width={800} columns={3} gutter={6} onGifClick={(item, e) => {
-				e.preventDefault(); console.log(item, "item");
-
-				dispatch(setType("gif"))
-				dispatch(setMessage(item?.images.downsized.url))
-				setUrl(item?.images.downsized.url);
-			}} fetchGifs={fetchGifs} key={searchKey} /> */}
           </div>
         </>
       )}

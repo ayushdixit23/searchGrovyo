@@ -49,13 +49,13 @@ function Sidebar() {
       <div className="h-screen w-[60px] ring-[#f5f5f5] bg-[#f2f2f2] dark:bg-bluedark border-[#f7f7f7] dark:border-[#131619]
       border-r-2 absolute flex flex-col justify-evenly items-center">
         {data?.dp !== null ? (
-          <Link href="/prosite">
+          <div className="h-[40px] w-[40px] ">
             <img
-              className="h-[40px] w-[40px] rounded-[18px] ring-1 ring-white dark:ring-[#273142] bg-white dark:bg-bluedark "
+              className="w-full h-full object-cover rounded-[18px] ring-1 ring-white dark:ring-[#273142] bg-white dark:bg-bluedark "
               src={data?.dp}
             //alt="pix"
             />
-          </Link>
+          </div>
         ) : (
           <div className="h-[40px] w-[40px] rounded-[18px] bg-[#f5f5f5] ring-1 ring-white shadow-sm animate-pulse "></div>
         )}

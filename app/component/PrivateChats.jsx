@@ -11,6 +11,10 @@ import {
 import { useSelector } from "react-redux";
 import { IoDocumentSharp } from "react-icons/io5";
 import VideoPlayer from "./VideoPlayer";
+import hidden from "../assets/hidechat.png";
+import deletechat from "../assets/deletechat.png";
+import replypic from "../assets/replypic.png";
+import Image from "next/image";
 
 const PrivateChats = React.forwardRef(
   (
@@ -33,6 +37,13 @@ const PrivateChats = React.forwardRef(
     const [delopen, setDelopen] = useState(false);
     const [msgId, setMsgId] = useState(null);
     const hiddenMsg = useSelector((state) => state.message.hiddenMsg);
+
+    function getHourAndMinutes(dateString) {
+      const date = new Date(dateString);
+      const hours = date.getHours().toString().padStart(2, "0");
+      const minutes = date.getMinutes().toString().padStart(2, "0");
+      return `${hours}:${minutes}`;
+    }
 
     const hideChats = async (msgid) => {
       try {
@@ -183,7 +194,10 @@ const PrivateChats = React.forwardRef(
             <div className="flex flex-col items-center justify-center">
               {data?.id !== d?.sender?._id && (
                 <div className="h-[40px] w-[40px] overflow-hidden bg-[#fff] rounded-2xl">
-                  <img src={user?.profilepic} className="w-full h-full" />
+                  <img
+                    src={user?.profilepic}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               )}
 
@@ -202,7 +216,7 @@ const PrivateChats = React.forwardRef(
                 className={`relative group h-auto flex justify-start items-center mt-6 ${
                   data?.id === d?.sender?._id
                     ? "bg-[#0075ff] text-white p-2 px-4 md:text-[14px]  rounded-l-2xl pn:max-sm:text-[14px] max-w-[650px]  rounded-br-2xl "
-                    : "bg-[#ffffff] dark:text-black dark:bg-gray-100 p-2 px-4 rounded-r-2xl md:text-[14px] pn:max-sm:text-[14px] max-w-[650px] rounded-bl-2xl"
+                    : "bg-[#ffffff] dark:bg-[#0D0D0D] border dark:border-[#1A1D21] text-[#9B9C9E] p-2 px-4 rounded-r-2xl md:text-[14px] pn:max-sm:text-[14px] max-w-[650px] rounded-bl-2xl"
                 } `}
                 style={{
                   overflowWrap: "break-word",
@@ -271,18 +285,19 @@ const PrivateChats = React.forwardRef(
                   </div>
                 )}
                 <div
-                  className={`${
-                    popupPosition === "top" ? "bottom-0" : "top-4" // Dynamically set position based on popupPosition state
-                  } absolute z-40 ${
+                  className={`flex flex-col gap-1 absolute z-40 ${
                     data?.id === d?.sender?._id
                       ? "right-0"
                       : "left-0 bg-[#f3f3f3]"
                   }   shadow-2xl  text-black  duration-100
-                      ${
-                        click === true
-                          ? "rounded-[15px] bg-white shadow-2xl  py-2 w-[80px] h-[110px]"
-                          : "rounded-[0px] bg-white shadow-0 py-0 w-[0px] h-[0px]"
-                      } `}
+                  ${
+                    popupPosition === "top" ? "bottom-0" : "top-4" // Dynamically set position based on popupPosition state
+                  }
+                    ${
+                      click === true
+                        ? "rounded-[15px] bg-white dark:text-white dark:bg-[#0D0F10] text-[#6e6e6e] shadow-md dark:shadow-custom-lg py-2 w-auto h-auto min-w-[150px]"
+                        : "rounded-[0px] bg-white dark:text-white dark:bg-[#0D0F10] text-[#6e6e6e] shadow-0 py-0 w-[0px] h-[0px]"
+                    } `}
                 >
                   {d?.hidden?.includes(data?.id) ? (
                     <div
@@ -290,13 +305,23 @@ const PrivateChats = React.forwardRef(
                         UnhideChats(d?.mesId);
                         setClick(false);
                       }}
-                      className={`duration-100 ${
+                      className={`duration-100 flex gap-2 items-center ${
                         click === true
-                          ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          ? "text-[14px] my-2 px-3 cursor-pointer"
                           : "text-[0px] my-0 px-0"
                       }`}
                     >
-                      Unhide
+                      <div>
+                        <Image
+                          src={hidden}
+                          className={`duration-75 ${
+                            click === true
+                              ? "w-[22px] h-[20px]"
+                              : "h-[0px] w-[0px]"
+                          }`}
+                        />
+                      </div>
+                      <div>Unhide</div>
                     </div>
                   ) : (
                     <div
@@ -304,28 +329,26 @@ const PrivateChats = React.forwardRef(
                         hideChats(d?.mesId);
                         setClick(false);
                       }}
-                      className={`duration-100 ${
+                      className={`duration-100 flex gap-2  items-center ${
                         click === true
-                          ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          ? "text-[14px] my-2 px-3  cursor-pointer"
                           : "text-[0px] my-0 px-0"
                       }`}
                     >
-                      Hide
+                      <div>
+                        <Image
+                          src={hidden}
+                          className={`duration-75 ${
+                            click === true
+                              ? "w-[22px] h-[20px]"
+                              : "h-[0px] w-[0px]"
+                          }`}
+                        />
+                      </div>
+                      <div>Hide</div>
                     </div>
                   )}
-                  <div
-                    onClick={() => {
-                      deletepopUp(d?.mesId);
-                      setClick(false);
-                    }}
-                    className={`duration-100 ${
-                      click === true
-                        ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
-                        : "text-[0px] my-0 px-0"
-                    }`}
-                  >
-                    Delete
-                  </div>
+
                   {showHiddenreply && (
                     <div
                       onClick={() => {
@@ -338,15 +361,49 @@ const PrivateChats = React.forwardRef(
                         );
                         setClick(false);
                       }}
-                      className={`duration-100 ${
+                      className={`duration-100 flex gap-2 items-center ${
                         click === true
-                          ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          ? "text-[14px] my-2 px-3 cursor-pointer"
                           : "text-[0px] my-0 px-0"
                       }`}
                     >
-                      Reply
+                      <div>
+                        <Image
+                          src={replypic}
+                          className={`duration-75 ${
+                            click === true
+                              ? "w-[19px] h-[17px]"
+                              : "h-[0px] w-[0px]"
+                          }`}
+                        />
+                      </div>
+                      <div>Reply</div>
                     </div>
                   )}
+
+                  <div
+                    onClick={() => {
+                      deletepopUp(d?.mesId);
+                      setClick(false);
+                    }}
+                    className={`duration-100 flex gap-2 items-center ${
+                      click === true
+                        ? "text-[14px] my-2 px-3 cursor-pointer"
+                        : "text-[0px] my-0 px-0"
+                    }`}
+                  >
+                    <div>
+                      <Image
+                        src={deletechat}
+                        className={`duration-75 ${
+                          click === true
+                            ? "w-[19px] h-[17px]"
+                            : "h-[0px] w-[0px]"
+                        }`}
+                      />
+                    </div>
+                    <div>Delete</div>
+                  </div>
 
                   {/* <div></div>
 				<div></div> */}
@@ -366,7 +423,7 @@ const PrivateChats = React.forwardRef(
                 className={`relative group h-auto  flex justify-center items-center mt-6 ${
                   data?.id === d?.sender?._id
                     ? "bg-[#0075ff]  text-white  rounded-l-2xl pn:max-sm:text-[14px] max-w-[320px] rounded-br-2xl "
-                    : "bg-[#ffffff] dark:text-black dark:bg-gray-100 p-2 rounded-r-2xl pn:max-sm:text-[14px] max-w-[320px] rounded-bl-2xl"
+                    : "bg-[#ffffff] dark:bg-[#0D0D0D] border dark:border-[#1A1D21] text-[#9B9C9E] rounded-r-2xl pn:max-sm:text-[14px] max-w-[320px] rounded-bl-2xl"
                 }`}
               >
                 <div className="p-2">
@@ -419,7 +476,7 @@ const PrivateChats = React.forwardRef(
                             className={` ${
                               data?.id === d?.sender?._id
                                 ? "bg-[#0058e5] text-white  border-r-4 border-[#fff] "
-                                : "bg-[#f9fafb] text-black border-l-4 border-[#0075ff] "
+                                : "bg-[#f9fafb] dark:bg-[#1A1D21] text-[#9B9C9E] border-l-4 border-[#0075ff] "
                             }  px-2  p-1 rounded-lg md:text-[12px] pn:max-sm:text-[12px] `}
                             style={{
                               overflowWrap: "break-word",
@@ -435,7 +492,7 @@ const PrivateChats = React.forwardRef(
                               wordWrap: "break-word",
                               wordBreak: "break-word",
                             }}
-                            className="md:text-[14px] pn:max-sm:text-[14px] px-2 "
+                            className="md:text-[14px] pn:max-sm:text-[14px] py-1 px-2 "
                           >
                             {d?.text}
                           </div>
@@ -459,7 +516,7 @@ const PrivateChats = React.forwardRef(
                 )}
 
                 <div
-                  className={`${
+                  className={`flex flex-col gap-1 ${
                     popupPosition === "top" ? "bottom-0" : "top-4" // Dynamically set position based on popupPosition state
                   } absolute z-40 ${
                     data?.id === d?.sender?._id
@@ -468,8 +525,8 @@ const PrivateChats = React.forwardRef(
                   }   shadow-2xl  text-black  duration-100
                       ${
                         click === true
-                          ? "rounded-[15px] bg-white shadow-2xl  py-2 w-[80px] h-[110px]"
-                          : "rounded-[0px] bg-white shadow-0 py-0 w-[0px] h-[0px]"
+                          ? "rounded-[15px] bg-white dark:text-white dark:bg-[#0D0F10] text-[#6e6e6e] shadow-md dark:shadow-custom-lg py-2 w-auto h-auto min-w-[150px]"
+                          : "rounded-[0px] bg-white dark:text-white dark:bg-[#0D0F10] text-[#6e6e6e] shadow-0 py-0 w-[0px] h-[0px]"
                       } `}
                 >
                   {d?.hidden?.includes(data?.id) ? (
@@ -478,13 +535,23 @@ const PrivateChats = React.forwardRef(
                         UnhideChats(d?.mesId);
                         setClick(false);
                       }}
-                      className={`duration-100 ${
+                      className={`duration-100 flex gap-2 items-center ${
                         click === true
-                          ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          ? "text-[14px] my-2 px-3 cursor-pointer"
                           : "text-[0px] my-0 px-0"
                       }`}
                     >
-                      Unhide
+                      <div>
+                        <Image
+                          src={hidden}
+                          className={`duration-75 ${
+                            click === true
+                              ? "w-[22px] h-[20px]"
+                              : "h-[0px] w-[0px]"
+                          }`}
+                        />
+                      </div>
+                      <div>Unhide</div>
                     </div>
                   ) : (
                     <div
@@ -492,28 +559,26 @@ const PrivateChats = React.forwardRef(
                         hideChats(d?.mesId);
                         setClick(false);
                       }}
-                      className={`duration-100 ${
+                      className={`duration-100 flex gap-2  items-center ${
                         click === true
-                          ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          ? "text-[14px] my-2 px-3  cursor-pointer"
                           : "text-[0px] my-0 px-0"
                       }`}
                     >
-                      Hide
+                      <div>
+                        <Image
+                          src={hidden}
+                          className={`duration-75 ${
+                            click === true
+                              ? "w-[22px] h-[20px]"
+                              : "h-[0px] w-[0px]"
+                          }`}
+                        />
+                      </div>
+                      <div>Hide</div>
                     </div>
                   )}
-                  <div
-                    onClick={() => {
-                      deletepopUp(d?.mesId);
-                      setClick(false);
-                    }}
-                    className={`duration-100 ${
-                      click === true
-                        ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
-                        : "text-[0px] my-0 px-0"
-                    }`}
-                  >
-                    Delete
-                  </div>
+
                   {showHiddenreply && (
                     <div
                       onClick={() => {
@@ -526,15 +591,49 @@ const PrivateChats = React.forwardRef(
                         );
                         setClick(false);
                       }}
-                      className={`duration-100 ${
+                      className={`duration-100 flex gap-2 items-center ${
                         click === true
-                          ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          ? "text-[14px] my-2 px-3 cursor-pointer"
                           : "text-[0px] my-0 px-0"
                       }`}
                     >
-                      Reply
+                      <div>
+                        <Image
+                          src={replypic}
+                          className={`duration-75 ${
+                            click === true
+                              ? "w-[19px] h-[17px]"
+                              : "h-[0px] w-[0px]"
+                          }`}
+                        />
+                      </div>
+                      <div>Reply</div>
                     </div>
                   )}
+
+                  <div
+                    onClick={() => {
+                      deletepopUp(d?.mesId);
+                      setClick(false);
+                    }}
+                    className={`duration-100 flex gap-2 items-center ${
+                      click === true
+                        ? "text-[14px] my-2 px-3 cursor-pointer"
+                        : "text-[0px] my-0 px-0"
+                    }`}
+                  >
+                    <div>
+                      <Image
+                        src={deletechat}
+                        className={`duration-75 ${
+                          click === true
+                            ? "w-[19px] h-[17px]"
+                            : "h-[0px] w-[0px]"
+                        }`}
+                      />
+                    </div>
+                    <div>Delete</div>
+                  </div>
 
                   {/* <div></div>
 				<div></div> */}
@@ -550,26 +649,27 @@ const PrivateChats = React.forwardRef(
                     setReplyFunction({ reply: d?.text, replyId: d?.mesId })
                   );
                 }}
-                className={`relative max-w-[240px] group ${
+                className={`relative max-w-[350px] h-[350px] w-full group ${
                   data?.id === d?.sender?._id
-                    ? "bg-[#0075ff] text-white p-2  rounded-l-2xl mt-4 rounded-br-2xl "
-                    : "bg-[#ffffff] dark:text-black dark:bg-gray-100 p-2 rounded-r-2xl mt-4 rounded-bl-2xl"
+                    ? "bg-[#0075ff] text-white p-2 rounded-l-2xl mt-4 rounded-br-2xl "
+                    : "bg-[#ffffff] dark:bg-[#0D0D0D] border dark:border-[#1A1D21] text-[#9B9C9E] p-2 rounded-r-2xl mt-4 rounded-bl-2xl"
                 }`}
               >
                 <div
-                  className={`${
-                    data?.id === d?.sender?._id
-                      ? "group-hover:pr-2"
-                      : "group-hover:pl-2"
-                  }`}
+                  className="w-full h-full"
+                  // className={`${
+                  //   data?.id === d?.sender?._id
+                  //     ? "group-hover:pr-2"
+                  //     : "group-hover:pl-2"
+                  // }`}
                 >
                   {d.status === "deleted" ? (
                     <div>This Message was Deleted!</div>
                   ) : (
-                    <div className="">
+                    <div className="w-full h-full">
                       <img
                         src={d?.url}
-                        className="h-[145px]  sm:w-[240px] sm:h-[240px] w-[145px] rounded-2xl  bg-white "
+                        className="w-full h-full rounded-2xl object-cover bg-white "
                       />
                       {d?.text && (
                         <div
@@ -577,7 +677,7 @@ const PrivateChats = React.forwardRef(
                             data?.id === d?.sender?._id
                               ? "text-white"
                               : "text-black"
-                          } md:text-[14px]  py-1   pn:max-sm:text-[14px] `}
+                          } md:text-[14px]  py-1 pn:max-sm:text-[14px] `}
                           style={{
                             overflowWrap: "break-word",
                             wordWrap: "break-word",
@@ -604,7 +704,7 @@ const PrivateChats = React.forwardRef(
                 )}
 
                 <div
-                  className={`${
+                  className={`flex flex-col gap-1 ${
                     popupPosition === "top" ? "bottom-0" : "top-4" // Dynamically set position based on popupPosition state
                   } absolute z-40 ${
                     data?.id === d?.sender?._id
@@ -613,8 +713,8 @@ const PrivateChats = React.forwardRef(
                   }   shadow-2xl  text-black  duration-100
                       ${
                         click === true
-                          ? "rounded-[15px] bg-white shadow-2xl  py-2 w-[80px] h-[110px]"
-                          : "rounded-[0px] bg-white shadow-0 py-0 w-[0px] h-[0px]"
+                          ? "rounded-[15px] bg-white dark:text-white dark:bg-[#0D0F10] text-[#6e6e6e] shadow-md dark:shadow-custom-lg py-2 w-auto h-auto min-w-[150px]"
+                          : "rounded-[0px] bg-white dark:text-white dark:bg-[#0D0F10] text-[#6e6e6e] shadow-0 py-0 w-[0px] h-[0px]"
                       } `}
                 >
                   {d?.hidden?.includes(data?.id) ? (
@@ -623,13 +723,23 @@ const PrivateChats = React.forwardRef(
                         UnhideChats(d?.mesId);
                         setClick(false);
                       }}
-                      className={`duration-100 ${
+                      className={`duration-100 flex gap-2 items-center ${
                         click === true
-                          ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          ? "text-[14px] my-2 px-3 cursor-pointer"
                           : "text-[0px] my-0 px-0"
                       }`}
                     >
-                      Unhide
+                      <div>
+                        <Image
+                          src={hidden}
+                          className={`duration-75 ${
+                            click === true
+                              ? "w-[22px] h-[20px]"
+                              : "h-[0px] w-[0px]"
+                          }`}
+                        />
+                      </div>
+                      <div>Unhide</div>
                     </div>
                   ) : (
                     <div
@@ -637,28 +747,26 @@ const PrivateChats = React.forwardRef(
                         hideChats(d?.mesId);
                         setClick(false);
                       }}
-                      className={`duration-100 ${
+                      className={`duration-100 flex gap-2  items-center ${
                         click === true
-                          ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          ? "text-[14px] my-2 px-3  cursor-pointer"
                           : "text-[0px] my-0 px-0"
                       }`}
                     >
-                      Hide
+                      <div>
+                        <Image
+                          src={hidden}
+                          className={`duration-75 ${
+                            click === true
+                              ? "w-[22px] h-[20px]"
+                              : "h-[0px] w-[0px]"
+                          }`}
+                        />
+                      </div>
+                      <div>Hide</div>
                     </div>
                   )}
-                  <div
-                    onClick={() => {
-                      deletepopUp(d?.mesId);
-                      setClick(false);
-                    }}
-                    className={`duration-100 ${
-                      click === true
-                        ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
-                        : "text-[0px] my-0 px-0"
-                    }`}
-                  >
-                    Delete
-                  </div>
+
                   {showHiddenreply && (
                     <div
                       onClick={() => {
@@ -671,15 +779,49 @@ const PrivateChats = React.forwardRef(
                         );
                         setClick(false);
                       }}
-                      className={`duration-100 ${
+                      className={`duration-100 flex gap-2 items-center ${
                         click === true
-                          ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          ? "text-[14px] my-2 px-3 cursor-pointer"
                           : "text-[0px] my-0 px-0"
                       }`}
                     >
-                      Reply
+                      <div>
+                        <Image
+                          src={replypic}
+                          className={`duration-75 ${
+                            click === true
+                              ? "w-[19px] h-[17px]"
+                              : "h-[0px] w-[0px]"
+                          }`}
+                        />
+                      </div>
+                      <div>Reply</div>
                     </div>
                   )}
+
+                  <div
+                    onClick={() => {
+                      deletepopUp(d?.mesId);
+                      setClick(false);
+                    }}
+                    className={`duration-100 flex gap-2 items-center ${
+                      click === true
+                        ? "text-[14px] my-2 px-3 cursor-pointer"
+                        : "text-[0px] my-0 px-0"
+                    }`}
+                  >
+                    <div>
+                      <Image
+                        src={deletechat}
+                        className={`duration-75 ${
+                          click === true
+                            ? "w-[19px] h-[17px]"
+                            : "h-[0px] w-[0px]"
+                        }`}
+                      />
+                    </div>
+                    <div>Delete</div>
+                  </div>
 
                   {/* <div></div>
 				<div></div> */}
@@ -695,13 +837,13 @@ const PrivateChats = React.forwardRef(
                     setReplyFunction({ reply: "Document", replyId: d?.mesId })
                   );
                 }}
-                className={`relative group ${
+                className={` relative group ${
                   data?.id === d?.sender?._id
                     ? "bg-[#0075ff] text-white p-2 rounded-l-2xl mt-4 rounded-br-2xl "
-                    : "bg-[#ffffff] dark:text-black dark:bg-gray-100 p-2 rounded-r-2xl mt-4 rounded-bl-2xl"
+                    : "bg-[#ffffff] dark:bg-[#0D0D0D] border dark:border-[#1A1D21] text-[#9B9C9E] p-2 rounded-r-2xl mt-4 rounded-bl-2xl"
                 }`}
               >
-                <div className="group-hover:pr-2">
+                <div>
                   {d.status === "deleted" ? (
                     <div>This Message was Deleted!</div>
                   ) : (
@@ -734,7 +876,7 @@ const PrivateChats = React.forwardRef(
                 )}
 
                 <div
-                  className={`${
+                  className={` flex flex-col gap-1 ${
                     popupPosition === "top" ? "bottom-0" : "top-4" // Dynamically set position based on popupPosition state
                   } absolute z-40 ${
                     data?.id === d?.sender?._id
@@ -743,8 +885,8 @@ const PrivateChats = React.forwardRef(
                   }   shadow-2xl  text-black  duration-100
                       ${
                         click === true
-                          ? "rounded-[15px] bg-white shadow-2xl  py-2 w-[80px] h-[110px]"
-                          : "rounded-[0px] bg-white shadow-0 py-0 w-[0px] h-[0px]"
+                          ? "rounded-[15px] bg-white dark:text-white dark:bg-[#0D0F10] text-[#6e6e6e] shadow-custom-lg py-2 w-auto h-auto min-w-[150px]"
+                          : "rounded-[0px] bg-white dark:text-white dark:bg-[#0D0F10] text-[#6e6e6e] shadow-0 py-0 w-[0px] h-[0px]"
                       } `}
                 >
                   {d?.hidden?.includes(data?.id) ? (
@@ -753,13 +895,23 @@ const PrivateChats = React.forwardRef(
                         UnhideChats(d?.mesId);
                         setClick(false);
                       }}
-                      className={`duration-100 ${
+                      className={`duration-100 flex gap-2 items-center ${
                         click === true
-                          ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          ? "text-[14px] my-2 px-3 cursor-pointer"
                           : "text-[0px] my-0 px-0"
                       }`}
                     >
-                      Unhide
+                      <div>
+                        <Image
+                          src={hidden}
+                          className={`duration-75 ${
+                            click === true
+                              ? "w-[22px] h-[20px]"
+                              : "h-[0px] w-[0px]"
+                          }`}
+                        />
+                      </div>
+                      <div>Unhide</div>
                     </div>
                   ) : (
                     <div
@@ -767,28 +919,26 @@ const PrivateChats = React.forwardRef(
                         hideChats(d?.mesId);
                         setClick(false);
                       }}
-                      className={`duration-100 ${
+                      className={`duration-100 flex gap-2  items-center ${
                         click === true
-                          ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          ? "text-[14px] my-2 px-3  cursor-pointer"
                           : "text-[0px] my-0 px-0"
                       }`}
                     >
-                      Hide
+                      <div>
+                        <Image
+                          src={hidden}
+                          className={`duration-75 ${
+                            click === true
+                              ? "w-[22px] h-[20px]"
+                              : "h-[0px] w-[0px]"
+                          }`}
+                        />
+                      </div>
+                      <div>Hide</div>
                     </div>
                   )}
-                  <div
-                    onClick={() => {
-                      deletepopUp(d?.mesId);
-                      setClick(false);
-                    }}
-                    className={`duration-100 ${
-                      click === true
-                        ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
-                        : "text-[0px] my-0 px-0"
-                    }`}
-                  >
-                    Delete
-                  </div>
+
                   {showHiddenreply && (
                     <div
                       onClick={() => {
@@ -801,18 +951,49 @@ const PrivateChats = React.forwardRef(
                         );
                         setClick(false);
                       }}
-                      className={`duration-100 ${
+                      className={`duration-100 flex gap-2 items-center ${
                         click === true
-                          ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          ? "text-[14px] my-2 px-3 cursor-pointer"
                           : "text-[0px] my-0 px-0"
                       }`}
                     >
-                      Reply
+                      <div>
+                        <Image
+                          src={replypic}
+                          className={`duration-75 ${
+                            click === true
+                              ? "w-[19px] h-[17px]"
+                              : "h-[0px] w-[0px]"
+                          }`}
+                        />
+                      </div>
+                      <div>Reply</div>
                     </div>
                   )}
 
-                  {/* <div></div>
-				<div></div> */}
+                  <div
+                    onClick={() => {
+                      deletepopUp(d?.mesId);
+                      setClick(false);
+                    }}
+                    className={`duration-100 flex gap-2 items-center ${
+                      click === true
+                        ? "text-[14px] my-2 px-3 cursor-pointer"
+                        : "text-[0px] my-0 px-0"
+                    }`}
+                  >
+                    <div>
+                      <Image
+                        src={deletechat}
+                        className={`duration-75 ${
+                          click === true
+                            ? "w-[19px] h-[17px]"
+                            : "h-[0px] w-[0px]"
+                        }`}
+                      />
+                    </div>
+                    <div>Delete</div>
+                  </div>
                 </div>
               </div>
             )}
@@ -828,7 +1009,7 @@ const PrivateChats = React.forwardRef(
                 className={`relative max-w-[350px] max-h-[350px] group ${
                   data?.id === d?.sender?._id
                     ? " bg-[#0075ff] text-white mt-4 flex justify-center items-center p-2 rounded-l-2xl rounded-br-2xl"
-                    : "bg-[#ffffff] dark:text-black dark:bg-gray-100 mt-4 flex justify-center items-center p-2 rounded-r-2xl rounded-bl-2xl"
+                    : "bg-[#ffffff] dark:bg-[#0D0D0D] border dark:border-[#1A1D21] text-[#9B9C9E] mt-4 flex justify-center items-center p-2 rounded-r-2xl rounded-bl-2xl"
                 }`}
               >
                 <div className="group-hover:pr-2">
@@ -860,7 +1041,7 @@ const PrivateChats = React.forwardRef(
                 )}
 
                 <div
-                  className={`${
+                  className={`flex flex-col gap-1 ${
                     popupPosition === "top" ? "bottom-0" : "top-4" // Dynamically set position based on popupPosition state
                   } absolute z-40 ${
                     data?.id === d?.sender?._id
@@ -869,8 +1050,8 @@ const PrivateChats = React.forwardRef(
                   }   shadow-2xl  text-black  duration-100
                       ${
                         click === true
-                          ? "rounded-[15px] bg-white shadow-2xl  py-2 w-[80px] h-[110px]"
-                          : "rounded-[0px] bg-white shadow-0 py-0 w-[0px] h-[0px]"
+                          ? "rounded-[15px] bg-white dark:text-white dark:bg-[#0D0F10] text-[#6e6e6e] shadow-custom-lg py-2 w-auto h-auto min-w-[150px]"
+                          : "rounded-[0px] bg-white dark:text-white dark:bg-[#0D0F10] text-[#6e6e6e] shadow-0 py-0 w-[0px] h-[0px]"
                       } `}
                 >
                   {d?.hidden?.includes(data?.id) ? (
@@ -879,13 +1060,23 @@ const PrivateChats = React.forwardRef(
                         UnhideChats(d?.mesId);
                         setClick(false);
                       }}
-                      className={`duration-100 ${
+                      className={`duration-100 flex gap-2 items-center ${
                         click === true
-                          ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          ? "text-[14px] my-2 px-3 cursor-pointer"
                           : "text-[0px] my-0 px-0"
                       }`}
                     >
-                      Unhide
+                      <div>
+                        <Image
+                          src={hidden}
+                          className={`duration-75 ${
+                            click === true
+                              ? "w-[22px] h-[20px]"
+                              : "h-[0px] w-[0px]"
+                          }`}
+                        />
+                      </div>
+                      <div>Unhide</div>
                     </div>
                   ) : (
                     <div
@@ -893,28 +1084,26 @@ const PrivateChats = React.forwardRef(
                         hideChats(d?.mesId);
                         setClick(false);
                       }}
-                      className={`duration-100 ${
+                      className={`duration-100 flex gap-2  items-center ${
                         click === true
-                          ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          ? "text-[14px] my-2 px-3  cursor-pointer"
                           : "text-[0px] my-0 px-0"
                       }`}
                     >
-                      Hide
+                      <div>
+                        <Image
+                          src={hidden}
+                          className={`duration-75 ${
+                            click === true
+                              ? "w-[22px] h-[20px]"
+                              : "h-[0px] w-[0px]"
+                          }`}
+                        />
+                      </div>
+                      <div>Hide</div>
                     </div>
                   )}
-                  <div
-                    onClick={() => {
-                      deletepopUp(d?.mesId);
-                      setClick(false);
-                    }}
-                    className={`duration-100 ${
-                      click === true
-                        ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
-                        : "text-[0px] my-0 px-0"
-                    }`}
-                  >
-                    Delete
-                  </div>
+
                   {showHiddenreply && (
                     <div
                       onClick={() => {
@@ -927,18 +1116,49 @@ const PrivateChats = React.forwardRef(
                         );
                         setClick(false);
                       }}
-                      className={`duration-100 ${
+                      className={`duration-100 flex gap-2 items-center ${
                         click === true
-                          ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          ? "text-[14px] my-2 px-3 cursor-pointer"
                           : "text-[0px] my-0 px-0"
                       }`}
                     >
-                      Reply
+                      <div>
+                        <Image
+                          src={replypic}
+                          className={`duration-75 ${
+                            click === true
+                              ? "w-[19px] h-[17px]"
+                              : "h-[0px] w-[0px]"
+                          }`}
+                        />
+                      </div>
+                      <div>Reply</div>
                     </div>
                   )}
 
-                  {/* <div></div>
-				<div></div> */}
+                  <div
+                    onClick={() => {
+                      deletepopUp(d?.mesId);
+                      setClick(false);
+                    }}
+                    className={`duration-100 flex gap-2 items-center ${
+                      click === true
+                        ? "text-[14px] my-2 px-3 cursor-pointer"
+                        : "text-[0px] my-0 px-0"
+                    }`}
+                  >
+                    <div>
+                      <Image
+                        src={deletechat}
+                        className={`duration-75 ${
+                          click === true
+                            ? "w-[19px] h-[17px]"
+                            : "h-[0px] w-[0px]"
+                        }`}
+                      />
+                    </div>
+                    <div>Delete</div>
+                  </div>
                 </div>
               </div>
             )}
@@ -954,7 +1174,7 @@ const PrivateChats = React.forwardRef(
                 className={`relative group  ${
                   data?.id === d?.sender?._id
                     ? "bg-[#0075ff] text-white p-2 mt-4 rounded-l-2xl rounded-br-2xl"
-                    : "bg-[#ffffff] dark:text-black dark:bg-gray-100 p-2 mt-4 rounded-r-2xl rounded-bl-2xl"
+                    : "bg-[#ffffff] dark:bg-[#0D0D0D] border dark:border-[#1A1D21] text-[#9B9C9E] p-2 mt-4 rounded-r-2xl rounded-bl-2xl"
                 }`}
               >
                 <div className="group-hover:pr-2">
@@ -983,7 +1203,7 @@ const PrivateChats = React.forwardRef(
                 )}
 
                 <div
-                  className={`${
+                  className={`flex flex-col gap-1 ${
                     popupPosition === "top" ? "bottom-0" : "top-4" // Dynamically set position based on popupPosition state
                   } absolute z-40 ${
                     data?.id === d?.sender?._id
@@ -992,8 +1212,8 @@ const PrivateChats = React.forwardRef(
                   }   shadow-2xl  text-black  duration-100
                       ${
                         click === true
-                          ? "rounded-[15px] bg-white shadow-2xl  py-2 w-[80px] h-[110px]"
-                          : "rounded-[0px] bg-white shadow-0 py-0 w-[0px] h-[0px]"
+                          ? "rounded-[15px] bg-white dark:text-white dark:bg-[#0D0F10] text-[#6e6e6e] shadow-custom-lg py-2 w-auto h-auto min-w-[150px]"
+                          : "rounded-[0px] bg-white dark:text-white dark:bg-[#0D0F10] text-[#6e6e6e] shadow-0 py-0 w-[0px] h-[0px]"
                       } `}
                 >
                   {d?.hidden?.includes(data?.id) ? (
@@ -1002,13 +1222,23 @@ const PrivateChats = React.forwardRef(
                         UnhideChats(d?.mesId);
                         setClick(false);
                       }}
-                      className={`duration-100 ${
+                      className={`duration-100 flex gap-2 items-center ${
                         click === true
-                          ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          ? "text-[14px] my-2 px-3 cursor-pointer"
                           : "text-[0px] my-0 px-0"
                       }`}
                     >
-                      Unhide
+                      <div>
+                        <Image
+                          src={hidden}
+                          className={`duration-75 ${
+                            click === true
+                              ? "w-[22px] h-[20px]"
+                              : "h-[0px] w-[0px]"
+                          }`}
+                        />
+                      </div>
+                      <div>Unhide</div>
                     </div>
                   ) : (
                     <div
@@ -1016,28 +1246,26 @@ const PrivateChats = React.forwardRef(
                         hideChats(d?.mesId);
                         setClick(false);
                       }}
-                      className={`duration-100 ${
+                      className={`duration-100 flex gap-2  items-center ${
                         click === true
-                          ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          ? "text-[14px] my-2 px-3  cursor-pointer"
                           : "text-[0px] my-0 px-0"
                       }`}
                     >
-                      Hide
+                      <div>
+                        <Image
+                          src={hidden}
+                          className={`duration-75 ${
+                            click === true
+                              ? "w-[22px] h-[20px]"
+                              : "h-[0px] w-[0px]"
+                          }`}
+                        />
+                      </div>
+                      <div>Hide</div>
                     </div>
                   )}
-                  <div
-                    onClick={() => {
-                      deletepopUp(d?.mesId);
-                      setClick(false);
-                    }}
-                    className={`duration-100 ${
-                      click === true
-                        ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
-                        : "text-[0px] my-0 px-0"
-                    }`}
-                  >
-                    Delete
-                  </div>
+
                   {showHiddenreply && (
                     <div
                       onClick={() => {
@@ -1050,21 +1278,56 @@ const PrivateChats = React.forwardRef(
                         );
                         setClick(false);
                       }}
-                      className={`duration-100 ${
+                      className={`duration-100 flex gap-2 items-center ${
                         click === true
-                          ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          ? "text-[14px] my-2 px-3 cursor-pointer"
                           : "text-[0px] my-0 px-0"
                       }`}
                     >
-                      Reply
+                      <div>
+                        <Image
+                          src={replypic}
+                          className={`duration-75 ${
+                            click === true
+                              ? "w-[19px] h-[17px]"
+                              : "h-[0px] w-[0px]"
+                          }`}
+                        />
+                      </div>
+                      <div>Reply</div>
                     </div>
                   )}
+
+                  <div
+                    onClick={() => {
+                      deletepopUp(d?.mesId);
+                      setClick(false);
+                    }}
+                    className={`duration-100 flex gap-2 items-center ${
+                      click === true
+                        ? "text-[14px] my-2 px-3 cursor-pointer"
+                        : "text-[0px] my-0 px-0"
+                    }`}
+                  >
+                    <div>
+                      <Image
+                        src={deletechat}
+                        className={`duration-75 ${
+                          click === true
+                            ? "w-[19px] h-[17px]"
+                            : "h-[0px] w-[0px]"
+                        }`}
+                      />
+                    </div>
+                    <div>Delete</div>
+                  </div>
 
                   {/* <div></div>
 				<div></div> */}
                 </div>
               </div>
             )}
+
             {d?.typ == "post" && (
               <div
                 onDoubleClick={() => {
@@ -1073,10 +1336,10 @@ const PrivateChats = React.forwardRef(
                     setReplyFunction({ reply: d?.text, replyId: d?.mesId })
                   );
                 }}
-                className={`relative group ${
+                className={`relative group sm:w-[350px] sm:h-[350px] ${
                   data?.id === d?.sender?._id
                     ? "bg-[#0075ff] text-white p-2 mt-4 rounded-l-2xl rounded-br-2xl"
-                    : "bg-[#ffffff] dark:text-black dark:bg-gray-100 p-2 mt-4 rounded-r-2xl rounded-bl-2xl"
+                    : "bg-[#ffffff] dark:bg-[#0D0D0D] border dark:border-[#1A1D21] text-[#9B9C9E] p-2 mt-4 rounded-r-2xl rounded-bl-2xl"
                 }`}
               >
                 <div className="">
@@ -1084,27 +1347,31 @@ const PrivateChats = React.forwardRef(
                     {d.status === "deleted" ? (
                       <div>This Message was Deleted!</div>
                     ) : (
-                      <div>
+                      <div className="max-w-full h-[260px]">
                         {d?.content.type.startsWith("image") ? (
-                          <img
-                            className={`${
-                              data?.id === d?.sender?._id
-                                ? "h-[145px] sm:h-[240px] sm:w-[240px] w-[145px] rounded-2xl bg-yellow-300 "
-                                : "h-[145px] sm:h-[240px] sm:w-[240px] w-[145px] rounded-2xl bg-yellow-300"
-                            }`}
-                            src={d?.url}
-                            alt=""
-                          />
+                          <div className="w-full h-full">
+                            <img
+                              className={`w-full h-full ${
+                                data?.id === d?.sender?._id
+                                  ? " rounded-2xl bg-yellow-300 "
+                                  : " rounded-2xl bg-yellow-300"
+                              }`}
+                              src={d?.url}
+                              alt=""
+                            />
+                          </div>
                         ) : (
-                          <video
-                            src={d?.url}
-                            className={`${
-                              data?.id === d?.sender?._id
-                                ? "h-[145px] sm:h-[240px] sm:w-[240px] w-[145px] rounded-2xl bg-yellow-300 "
-                                : "h-[145px] sm:h-[240px] sm:w-[240px] w-[145px] rounded-2xl bg-yellow-300"
-                            }`}
-                            controls
-                          />
+                          <div className="w-full h-full">
+                            <video
+                              src={d?.url}
+                              className={`w-full h-full ${
+                                data?.id === d?.sender?._id
+                                  ? " rounded-2xl bg-yellow-300 "
+                                  : " rounded-2xl bg-yellow-300"
+                              }`}
+                              controls
+                            />
+                          </div>
                         )}
                       </div>
                     )}
@@ -1122,7 +1389,7 @@ const PrivateChats = React.forwardRef(
                   </div>
 
                   <div
-                    className={`${
+                    className={`flex flex-col gap-1 ${
                       popupPosition === "top" ? "bottom-0" : "top-4" // Dynamically set position based on popupPosition state
                     } absolute z-40 ${
                       data?.id === d?.sender?._id
@@ -1131,8 +1398,8 @@ const PrivateChats = React.forwardRef(
                     }   shadow-2xl  text-black  duration-100
                       ${
                         click === true
-                          ? "rounded-[15px] bg-white shadow-2xl  py-2 w-[80px] h-[110px]"
-                          : "rounded-[0px] bg-white shadow-0 py-0 w-[0px] h-[0px]"
+                          ? "rounded-[15px] bg-white dark:text-white dark:bg-[#0D0F10] text-[#6e6e6e] shadow-custom-lg py-2 w-auto h-auto min-w-[150px]"
+                          : "rounded-[0px] bg-white dark:text-white dark:bg-[#0D0F10] text-[#6e6e6e] shadow-0 py-0 w-[0px] h-[0px]"
                       } `}
                   >
                     {d?.hidden?.includes(data?.id) ? (
@@ -1141,13 +1408,23 @@ const PrivateChats = React.forwardRef(
                           UnhideChats(d?.mesId);
                           setClick(false);
                         }}
-                        className={`duration-100 ${
+                        className={`duration-100 flex gap-2 items-center ${
                           click === true
-                            ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                            ? "text-[14px] my-2 px-3 cursor-pointer"
                             : "text-[0px] my-0 px-0"
                         }`}
                       >
-                        Unhide
+                        <div>
+                          <Image
+                            src={hidden}
+                            className={`duration-75 ${
+                              click === true
+                                ? "w-[22px] h-[20px]"
+                                : "h-[0px] w-[0px]"
+                            }`}
+                          />
+                        </div>
+                        <div>Unhide</div>
                       </div>
                     ) : (
                       <div
@@ -1155,28 +1432,26 @@ const PrivateChats = React.forwardRef(
                           hideChats(d?.mesId);
                           setClick(false);
                         }}
-                        className={`duration-100 ${
+                        className={`duration-100 flex gap-2  items-center ${
                           click === true
-                            ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                            ? "text-[14px] my-2 px-3  cursor-pointer"
                             : "text-[0px] my-0 px-0"
                         }`}
                       >
-                        Hide
+                        <div>
+                          <Image
+                            src={hidden}
+                            className={`duration-75 ${
+                              click === true
+                                ? "w-[22px] h-[20px]"
+                                : "h-[0px] w-[0px]"
+                            }`}
+                          />
+                        </div>
+                        <div>Hide</div>
                       </div>
                     )}
-                    <div
-                      onClick={() => {
-                        deletepopUp(d?.mesId);
-                        setClick(false);
-                      }}
-                      className={`duration-100 ${
-                        click === true
-                          ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
-                          : "text-[0px] my-0 px-0"
-                      }`}
-                    >
-                      Delete
-                    </div>
+
                     {showHiddenreply && (
                       <div
                         onClick={() => {
@@ -1189,28 +1464,63 @@ const PrivateChats = React.forwardRef(
                           );
                           setClick(false);
                         }}
-                        className={`duration-100 ${
+                        className={`duration-100 flex gap-2 items-center ${
                           click === true
-                            ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                            ? "text-[14px] my-2 px-3 cursor-pointer"
                             : "text-[0px] my-0 px-0"
                         }`}
                       >
-                        Reply
+                        <div>
+                          <Image
+                            src={replypic}
+                            className={`duration-75 ${
+                              click === true
+                                ? "w-[19px] h-[17px]"
+                                : "h-[0px] w-[0px]"
+                            }`}
+                          />
+                        </div>
+                        <div>Reply</div>
                       </div>
                     )}
+
+                    <div
+                      onClick={() => {
+                        deletepopUp(d?.mesId);
+                        setClick(false);
+                      }}
+                      className={`duration-100 flex gap-2 items-center ${
+                        click === true
+                          ? "text-[14px] my-2 px-3 cursor-pointer"
+                          : "text-[0px] my-0 px-0"
+                      }`}
+                    >
+                      <div>
+                        <Image
+                          src={deletechat}
+                          className={`duration-75 ${
+                            click === true
+                              ? "w-[19px] h-[17px]"
+                              : "h-[0px] w-[0px]"
+                          }`}
+                        />
+                      </div>
+                      <div>Delete</div>
+                    </div>
 
                     {/* <div></div>
 				<div></div> */}
                   </div>
                 </div>
-                <div className="h-[45px] sm:h-[40px] sm:w-[240px] w-[145px] rounded-2xl ">
-                  {d?.text}
+                <div className="h-[45px] sm:h-[40px]  rounded-2xl ">
+                  {d?.text.length > 20 ? `${d?.text.slice(0, 20)}...` : d?.text}
                 </div>
-                <div className="text-[14px] sm:w-[240px] flex justify-center items-center w-[145px] h-[40px] bg-[#f7f7f7] rounded-xl">
+                <div className="text-[14px] -mt-1 flex justify-center items-center h-[40px] bg-[#f7f7f7] rounded-xl">
                   Visit
                 </div>
               </div>
             )}
+
             {d?.typ == "product" && (
               <div
                 onDoubleClick={() => {
@@ -1222,7 +1532,7 @@ const PrivateChats = React.forwardRef(
                 className={`relative group ${
                   data?.id === d?.sender?._id
                     ? "bg-[#0075ff] text-white p-2 mt-4 rounded-l-2xl rounded-br-2xl"
-                    : "bg-[#ffffff] dark:text-black dark:bg-gray-100 p-2 mt-4 rounded-r-2xl rounded-bl-2xl"
+                    : "bg-[#ffffff] dark:bg-[#0D0D0D] border dark:border-[#1A1D21] text-[#9B9C9E] p-2 mt-4 rounded-r-2xl rounded-bl-2xl"
                 }`}
               >
                 <div>
@@ -1266,7 +1576,7 @@ const PrivateChats = React.forwardRef(
                   </div>
                   {click && (
                     <div
-                      className={`${
+                      className={`flex flex-col gap-1 ${
                         popupPosition === "top" ? "bottom-20" : "top-4" // Dynamically set position based on popupPosition state
                       } absolute z-40 ${
                         data?.id === d?.sender?._id
@@ -1281,9 +1591,23 @@ const PrivateChats = React.forwardRef(
                             UnhideChats(d?.mesId);
                             setClick(false);
                           }}
-                          className="text-sm my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          className={`duration-100 flex gap-2 items-center ${
+                            click === true
+                              ? "text-[14px] my-2 px-3 cursor-pointer"
+                              : "text-[0px] my-0 px-0"
+                          }`}
                         >
-                          Unhide
+                          <div>
+                            <Image
+                              src={hidden}
+                              className={`duration-75 ${
+                                click === true
+                                  ? "w-[22px] h-[20px]"
+                                  : "h-[0px] w-[0px]"
+                              }`}
+                            />
+                          </div>
+                          <div>Unhide</div>
                         </div>
                       ) : (
                         <div
@@ -1291,20 +1615,26 @@ const PrivateChats = React.forwardRef(
                             hideChats(d?.mesId);
                             setClick(false);
                           }}
-                          className="text-sm my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          className={`duration-100 flex gap-2  items-center ${
+                            click === true
+                              ? "text-[14px] my-2 px-3  cursor-pointer"
+                              : "text-[0px] my-0 px-0"
+                          }`}
                         >
-                          Hide
+                          <div>
+                            <Image
+                              src={hidden}
+                              className={`duration-75 ${
+                                click === true
+                                  ? "w-[22px] h-[20px]"
+                                  : "h-[0px] w-[0px]"
+                              }`}
+                            />
+                          </div>
+                          <div>Hide</div>
                         </div>
                       )}
-                      <div
-                        onClick={() => {
-                          deletepopUp(d?.mesId);
-                          setClick(false);
-                        }}
-                        className="text-sm my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
-                      >
-                        Delete
-                      </div>
+
                       {showHiddenreply && (
                         <div
                           onClick={() => {
@@ -1317,11 +1647,49 @@ const PrivateChats = React.forwardRef(
                             );
                             setClick(false);
                           }}
-                          className="text-sm my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          className={`duration-100 flex gap-2 items-center ${
+                            click === true
+                              ? "text-[14px] my-2 px-3 cursor-pointer"
+                              : "text-[0px] my-0 px-0"
+                          }`}
                         >
-                          Reply
+                          <div>
+                            <Image
+                              src={replypic}
+                              className={`duration-75 ${
+                                click === true
+                                  ? "w-[19px] h-[17px]"
+                                  : "h-[0px] w-[0px]"
+                              }`}
+                            />
+                          </div>
+                          <div>Reply</div>
                         </div>
                       )}
+
+                      <div
+                        onClick={() => {
+                          deletepopUp(d?.mesId);
+                          setClick(false);
+                        }}
+                        className={`duration-100 flex gap-2 items-center ${
+                          click === true
+                            ? "text-[14px] my-2 px-3 cursor-pointer"
+                            : "text-[0px] my-0 px-0"
+                        }`}
+                      >
+                        <div>
+                          <Image
+                            src={deletechat}
+                            className={`duration-75 ${
+                              click === true
+                                ? "w-[19px] h-[17px]"
+                                : "h-[0px] w-[0px]"
+                            }`}
+                          />
+                        </div>
+                        <div>Delete</div>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -1333,6 +1701,7 @@ const PrivateChats = React.forwardRef(
                 </div>
               </div>
             )}
+
             {d?.typ == "gif" && (
               <div
                 onDoubleClick={() => {
@@ -1346,7 +1715,7 @@ const PrivateChats = React.forwardRef(
                   className={`relative group  ${
                     data?.id === d?.sender?._id
                       ? "bg-[#0075ff] text-white p-2 mt-4 rounded-l-2xl rounded-br-2xl"
-                      : "bg-[#ffffff] dark:text-black dark:bg-gray-100 p-2 mt-4 rounded-r-2xl rounded-bl-2xl"
+                      : "bg-[#ffffff] dark:bg-[#0D0D0D] border dark:border-[#1A1D21] text-[#9B9C9E] p-2 mt-4 rounded-r-2xl rounded-bl-2xl"
                   }`}
                 >
                   <div className="group-hover:pr-2">
@@ -1375,14 +1744,20 @@ const PrivateChats = React.forwardRef(
                   </div>
                   {click && (
                     <div
-                      className={`${
-                        popupPosition === "top" ? "bottom-20" : "top-4" // Dynamically set position based on popupPosition state
-                      } absolute z-40 ${
+                      className={`flex flex-col gap-1
+                         ${
+                           click === true
+                             ? "rounded-[15px] bg-white dark:text-white dark:bg-[#0D0F10] text-[#6e6e6e] shadow-custom-lg py-2 w-auto h-auto min-w-[150px]"
+                             : "rounded-[0px] bg-white dark:text-white dark:bg-[#0D0F10] text-[#6e6e6e] shadow-0 py-0 w-[0px] h-[0px]"
+                         }
+
+                        ${
+                          popupPosition === "top" ? "bottom-20" : "top-4"
+                        } absolute z-40 ${
                         data?.id === d?.sender?._id
                           ? "right-0 bg-white"
                           : "left-0 bg-[#f3f3f3]"
-                      }   shadow-2xl  text-black  
-                     rounded-lg py-2 w-[80px] h-[110px]  `}
+                      }  `}
                     >
                       {d?.hidden?.includes(data?.id) ? (
                         <div
@@ -1390,9 +1765,23 @@ const PrivateChats = React.forwardRef(
                             UnhideChats(d?.mesId);
                             setClick(false);
                           }}
-                          className="text-sm my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          className={`duration-100 flex gap-2 items-center ${
+                            click === true
+                              ? "text-[14px] my-2 px-3 cursor-pointer"
+                              : "text-[0px] my-0 px-0"
+                          }`}
                         >
-                          Unhide
+                          <div>
+                            <Image
+                              src={hidden}
+                              className={`duration-75 ${
+                                click === true
+                                  ? "w-[22px] h-[20px]"
+                                  : "h-[0px] w-[0px]"
+                              }`}
+                            />
+                          </div>
+                          <div>Unhide</div>
                         </div>
                       ) : (
                         <div
@@ -1400,20 +1789,25 @@ const PrivateChats = React.forwardRef(
                             hideChats(d?.mesId);
                             setClick(false);
                           }}
-                          className="text-sm my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          className={`duration-100 flex gap-2  items-center ${
+                            click === true
+                              ? "text-[14px] my-2 px-3  cursor-pointer"
+                              : "text-[0px] my-0 px-0"
+                          }`}
                         >
-                          Hide
+                          <div>
+                            <Image
+                              src={hidden}
+                              className={`duration-75 ${
+                                click === true
+                                  ? "w-[22px] h-[20px]"
+                                  : "h-[0px] w-[0px]"
+                              }`}
+                            />
+                          </div>
+                          <div>Hide</div>
                         </div>
                       )}
-                      <div
-                        onClick={() => {
-                          deletepopUp(d?.mesId);
-                          setClick(false);
-                        }}
-                        className="text-sm my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
-                      >
-                        Delete
-                      </div>
 
                       {showHiddenreply && (
                         <div
@@ -1427,11 +1821,49 @@ const PrivateChats = React.forwardRef(
                             );
                             setClick(false);
                           }}
-                          className="text-sm my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                          className={`duration-100 flex gap-2 items-center ${
+                            click === true
+                              ? "text-[14px] my-2 px-3 cursor-pointer"
+                              : "text-[0px] my-0 px-0"
+                          }`}
                         >
-                          Reply
+                          <div>
+                            <Image
+                              src={replypic}
+                              className={`duration-75 ${
+                                click === true
+                                  ? "w-[19px] h-[17px]"
+                                  : "h-[0px] w-[0px]"
+                              }`}
+                            />
+                          </div>
+                          <div>Reply</div>
                         </div>
                       )}
+
+                      <div
+                        onClick={() => {
+                          deletepopUp(d?.mesId);
+                          setClick(false);
+                        }}
+                        className={`duration-100 flex gap-2 items-center ${
+                          click === true
+                            ? "text-[14px] my-2 px-3 cursor-pointer"
+                            : "text-[0px] my-0 px-0"
+                        }`}
+                      >
+                        <div>
+                          <Image
+                            src={deletechat}
+                            className={`duration-75 ${
+                              click === true
+                                ? "w-[19px] h-[17px]"
+                                : "h-[0px] w-[0px]"
+                            }`}
+                          />
+                        </div>
+                        <div>Delete</div>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -1442,7 +1874,7 @@ const PrivateChats = React.forwardRef(
           {data?.id === d?.sender?._id && (
             <div className="flex flex-col items-center justify-center">
               {data?.id === d?.sender?._id && (
-                <div className="h-[35px]  relative w-[35px]  overflow-hidden bg-[#fff] rounded-[14px]">
+                <div className="h-[40px]  relative w-[40px]  overflow-hidden bg-[#fff] rounded-[14px]">
                   <div
                     className={`${
                       d?.readby?.includes(receiverId)
@@ -1450,11 +1882,18 @@ const PrivateChats = React.forwardRef(
                         : "absolute top-0 left-0 bg-black/40 w-full h-full"
                     } `}
                   ></div>
-                  <img src={data?.dp} className="w-full h-full" />
+                  <img src={data?.dp} className="w-full h-full object-cover" />
                 </div>
               )}
-
-              <div className="text-[14px] mt-1">{d?.timestamp}</div>
+              {console.log(d?.timestamp, "d?.timestamp")}
+              {d?.typ === "post" && (
+                <div className="text-[14px] mt-1">
+                  {getHourAndMinutes(d?.timestamp)}
+                </div>
+              )}
+              {d?.typ !== "post" && (
+                <div className="text-[14px] mt-1">{d?.timestamp}</div>
+              )}
             </div>
           )}
         </div>

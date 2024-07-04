@@ -32,20 +32,20 @@ const Convs = ({ d, handleMuting, removingchat, href, handleVisible }) => {
           show ? "z-40" : "-z-20"
         }  w-screen h-screen`}
       ></div>
-      <div className="w-[100%] gap-2 py-2 px-2 duration-200 hover:bg-slate-100 hover:dark:bg-gray-700 h-[55px]  flex flex-row justify-between items-center ">
+      <div className="w-[100%] py-3 gap-2 px-2 duration-200 hover:bg-slate-100 hover:dark:bg-[#191B1C] h-[55px]  flex flex-row justify-between items-center ">
         <Link
           onClick={handleVisible}
           href={href}
-          className=" gap-2 py-2 w-full flex flex-row justify-start items-center "
+          className=" gap-3 py-2 w-full flex flex-row justify-start items-center "
         >
-          <div>
+          <div className="h-[40px] w-[40px]">
             <img
               src={d?.pic}
-              className="h-[40px] w-[40px] rounded-[17px] ring-1 dark:ring-[#273142] ring-white bg-white dark:bg-bluedark "
+              className="h-full w-full object-cover rounded-[17px] ring-1 dark:ring-[#273142] ring-white bg-white dark:bg-bluedark "
             />
           </div>
-          <div>
-            <div className="text-[15px] font-semibold">{d?.fullname}</div>
+          <div className="flex flex-col ">
+            <div className="text-[15px] pb-1 font-semibold">{d?.fullname}</div>
             {d?.msgs[0]?.typ === "message" && (
               <div className="text-[14px] ">
                 {d?.msgs[0]?.text.length > 30
@@ -53,10 +53,18 @@ const Convs = ({ d, handleMuting, removingchat, href, handleVisible }) => {
                   : d?.msgs[0]?.text}
               </div>
             )}
-            {d?.msgs[0]?.typ === "image" && <div>Image</div>}
-            {d?.msgs[0]?.typ === "video" && <div>Video</div>}
-            {d?.msgs[0]?.typ === "doc" && <div>Document</div>}
-            {d?.msgs[0]?.typ === "glimpse" && <div>Glimpse</div>}
+            {d?.msgs[0]?.typ === "image" && (
+              <div className="text-sm">Image</div>
+            )}
+            {d?.msgs[0]?.typ === "video" && (
+              <div className="text-sm">Video</div>
+            )}
+            {d?.msgs[0]?.typ === "doc" && (
+              <div className="text-sm">Document</div>
+            )}
+            {d?.msgs[0]?.typ === "glimpse" && (
+              <div className="text-sm">Glimpse</div>
+            )}
             {d?.msgs[0]?.typ === "reply" && (
               <div className="text-[14px]">
                 {d?.msgs[0]?.text.length > 30
@@ -64,19 +72,21 @@ const Convs = ({ d, handleMuting, removingchat, href, handleVisible }) => {
                   : d?.msgs[0]?.text}
               </div>
             )}
-            {d?.msgs[0]?.typ === "post" && <div>Post</div>}
-            {d?.msgs[0]?.typ === "gif" && <div>Gif</div>}
-            {d?.msgs[0]?.typ === "product" && <div>Product</div>}
+            {d?.msgs[0]?.typ === "post" && <div className="text-sm">Post</div>}
+            {d?.msgs[0]?.typ === "gif" && <div className="text-sm">Gif</div>}
+            {d?.msgs[0]?.typ === "product" && (
+              <div className="text-sm">Product</div>
+            )}
           </div>
         </Link>
-        <div className="flex relative justify-center items-center gap-2">
+        <div className="flex relative justify-center  items-center ">
           {d?.unread != "0" && (
-            <div className="w-6 h-6 p-1 text-xs bg-blue-700 text-white flex justify-center items-center rounded-full">
+            <div className="w-4 h-4 p-1 text-[8px] bg-[#3392FF] text-white flex justify-center items-center rounded-full">
               {d?.unread}
             </div>
           )}
 
-          <div className="relative">
+          {/* <div className="relative left-2">
             <CiMenuKebab onClick={() => setShow(true)} />
 
             <div
@@ -102,11 +112,11 @@ const Convs = ({ d, handleMuting, removingchat, href, handleVisible }) => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
 
-      <div className="w-[99%] border-b-[0.5px] "></div>
+      <div className="w-[100%] border-b-[0.5px] dark:border-[#1B1B1B]"></div>
     </>
   );
 };

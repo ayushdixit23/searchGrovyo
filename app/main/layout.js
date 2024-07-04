@@ -21,8 +21,7 @@ export default function MainLayout({ children }) {
           <Header />
         </div>
       )}
-      <div style={{ width: 'calc(100% - 60px)' }
-    } className="h-screen z-0 pn:max-md:w-full">{children}</div>
+      <div className="h-screen z-0 sm:w-[calc(100%-60px)] pn:max-md:w-full">{children}</div>
       {hide === false && (
         <div className={`${visible ? "md:hidden bg-gray-200" : "hidden"} `}>
           <Tabbar />

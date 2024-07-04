@@ -39,8 +39,8 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import Image from "next/image";
 import reportspic from "../../../../assets/reports.png";
 import mutepic from "../../../../assets/mute.png";
-import logout from "../../../../assets/logout.png";
 import unmutepic from "../../../../assets/unmute.png";
+import logout from "../../../../assets/logout.png";
 import memberspic from "../../../../assets/members.png";
 import { MdOutlineArrowBackIosNew } from "react-icons/md";
 import { setPreview } from "@/app/redux/slice/remember";
@@ -1490,7 +1490,9 @@ function Components({ params }) {
               </div>
 
               {/* // for unjoined community */}
-              <div className="h-[90%]  dark:bg-bluedark pb-[100px] w-full relative overflow-y-scroll">
+              <div
+                className={`h-[90%]  dark:bg-bluedark pb-[100px] w-full ${styles.customScrollbar} relative overflow-y-scroll`}
+              >
                 <div className=" z-0 w-full  h-full  bottom-0 right-0 top-0 left-0">
                   <div className="flex gap-2  border-b dark:border-[#131619]">
                     <div className="flex gap-6 ml-4 text-sm">
