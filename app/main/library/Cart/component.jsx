@@ -14,6 +14,7 @@ import { API } from "../../../../Essentials";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import Cartempty from "../../../assets/Cartempty.png";
 
 function page() {
   const [data, setData] = useState([]);
@@ -696,14 +697,14 @@ function page() {
             </div>
           </div>
         ) : (
-          <div className="pn:max-md:w-[100%] md:min-w-[390px] pn:max-md:h-[100%] bg-[#ffffff] dark:bg-bluedark border-r-2 dark:border-[#3e3e3e] border-[#f9f9f9] flex items-center flex-col">
+          <div className="pn:max-md:w-[100%] md:min-w-[100%] pn:max-md:h-[100%] bg-[#ffffff] dark:bg-bluedark dark:border-[#3e3e3e] flex items-center flex-col">
             <div className="h-[100%] w-[100%] flex items-center flex-col justify-center ">
-              {/* <Image
-              alt="cart"
-              src={cart}
-              className="h-[250px] w-[250px] mt-10"
-            /> */}
-              <div className="text-black dark:text-white text-[27px] font-sans font-bold mt-2 mb-2">
+              <Image
+                alt="cart"
+                src={Cartempty}
+                className="h-[200px] w-[200px] mt-10"
+              />
+              <div className="text-black dark:text-white text-[23px] font-sans font-semibold mt-2 mb-2">
                 Your Cart is Empty
               </div>
               <div className="text-[#9E9E9E] text-[16px] font-sans ">
@@ -712,36 +713,34 @@ function page() {
               <div className="text-[#9E9E9E] text-[16px] font-sans ">
                 anything to your cart yet
               </div>
-              <div className="text-white p-2 text-[14px] mt-3 px-4 bg-[#307EF4] rounded-3xl flex justify-center items-center">
-                Go Shop
-              </div>
             </div>
           </div>
         )}
         {/* out */}
 
         <div
-          className="w-[100%] pn:max-md:hidden dark:bg-red-900 absolute dark:bg-bluedark bg-white
+          className="w-[100%] pn:max-md:hidden dark:bg-black dark:bg-bluedark bg-white
 	   flex flex-col items-center justify-center "
         >
-          <div
-            className="pn:max-md:hidden dark:bg-bluelight  bg-[#f9f9f9]
+          {data?.length > 0 && (
+            <div
+              className="pn:max-md:hidden dark:bg-bluelight  bg-[#f9f9f9]
 	   flex flex-col items-center justify-evenly m-2 p-4 w-[80%] rounded-2xl h-[80%] "
-          >
-            {/* No charges */}
-            <div className="w-[80%] h-[10%] bg-[#f9f9f9] dark:bg-bluelight rounded-lg flex flex-row items-center justify-center">
-              <div className="text-[18px] text-[#2D2D2D]  dark:text-white px-1">
-                Yay!
+            >
+              {/* No charges */}
+              <div className="w-[80%] h-[10%] bg-[#f9f9f9] dark:bg-bluelight rounded-lg flex flex-row items-center justify-center">
+                <div className="text-[18px] text-[#2D2D2D]  dark:text-white px-1">
+                  Yay!
+                </div>
+                <div className="text-[18px] text-[#2D2D2D]  dark:text-white  font-semibold">
+                  No Delivery Charge
+                </div>
+                <div className="text-[18px] text-[#2D2D2D]  dark:text-white px-1">
+                  on this order
+                </div>
               </div>
-              <div className="text-[18px] text-[#2D2D2D]  dark:text-white  font-semibold">
-                No Delivery Charge
-              </div>
-              <div className="text-[18px] text-[#2D2D2D]  dark:text-white px-1">
-                on this order
-              </div>
-            </div>
-            {/* Apply coupon */}
-            {/* <div className="w-[60%] h-[15%] flex flex-col items-center justify-center">
+              {/* Apply coupon */}
+              {/* <div className="w-[60%] h-[15%] flex flex-col items-center justify-center">
               <div className="w-[100%] h-[50%] font-bold text-black dark:text-white text-[18px] bg-[#f9f9f9] dark:bg-bluelight flex items-center">
                 Have a Coupon?
               </div>
@@ -759,70 +758,72 @@ function page() {
                 </div>
               </div>
             </div> */}
-            {/* Price details*/}
-            <div className="w-[60%] h-[55%] bg-[#f9f9f9] dark:bg-bluelight flex flex-col justify-between">
-              <div className="text-[16px] font-semibold text-black dark:text-white">
-                PRICE DETAILS{" "}
-                {data.map((d, i) => (
-                  <div key={i}>{d?.length}</div>
-                ))}
-                {/* ({d?.c?.quantity} items) */}
-              </div>
-              {/* MRP */}
-              <div className="flex flex-row justify-between items-center">
-                <div className="text-[#737373] dark:text-white text-[14px]">
-                  Total MRP
+              {/* Price details*/}
+              <div className="w-[60%] h-[55%] bg-[#f9f9f9] dark:bg-bluelight flex flex-col justify-between">
+                <div className="text-[16px] font-semibold text-black dark:text-white">
+                  PRICE DETAILS{" "}
+                  {data.map((d, i) => (
+                    <div key={i}>{d?.length}</div>
+                  ))}
+                  {/* ({d?.c?.quantity} items) */}
                 </div>
-                <div className="text-black dark:text-white text-[14px]">
-                  Rs. {mrpPrice}
-                  {/* {d?.c?.product?.price} */}
+                {/* MRP */}
+                <div className="flex flex-row justify-between items-center">
+                  <div className="text-[#737373] dark:text-white text-[14px]">
+                    Total MRP
+                  </div>
+                  <div className="text-black dark:text-white text-[14px]">
+                    Rs. {mrpPrice}
+                    {/* {d?.c?.product?.price} */}
+                  </div>
                 </div>
-              </div>
-              {/* Discount */}
-              <div className="flex flex-row justify-between items-center">
-                <div className="text-[#737373] dark:text-white text-[14px]">
-                  Discount on MRP
+                {/* Discount */}
+                <div className="flex flex-row justify-between items-center">
+                  <div className="text-[#737373] dark:text-white text-[14px]">
+                    Discount on MRP
+                  </div>
+                  <div className="text-[#2DC071] text-[14px]">
+                    -Rs. {discountedPrice}
+                  </div>
                 </div>
-                <div className="text-[#2DC071] text-[14px]">
-                  -Rs. {discountedPrice}
+                {/* Coupon Discount */}
+                <div className="flex flex-row justify-between items-center">
+                  <div className="text-[#737373] dark:text-white text-[14px]">
+                    Coupon Discount
+                  </div>
+                  <div className="text-black dark:text-white text-[14px]">
+                    Rs. 0
+                  </div>
                 </div>
-              </div>
-              {/* Coupon Discount */}
-              <div className="flex flex-row justify-between items-center">
-                <div className="text-[#737373] dark:text-white text-[14px]">
-                  Coupon Discount
+                {/* delivery charge */}
+                <div className="flex flex-row justify-between items-center">
+                  <div className="text-[#737373] dark:text-white text-[14px]">
+                    Delivery Charge
+                  </div>
+                  <div className="text-[#2DC071] text-[14px]">Free</div>
                 </div>
-                <div className="text-black dark:text-white text-[14px]">
-                  Rs. 0
+                {/* Total charge */}
+                <div className="border-t-2 flex flex-row justify-between items-center py-2 bg">
+                  <div className="text-[#737373] dark:text-white text-[14px]">
+                    Total Amount
+                  </div>
+                  <div className="text-black dark:text-white font-bold text-[14px]">
+                    Rs. {actualPrice}
+                    {/* {d?.c?.product?.discountedprice} */}
+                  </div>
                 </div>
-              </div>
-              {/* delivery charge */}
-              <div className="flex flex-row justify-between items-center">
-                <div className="text-[#737373] dark:text-white text-[14px]">
-                  Delivery Charge
+                <div
+                  onClick={() => {
+                    placeOrderWithCash();
+                  }}
+                  className="bg-black rounded-lg flex flex-row justify-center items-center py-3"
+                >
+                  <div className="text-white text-[14px]">PLACE ORDER</div>
                 </div>
-                <div className="text-[#2DC071] text-[14px]">Free</div>
-              </div>
-              {/* Total charge */}
-              <div className="border-t-2 flex flex-row justify-between items-center py-2 bg">
-                <div className="text-[#737373] dark:text-white text-[14px]">
-                  Total Amount
-                </div>
-                <div className="text-black dark:text-white font-bold text-[14px]">
-                  Rs. {actualPrice}
-                  {/* {d?.c?.product?.discountedprice} */}
-                </div>
-              </div>
-              <div
-                onClick={() => {
-                  placeOrderWithCash();
-                }}
-                className="bg-black rounded-lg flex flex-row justify-center items-center py-3"
-              >
-                <div className="text-white text-[14px]">PLACE ORDER</div>
               </div>
             </div>
-          </div>
+          )}
+
           {/* PopUp */}
           <div
             className={` ${

@@ -58,7 +58,7 @@ function Tabbar() {
   };
 
   return (
-    <div className="w-screen h-[60px] border-t-2 border-[#f5f5f5] bg-white flex flex-row fixed bottom-0 justify-evenly">
+    <div className="w-screen h-[60px] border-t-2 border-[#f5f5f5] bg-white dark:bg-[#0D0F10] flex flex-row fixed bottom-0 justify-evenly">
       {Map.map((d) => (
         <Link
           key={d.id}

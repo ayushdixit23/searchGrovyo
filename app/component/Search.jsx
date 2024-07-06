@@ -270,8 +270,8 @@ function page() {
 
       {active === "all" && (
         <>
-          {all.prosites.length > 0 &&
-          all.community.length > 0 &&
+          {all.prosites.length > 0 ||
+          all.community.length > 0 ||
           all.posts.length > 0 ? (
             <div
               className={`p-2 mt-4 flex flex-col gap-5 overflow-y-scroll ${styles.customScrollbar}`}
