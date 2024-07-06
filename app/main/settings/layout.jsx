@@ -9,7 +9,12 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useAuthContext } from "../../utils/AuthWrapper";
 import Cookies from "js-cookie";
-import { MdVerified } from "react-icons/md";
+import { MdOutlineCampaign, MdOutlineLogout, MdVerified } from "react-icons/md";
+import { FaUser, FaUsers } from "react-icons/fa";
+import { IoChatbubbleSharp } from "react-icons/io5";
+import { CgWebsite } from "react-icons/cg";
+import { HiCurrencyDollar } from "react-icons/hi";
+import { FiHelpCircle } from "react-icons/fi";
 
 export default function SettingLayout({ children }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,7 +22,7 @@ export default function SettingLayout({ children }) {
   const { data, setAuth, setData } = useAuthContext();
 
   const router = useRouter();
-  
+
   const handleLogout = () => {
     setIsModalOpen(false);
 
@@ -52,10 +57,10 @@ export default function SettingLayout({ children }) {
 
   return (
     <>
-      <div className="w-[100%] h-[100vh] bg-white dark:bg-bluedark flex pn:max-md:justify-center ">
-        <div className=" pn:max-md:h-[100vh] h-screen overflow-auto scrollbar-hide select-none md:min-w-[390px] lg:w-[360px] flex flex-col items-center md:border-r-2 border-[#f7f7f7] self-end w-full">
+      <div className="w-[100%] h-[100vh] bg-white dark:bg-[#0D0F10] flex pn:max-md:justify-center ">
+        <div className=" pn:max-md:h-[100vh] h-screen overflow-auto scrollbar-hide select-none md:min-w-[390px] lg:w-[360px] flex flex-col items-center md:border-r-2 dark:border-none border-[#f7f7f7] self-end w-full">
           <div
-            className="w-[100%] h-[50px] dark:bg-bluedark bg-slate-100
+            className="w-[100%] h-[10%] dark:bg-[#0D0F10] dark:border dark:border-[#131619] bg-slate-100
            flex flex-row px-5 justify-between items-center pn:max-md:h-[50px]"
           >
             <div className="text-[24px] text-black dark:text-white font-sans font-semibold">
@@ -64,12 +69,12 @@ export default function SettingLayout({ children }) {
           </div>
 
           <div
-            className={`md:col-span-1  w-full sm:col-span-2 h-[90%] bg-maincolor max-h-screen ${
+            className={`md:col-span-1 w-full sm:col-span-2 h-[90%] bg-maincolor max-h-screen ${
               isChildrenHidden ? "pn:max-sm:hidden" : " pn:max-sm:w-full"
             }`}
           >
-            <div className="flex flex-col w-full">
-              <div className="flex items-center gap-3 dark:bg-maincolor dark:border dark:border-border sm:max-md:p-2 p-4 rounded-xl">
+            <div className="flex mt-4 pl-3 flex-col w-full">
+              {/* <div className="flex items-center gap-3 dark:bg-maincolor dark:border dark:border-border sm:max-md:p-2 p-4 rounded-xl">
                 <div>
                   {data?.dp && (
                     <img
@@ -97,46 +102,79 @@ export default function SettingLayout({ children }) {
                     {data?.username}
                   </div>
                 </div>
+              </div> */}
+              <div className="text-sm rounded-xl flex items-center gap-3 my-2 sm:max-md:p-2 p-4 py-3  font-semibold">
+                <div>
+                  <FaUser className="text-xl" />
+                </div>
+                <div>Account</div>
               </div>
-              <a
-                target="_blank"
-                href={`https://prosite.grovyo.com/lwozxip?id=${encodeURIComponent(
-                  data?.id
-                )}&temp=1`}
-                className="text-base rounded-xl focus:bg-[#f9f9f9] dark:hover:bg-[#3d4654] dark:focus:bg-[#3d4654] hover:bg-[#f9f9f9] my-2 sm:max-md:p-2 p-4 py-3  font-semibold"
-              >
-                Customize Your Prosite
-              </a>
+
+              <div className="text-sm rounded-xl flex items-center gap-3 my-2 sm:max-md:p-2 p-4 py-3  font-semibold">
+                <div>
+                  <IoChatbubbleSharp className="text-xl" />
+                </div>
+                <div>Chats</div>
+              </div>
+
+              <div className="text-sm rounded-xl flex items-center gap-3 my-2 sm:max-md:p-2 p-4 py-3  font-semibold">
+                <div>
+                  <CgWebsite className="text-xl" />
+                </div>
+                <div>Prosite</div>
+              </div>
+
               <a
                 target="_blank"
                 href={`https://workspace.grovyo.com/aybdhw?zyxxpht=${data?.id}&path=/main/dashboard`}
-                className="text-base rounded-xl focus:bg-[#f9f9f9] dark:hover:bg-[#3d4654] dark:focus:bg-[#3d4654] hover:bg-[#f9f9f9] my-2 sm:max-md:p-2 p-4 py-3  font-semibold"
+                className="text-sm rounded-xl my-2 flex items-center gap-3 sm:max-md:p-2 p-4 py-3  font-semibold"
               >
-                View Community Analytics
+                <div>
+                  <FaUsers className="text-xl" />
+                </div>
+                <div>Communities</div>
               </a>
-              {/* <div className="text-base p-2 py-3  py-4 font-semibold">
+              {/* <div className="text-sm p-2 py-3  py-4 font-semibold">
   											Help And Support
   										</div> */}
               <a
                 target="_blank"
                 href={`http://localhost:3001/alginsf?zray=${data?.id}`}
                 // href={`https://ads.grovyo.com/alginsf?zray=${data?.id}`}
-                className="text-base rounded-xl focus:bg-[#f9f9f9] dark:hover:bg-[#3d4654] dark:focus:bg-[#3d4654] hover:bg-[#f9f9f9] my-2 sm:max-md:p-2 p-4 py-3  font-semibold"
+                className="text-sm rounded-xl my-2 flex items-center gap-3 sm:max-md:p-2 p-4 py-3  font-semibold"
               >
-                Create Your Ad
+                <div>
+                  <MdOutlineCampaign className="text-xl" />
+                </div>
+                <div>Create Your Ad</div>
               </a>
               <a
                 target="_blank"
-                href={`https://workspace.grovyo.com/aybdhw?zyxxpht=${data?.id}&path=/main/settings`}
-                className="text-base rounded-xl focus:bg-[#f9f9f9] dark:hover:bg-[#3d4654] dark:focus:bg-[#3d4654] hover:bg-[#f9f9f9] my-2 sm:max-md:p-2 p-4  py-3  font-semibold"
+                href={`https://grovyo.com/feautures/earnwithus`}
+                className="text-sm rounded-xl my-2 flex items-center gap-3 sm:max-md:p-2 p-4  py-3  font-semibold"
               >
-                Edit Profile
+                <div>
+                  <HiCurrencyDollar className="text-xl" />
+                </div>
+                <div> Earn With US</div>
               </a>
               <div
                 onClick={() => setIsModalOpen(true)}
-                className=" text-base sm:max-md:p-2 p-4 py-3 text-red-700 dark:hover:bg-[#3d4654] dark:focus:bg-[#3d4654] my-1 rounded-xl focus:bg-[#f9f9f9] hover:bg-[#f9f9f9] font-semibold"
+                className="text-sm rounded-xl my-2 flex items-center gap-3 sm:max-md:p-2 p-4  py-3  font-semibold"
               >
-                Log Out
+                <div>
+                  <FiHelpCircle className="text-xl" />
+                </div>
+                <div>Help</div>
+              </div>
+              <div
+                onClick={() => setIsModalOpen(true)}
+                className=" text-sm sm:max-md:p-2 p-4 py-3 text-red-700  my-2 rounded-xl  flex items-center gap-3 font-semibold"
+              >
+                <div>
+                  <MdOutlineLogout className="text-xl" />
+                </div>
+                <div>Log Out</div>
               </div>
               <LogoutModal
                 isOpen={isModalOpen}

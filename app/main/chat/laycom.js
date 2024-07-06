@@ -302,7 +302,7 @@ export default function ChatLayout({ children }) {
 
             {request.length <= 0 && (
               <div className="flex justify-center h-full items-center ">
-                Empty Hai
+                No Requests!
               </div>
             )}
           </div>

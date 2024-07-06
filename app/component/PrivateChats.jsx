@@ -215,7 +215,7 @@ const PrivateChats = React.forwardRef(
                 }}
                 className={`relative group h-auto flex justify-start items-center mt-6 ${
                   data?.id === d?.sender?._id
-                    ? "bg-[#0075ff] text-white p-2 px-4 md:text-[14px]  rounded-l-2xl pn:max-sm:text-[14px] max-w-[650px]  rounded-br-2xl "
+                    ? "bg-[#0075ff] text-white p-2 px-4 md:text-[14px] rounded-l-2xl pn:max-sm:text-[14px] max-w-[650px]  rounded-br-2xl "
                     : "bg-[#ffffff] dark:bg-[#0D0D0D] border dark:border-[#1A1D21] text-[#9B9C9E] p-2 px-4 rounded-r-2xl md:text-[14px] pn:max-sm:text-[14px] max-w-[650px] rounded-bl-2xl"
                 } `}
                 style={{
@@ -523,11 +523,11 @@ const PrivateChats = React.forwardRef(
                       ? "right-0"
                       : "left-0 bg-[#f3f3f3]"
                   }   shadow-2xl  text-black  duration-100
-                      ${
-                        click === true
-                          ? "rounded-[15px] bg-white dark:text-white dark:bg-[#0D0F10] text-[#6e6e6e] shadow-md dark:shadow-custom-lg py-2 w-auto h-auto min-w-[150px]"
-                          : "rounded-[0px] bg-white dark:text-white dark:bg-[#0D0F10] text-[#6e6e6e] shadow-0 py-0 w-[0px] h-[0px]"
-                      } `}
+                  ${
+                    click === true
+                      ? "rounded-[15px] bg-white dark:text-white dark:bg-[#0D0F10] text-[#6e6e6e] shadow-md dark:shadow-custom-lg py-2 w-auto h-auto min-w-[150px]"
+                      : "rounded-[0px] bg-white dark:text-white dark:bg-[#0D0F10] text-[#6e6e6e] shadow-0 py-0 w-[0px] h-[0px]"
+                  }  `}
                 >
                   {d?.hidden?.includes(data?.id) ? (
                     <div

@@ -7,7 +7,6 @@ import { FaGooglePay } from "react-icons/fa";
 import { TbTruckDelivery } from "react-icons/tb";
 import { SiPhonepe, SiVisa } from "react-icons/si";
 import { FaLocationDot } from "react-icons/fa6";
-import { MdKeyboardArrowRight } from "react-icons/md";
 import { BsBank } from "react-icons/bs";
 import { useAuthContext } from "../../../utils/AuthWrapper";
 import axios from "axios";
@@ -297,7 +296,7 @@ function page() {
         </div>
       )}
 
-      <div className="md:flex  dark:bg-[#3e3e3e] h-[85.5vh]">
+      <div className="md:flex  dark:bg-[#ododod] h-[85.5vh]">
         {data.length !== 0 ? (
           <div className="sm:h-[100%] py-1 border-r dark:border-[#3e3e3e] pn:max-md:w-[100%] md:min-w-[390px] pn:max-sm:pt-40 bg-[#f4f4f4] dark:bg-bluedark flex items-center flex-col  h-[100vh] pn:max-md:fixed">
             {/* Shipping details */}
@@ -438,7 +437,7 @@ function page() {
             <div
               className={` ${
                 up
-                  ? "h-[100%] shadow-xl ring-1 ring-[#f1f1f1] rounded-t-lg bg-[#4e4e4e48] md:hidden justify-center items-center sm:max-md:w-[90%] shadow-3xl w-full absolute bottom-0"
+                  ? "h-[100%] shadow-xl ring-1 ring-[#f1f1f1] rounded-t-lg bg-[#4a3fe748] md:hidden justify-center items-center sm:max-md:w-[90%] shadow-3xl w-full absolute bottom-0"
                   : "h-[100%] rounded-t-lg bg-[#fff] md:hidden  sm:max-md:w-[90%] shadow-3xl w-full absolute -bottom-[100vh]"
               }`}
             >
@@ -474,7 +473,7 @@ function page() {
              flex flex-col items-center justify-evenly h-[100%] "
                 >
                   {/* No charges */}
-                  <div className="w-[80%] h-[10%] bg-[#f9f9f9] rounded-lg flex flex-row items-center justify-center">
+                  <div className="w-[80%] h-[10%] bg-[#ffa4a4] rounded-lg flex flex-row items-center justify-center">
                     <div className="text-[18px] text-[#2D2D2D] px-1">Yay!</div>
                     <div className="text-[18px] text-[#2D2D2D]  font-semibold">
                       No Delivery Charge
@@ -722,7 +721,7 @@ function page() {
         {/* out */}
 
         <div
-          className="w-[100%] pn:max-md:hidden dark:bg-bluedark bg-white
+          className="w-[100%] pn:max-md:hidden dark:bg-red-900 absolute dark:bg-bluedark bg-white
 	   flex flex-col items-center justify-center "
         >
           <div

@@ -76,7 +76,7 @@ const page = () => {
 
             <div className="bg-[#303030] text-white p-3 rounded-2xl flex flex-col justify-center items-center gap-2">
               <div>
-                <Image src={chat4} className="pp:max-w-[300px]" />
+                <Image src={chat5} className="pp:max-w-[300px]" />
               </div>
               <div className="sm:text-xl text-lg text-center font-semibold">
                 Web to Mobile
@@ -90,7 +90,7 @@ const page = () => {
 
             <div className="bg-[#303030] text-white p-3 rounded-2xl flex flex-col justify-center items-center gap-2">
               <div>
-                <Image src={chat5} className="pp:max-w-[300px]" />
+                <Image src={chat6} className="pp:max-w-[300px]" />
               </div>
               <div className="sm:text-xl text-lg text-center font-semibold">
                 Video Calls
@@ -103,7 +103,7 @@ const page = () => {
 
             <div className="bg-[#303030] text-white p-3 rounded-2xl flex flex-col justify-center items-center gap-2">
               <div>
-                <Image src={chat6} className="pp:max-w-[300px]" />
+                <Image src={chat4} className="pp:max-w-[300px]" />
               </div>
               <div className="sm:text-xl text-lg text-center font-semibold">
                 Order Notifications in Chat:

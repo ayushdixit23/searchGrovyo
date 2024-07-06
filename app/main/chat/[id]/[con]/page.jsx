@@ -967,9 +967,9 @@ const Components = () => {
                 <div
                   className={`absolute duration-100 ${
                     options
-                      ? "w-auto min-w-[180px] p-2 px-4 top-7 text-xs h-auto -left-[170px] "
-                      : "w-0 h-0 text-[0px] top-0 left-0"
-                  } z-40 rounded-lg dark:text-white dark:bg-[#0D0F10] text-[#6e6e6e] bg-white shadow-custom-lg `}
+                      ? "w-auto min-w-[180px] p-2 px-4 top-7 text-xs h-auto -left-[160px] "
+                      : "w-0 h-0 text-[0px] top-0 px-0 p-0 -left-[160px]"
+                  } z-40 rounded-lg dark:text-white  dark:bg-[#0D0F10] text-[#6e6e6e] bg-white shadow-custom-lg `}
                 >
                   {" "}
                   <div className="flex flex-col font-semibold h-full">

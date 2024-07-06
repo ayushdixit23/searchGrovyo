@@ -30,6 +30,7 @@
     "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",
     "leaflet": "^1.9.4",
+    "lottie-react": "^2.4.0",
     "lucide-react": "^0.395.0",
     "moment": "^2.30.1",
     "next": "14.1.0",
@@ -47,7 +48,6 @@
     "styled-components": "^6.1.11",
     "tailwind-merge": "^2.3.0",
     "tailwind-scrollbar-hide": "^1.1.7",
-    "tailwindcss-animate": "^1.0.7",
     "use-sound": "^4.0.1"
   },
   "devDependencies": {

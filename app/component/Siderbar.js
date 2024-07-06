@@ -1,8 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Image from "next/image";
 import Link from "next/link";
-import DarkModeToggle from "./darkMode";
 import Search from "../component/Search";
 import Home from "../assets/Home";
 import Chat from "../assets/Chat";
@@ -19,29 +17,29 @@ function Sidebar() {
   const [color, setColor] = useState(1);
   const path = usePathname()
 
-  const Map = [
-    {
-      name: "Home",
-      id: 0,
-      img: <Home color={(path.startsWith("/main/feed/newForYou") || path.startsWith("/main/feed/community")) ? 1 : 0} />,
-      path: "/main/feed/newForYou",
-      change: 1,
-    },
-    {
-      name: "Chats",
-      id: 1,
-      img: <Chat color={(path.startsWith("/main/chat")) ? 2 : 0} />,
-      path: "/main/chat",
-      change: 2,
-    },
-    {
-      name: "Library",
-      id: 2,
-      img: <Library color={(path.startsWith("/main/library")) ? 3 : 0} />,
-      path: "/main/library",
-      change: 3,
-    },
-  ];
+  // const Map = [
+  //   {
+  //     name: "Home",
+  //     id: 0,
+  //     img: <Home color={(path.startsWith("/main/feed/newForYou") || path.startsWith("/main/feed/community")) ? 1 : 0} />,
+  //     path: "/main/feed/newForYou",
+  //     change: 1,
+  //   },
+  //   {
+  //     name: "Chats",
+  //     id: 1,
+  //     img: <Chat color={(path.startsWith("/main/chat")) ? 2 : 0} />,
+  //     path: "/main/chat",
+  //     change: 2,
+  //   },
+  //   {
+  //     name: "Library",
+  //     id: 2,
+  //     img: <Library color={(path.startsWith("/main/library")) ? 3 : 0} />,
+  //     path: "/main/library",
+  //     change: 3,
+  //   },
+  // ];
 
   return (
     <div className="h-screen w-[60px] bg-[#ffffff] dark:bg-[#0D0F10] flex flex-col justify-center items-start">

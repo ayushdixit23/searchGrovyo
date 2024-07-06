@@ -563,7 +563,7 @@ function page() {
           <div
             className={`${
               state === 2
-                ? "pn:max-sm:h-auto h-full w-full flex justify-evenly items-center"
+                ? "pn:max-sm:h-auto h-full text-black w-full flex justify-evenly items-center"
                 : "hidden"
             }`}
           >
@@ -706,7 +706,7 @@ function page() {
           <div
             className={`${
               state === 3
-                ? "h-[90%] py-[5%] w-full pn:max-sm:pb-[20%] pn:max-sm:h-[100%]  flex flex-col justify-center items-center"
+                ? "h-[90%] py-[5%] w-full text-black pn:max-sm:pb-[20%] pn:max-sm:h-[100%]  flex flex-col justify-center items-center"
                 : "hidden"
             }`}
           >

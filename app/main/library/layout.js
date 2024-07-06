@@ -104,7 +104,7 @@ export default function LibraryLayout({ children }) {
       {/* chats */}
       <div className="h-[100vh] pn:max-md:h-[100vh] select-none pn:max-sm:w-[100%] w-[100%] flex flex-col items-start  md:border-r-2 border-[#f7f7f7]  ">
         {/* header */}
-        <div className="md:h-[15vh] py-2 border-b-2 bg-white border-r-2 dark:bg-bluedark dark:border-[#3e3e3e] dark:border-r-2 dark:text-[#fff] bg-rink-300 pn:max-sm:fixed top-14 md:min-w-[390px]  pn:max-md:w-[100%] flex flex-col pn:max-md:z-10">
+        <div className="md:h-[15vh] py-2 border-b-2 bg-white border-r-2 w-[100%] dark:bg-red-300 dark:bg-bluedark dark:border-[#3e3e3e] dark:border-r-2 dark:text-[#fff] bg-rink-300 pn:max-sm:fixed top-14 md:min-w-[390px]  pn:max-md:w-[100%] flex flex-col pn:max-md:z-10">
           <div
             className="h-[50%] w-[100%] 
            flex flex-col  text-[20px] font-bold px-4 py-2 justify-end"
