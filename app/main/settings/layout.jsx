@@ -6,7 +6,7 @@ import LogoutModal from "../../component/LogOut";
 // import MobileNav from "../component/MobileNav";
 import Image from "next/image";
 // import { getData } from "../utils/useful";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useAuthContext } from "../../utils/AuthWrapper";
 import Cookies from "js-cookie";
 import { MdOutlineCampaign, MdOutlineLogout, MdVerified } from "react-icons/md";
@@ -20,6 +20,7 @@ export default function SettingLayout({ children }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isChildrenHidden, setIsChildrenHidden] = useState(false);
   const { data, setAuth, setData } = useAuthContext();
+  const path = usePathname();
 
   const router = useRouter();
 
@@ -39,28 +40,28 @@ export default function SettingLayout({ children }) {
     router.push("/login");
   };
 
-  (() => {
-    if (
-      typeof window !== "undefined" &&
-      window.history &&
-      window.history.pushState
-    ) {
-      window.addEventListener("popstate", function () {
-        if (typeof setIsChildrenHidden === "function") {
-          setIsChildrenHidden(false);
-        }
-      });
-    } else {
-      console.warn("History API is not supported by this browser");
-    }
-  })();
+  // (() => {
+  //   if (
+  //     typeof window !== "undefined" &&
+  //     window.history &&
+  //     window.history.pushState
+  //   ) {
+  //     window.addEventListener("popstate", function () {
+  //       if (typeof setIsChildrenHidden === "function") {
+  //         setIsChildrenHidden(false);
+  //       }
+  //     });
+  //   } else {
+  //     console.warn("History API is not supported by this browser");
+  //   }
+  // })();
 
   return (
     <>
       <div className="w-[100%] h-[100vh] bg-white dark:bg-[#0D0F10] flex pn:max-md:justify-center ">
         <div className=" pn:max-md:h-[100vh] h-screen overflow-auto scrollbar-hide select-none md:min-w-[390px] lg:w-[360px] flex flex-col items-center md:border-r-2 dark:border-none border-[#f7f7f7] self-end w-full">
           <div
-            className="w-[100%] h-[10%] dark:bg-[#0D0F10] dark:border dark:border-[#131619] bg-slate-100
+            className="w-[100%] h-[10%] dark:bg-[#0D0F10] light:border-b dark:border dark:border-[#131619] 
            flex flex-row px-5 justify-between items-center pn:max-md:h-[50px]"
           >
             <div className="text-[24px] text-black dark:text-white font-sans font-semibold">
@@ -69,7 +70,7 @@ export default function SettingLayout({ children }) {
           </div>
 
           <div
-            className={`md:col-span-1 w-full sm:col-span-2 h-[90%] bg-maincolor max-h-screen ${
+            className={`md:col-span-1 w-full dark:bg-[#0D0F10] dark:border dark:border-[#131619] sm:col-span-2 h-[90%] bg-maincolor max-h-screen ${
               isChildrenHidden ? "pn:max-sm:hidden" : " pn:max-sm:w-full"
             }`}
           >
@@ -103,65 +104,79 @@ export default function SettingLayout({ children }) {
                   </div>
                 </div>
               </div> */}
-              <div className="text-sm rounded-xl flex items-center gap-3 my-2 sm:max-md:p-2 p-4 py-3  font-semibold">
+              <Link
+                href={"/main/settings/account"}
+                className={`text-sm ${
+                  path == "/main/settings" || path == "/main/settings/account"
+                    ? "text-blue-600"
+                    : ""
+                } rounded-xl flex items-center gap-3 my-2 sm:max-md:p-2 p-4 py-3 font-semibold`}
+              >
                 <div>
                   <FaUser className="text-xl" />
                 </div>
                 <div>Account</div>
-              </div>
+              </Link>
 
-              <div className="text-sm rounded-xl flex items-center gap-3 my-2 sm:max-md:p-2 p-4 py-3  font-semibold">
+              <Link
+                href={"/main/settings/chat"}
+                className={`text-sm rounded-xl ${
+                  path == "/main/settings/chat" ? "text-blue-600" : ""
+                } flex items-center gap-3 my-2 sm:max-md:p-2 p-4 py-3  font-semibold`}
+              >
                 <div>
                   <IoChatbubbleSharp className="text-xl" />
                 </div>
                 <div>Chats</div>
-              </div>
+              </Link>
 
-              <div className="text-sm rounded-xl flex items-center gap-3 my-2 sm:max-md:p-2 p-4 py-3  font-semibold">
+              <a
+                target="_blank"
+                href={`https://prosite.grovyo.com/lwozxip?id=${encodeURIComponent(
+                  data?.id
+                )}&temp=1&addData=false`}
+                className="text-sm rounded-xl flex items-center gap-3 my-2 sm:max-md:p-2 p-4 py-3  font-semibold"
+              >
                 <div>
                   <CgWebsite className="text-xl" />
                 </div>
                 <div>Prosite</div>
-              </div>
+              </a>
 
-              <a
-                target="_blank"
-                href={`https://workspace.grovyo.com/aybdhw?zyxxpht=${data?.id}&path=/main/dashboard`}
-                className="text-sm rounded-xl my-2 flex items-center gap-3 sm:max-md:p-2 p-4 py-3  font-semibold"
+              <Link
+                href={"/main/settings/community"}
+                className={`text-sm rounded-xl ${
+                  path == "/main/settings/community" ? "text-blue-600" : ""
+                } flex items-center gap-3 my-2 sm:max-md:p-2 p-4 py-3  font-semibold`}
               >
                 <div>
                   <FaUsers className="text-xl" />
                 </div>
                 <div>Communities</div>
-              </a>
-              {/* <div className="text-sm p-2 py-3  py-4 font-semibold">
-  											Help And Support
-  										</div> */}
+              </Link>
+
               <a
                 target="_blank"
-                href={`http://localhost:3001/alginsf?zray=${data?.id}`}
+                href={`https://ads.grovyo.com/alginsf?zray=${data?.id}`}
                 // href={`https://ads.grovyo.com/alginsf?zray=${data?.id}`}
                 className="text-sm rounded-xl my-2 flex items-center gap-3 sm:max-md:p-2 p-4 py-3  font-semibold"
               >
                 <div>
-                  <MdOutlineCampaign className="text-xl" />
+                  <MdOutlineCampaign className="text-2xl" />
                 </div>
                 <div>Create Your Ad</div>
               </a>
               <a
                 target="_blank"
-                href={`https://grovyo.com/feautures/earnwithus`}
+                href={`https://grovyo.com/features/earnwithus`}
                 className="text-sm rounded-xl my-2 flex items-center gap-3 sm:max-md:p-2 p-4  py-3  font-semibold"
               >
                 <div>
-                  <HiCurrencyDollar className="text-xl" />
+                  <HiCurrencyDollar className="text-2xl" />
                 </div>
                 <div> Earn With US</div>
               </a>
-              <div
-                onClick={() => setIsModalOpen(true)}
-                className="text-sm rounded-xl my-2 flex items-center gap-3 sm:max-md:p-2 p-4  py-3  font-semibold"
-              >
+              <div className="text-sm rounded-xl my-2 flex items-center gap-3 sm:max-md:p-2 p-4  py-3  font-semibold">
                 <div>
                   <FiHelpCircle className="text-xl" />
                 </div>
@@ -185,7 +200,7 @@ export default function SettingLayout({ children }) {
             </div>
           </div>
         </div>
-        <div className="w-full bg-green-300 pn:max-sm:hidden"> {children}</div>
+        <div className="w-full pn:max-sm:hidden"> {children}</div>
       </div>
     </>
   );

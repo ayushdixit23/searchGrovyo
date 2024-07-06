@@ -172,7 +172,7 @@ function Sidebar() {
             </div>
           </Link>
         </div>
-        <div className="">
+        <div className="dark:bg-[#171717]">
           {/* <DarkModeToggle /> */}
           <ModeToggle />
         </div>
