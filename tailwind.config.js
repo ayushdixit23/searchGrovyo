@@ -21,10 +21,10 @@ module.exports = {
       txl: "1600px",
     },
     extend: {
-
       backgroundImage: {
         chats: "url('./assets/Header.png')",
         mobilechats: "url('./assets/mobilechat.png')",
+        "com-image": "url('./assets/comimage.png')",
         loginbg: "url('./assets/backlogin.png')",
         piclogin: "url('./assets/piclogin.png')",
         chatslightbg: "url('./assets/bgchatlightmode.png')",

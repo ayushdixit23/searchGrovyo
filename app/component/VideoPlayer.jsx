@@ -14,7 +14,7 @@ import { BsChevronLeft, BsChevronRight, BsPip } from "react-icons/bs";
 import { IoMdSkipForward } from "react-icons/io";
 import { FaMinus, FaPlus } from "react-icons/fa";
 
-const VideoPlayer = ({ src, adSrc, width, height }) => {
+const VideoPlayer = ({ src, adSrc, width, height, poster }) => {
   const videoRef = useRef();
   const containerRef = useRef();
   const [isplaying, setIsplaying] = useState(false);
@@ -267,7 +267,7 @@ const VideoPlayer = ({ src, adSrc, width, height }) => {
           }
         }}
         ref={containerRef}
-        className={`relative cursor-pointer w-full h-full`}
+        className={`relative  cursor-pointer w-full h-full`}
       >
         <video
           ref={videoRef}
@@ -275,9 +275,9 @@ const VideoPlayer = ({ src, adSrc, width, height }) => {
           src={isAdPlayed ? adSrc : src}
           // src={isAdPlayed ? src : adSrc}
           // src={src}
-          // poster={poster}
+          poster={poster ? poster : null}
           onEnded={handleVideoEnd}
-          className="w-full object-contain bg-black rounded-2xl h-full"
+          className="w-full bg-black object-contain rounded-2xl h-full"
         />
 
         <div

@@ -17,7 +17,6 @@ const Members = ({ id, comId, dash }) => {
   useEffect(() => {
     if (id && comId)
       axios.get(`${API}/web/getallmembers/${id}/${comId}`).then((res) => {
-        console.log(res.data);
         setAdmin({
           dp: res.data?.admindp,
           fullname: res.data.admin.fullname,

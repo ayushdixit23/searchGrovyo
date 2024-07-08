@@ -8,6 +8,7 @@ import {
   socketemitfunc,
   useSocketContext,
 } from "../../../../utils/SocketWrapper";
+import styles from "../../../../CustomScrollbarComponent.module.css";
 import {
   setContent,
   setMessage,
@@ -1036,7 +1037,8 @@ function Components({ params }) {
             >
               <div
                 className={`pn:max-md:w-[100%] dark:shadow-custom-lg shadow-lg duration-200 max-h-[90%] ${optionType === "members" ? "" : "hidden"
-                  } overflow-y-scroll  md:min-w-[340px] md:max-w-[340px] flex-col`}
+                  } overflow-y-scroll ${styles.customScrollbar
+                  }  md:min-w-[340px] md:max-w-[340px] flex-col`}
               >
                 <Members
                   id={data?.id}
@@ -1048,11 +1050,12 @@ function Components({ params }) {
 
             {(!optionType || optionType === "members") && (
               <div
-                className={`w-full relative overflow-y-scroll ${currentState === "chat"
-                  ? reply && replyId
-                    ? "h-[78%]"
-                    : "h-[82%]"
-                  : "h-[90%]"
+                className={`w-full relative ${styles.customScrollbar
+                  }  overflow-y-scroll ${currentState === "chat"
+                    ? reply && replyId
+                      ? "h-[78%]"
+                      : "h-[82%]"
+                    : "h-[90%]"
                   }`}
               >
 
@@ -1083,18 +1086,22 @@ function Components({ params }) {
                     {isTopicJoined ? (
                       <div>
                         {com.map((d, i) => (
-                          <CommunityPost
-                            id={`${d?.posts?._id}`}
-                            key={`${d?.posts?._id}`}
-                            d={d}
-                            i={i}
-                            comId={params?.id}
-                            title={title}
-                            setShare={setShare}
-                            data={data}
-                            setShareValue={setShareValue}
-                            handleLike={handleLike}
-                          />
+                          <>
+                            {console.log(d, "post")}
+                            <CommunityPost
+                              id={`${d?.posts?._id}`}
+                              key={`${d?.posts?._id}`}
+                              d={d}
+                              i={i}
+                              comId={params?.id}
+                              title={title}
+                              setShare={setShare}
+                              data={data}
+                              setShareValue={setShareValue}
+                              handleLike={handleLike}
+                            />
+                          </>
+
                         ))}
                       </div>
                     ) : (

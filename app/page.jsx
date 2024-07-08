@@ -529,8 +529,8 @@ function page() {
             )}
 
             {/* {popup && */}
-            <div className="fixed sm:bottom-0 bottom-12 left-0 w-full">
-              <div className="w-full animate-popup text-black z-50 relative py-2 justify-center items-center text-sm px-3 flex">
+            <div className="fixed hidden sm:block sm:bottom-0 bottom-12 left-0 w-full">
+              <div className="w-full animate-popup hidden  text-black z-50 relative py-2 justify-center items-center text-sm px-3 sm:flex">
                 <div className="bg-white flex justify-between items-center w-full py-4 rounded-xl px-3 h-full">
                   {/* <a href="https://web.grovyo.com/login" target="_blank" className="font-medium">
                         Web App !

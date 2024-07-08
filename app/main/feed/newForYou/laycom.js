@@ -37,6 +37,7 @@ export default function NewforyouLayout({ children }) {
 	const [feed, setFeed] = useState([]);
 	const [shareValue, setShareValue] = useState("");
 	const [share, setShare] = useState(false);
+
 	const fetchfeed = async () => {
 		try {
 			const res = await axios.get(`${API}/newfetchfeeds3/${data?.id}`);
@@ -62,6 +63,7 @@ export default function NewforyouLayout({ children }) {
 			console.log(error);
 		}
 	};
+
 	const unjoinmembers = async (comId) => {
 		try {
 			const res = await axios.post(`${API}/unjoinmember/${data?.id}/${comId}`);
@@ -87,8 +89,8 @@ export default function NewforyouLayout({ children }) {
 			console.log(error);
 		}
 	};
-	// Like function
 
+	// Like function
 	const handleLike = async (postId, liked) => {
 		try {
 			// setLike(true);
@@ -155,6 +157,7 @@ export default function NewforyouLayout({ children }) {
 			setIsMobile(true);
 		}
 	}, []);
+
 	useEffect(() => {
 		const handleResize = () => {
 			const initialWidth = window.innerWidth;
@@ -181,6 +184,7 @@ export default function NewforyouLayout({ children }) {
 			dispatch(setHide(true));
 		}
 	}, [searchParams, id]);
+
 	return (
 		<>
 			{share && (
@@ -301,22 +305,21 @@ export default function NewforyouLayout({ children }) {
 			)}
 
 			{/* lg:w-[360px] md:min-w-[390px]  */}
-
 			{!id && (
-				<div className="w-[100%] h-[100vh]  bg-white dark:bg-[#0D0D0D] flex pn:max-md:justify-center ">
-					<div className=" pn:max-md:h-[96vh] lg:w-[27%] md:w-[32%] sm:w-[37%] h-screen overflow-auto scrollbar-hide select-none dark:border:[#273142] flex flex-col w-full items-center md:border-r-2 border-[#f7f7f7] dark:border-[#131619] self-end ">
+				<div className="w-[100%] h-[100vh] bg-white dark:bg-[#0D0D0D] flex pn:max-md:justify-center ">
+					<div className=" pn:max-md:h-[96vh] lg:w-[27%] md:w-[32%] sm:w-[37%] h-screen md:overflow-auto scrollbar-hide select-none dark:border:[#273142] flex flex-col w-full items-center md:border-r-2 border-[#f7f7f7] dark:border-[#131619] self-end ">
 						{/* post 1*/}
 						<div className="h-[10vh]"></div>
 						<div
 							id="scrollableDiv"
 							style={{
 								height: "92vh",
-								overflow: "auto",
+								overflowY: "auto",
 								display: "flex",
 								flexDirection: "column",
-								width: "100%",
+								width: "100%"
 							}}
-							className={`pn:max-sm:w-[100vw] px-2 ${styles.customScrollbar}`}
+							className={` pn:max-sm:w-[calc(100%-8px)] ${styles.customScrollbar}`}
 						>
 							{/*Put the scroll bar always on the bottom*/}
 							<InfiniteScroll
@@ -324,7 +327,8 @@ export default function NewforyouLayout({ children }) {
 								next={loadmoreData}
 								loader={
 									<>
-										<div className="bg-slate-50 dark:bg-graydark pn:max-sm:p-3 w-[100%] pn:max-sm:w-[100vw] p-4 pn:max-md:rounded-2xl">
+
+										<div className="bg-slate-50 dark:bg-graydark  pn:max-sm:p-3 w-[100%]  p-4 pn:max-md:rounded-2xl">
 											<div className="w-[100%] rounded-2xl flex flex-col items-center ">
 												<div className="h-[55px] px-2 w-[100%] flex flex-row items-center ">
 													<div className="w-[15%] flex object-scale-down items-center h-[100%] ">
@@ -423,9 +427,10 @@ export default function NewforyouLayout({ children }) {
 									</p>
 								}
 								inverse={false} //
+
 								scrollableTarget="scrollableDiv"
 							>
-								<div className="my-1 bg-white dark:bg-graydark">
+								<div className="my-1 w-full bg-white dark:bg-graydark">
 									{feed.map((d, i) => (
 										<>
 											{/* ads */}
@@ -497,6 +502,7 @@ export default function NewforyouLayout({ children }) {
 																					<VideoPlayer
 																						key={i}
 																						src={f?.content}
+																						poster={f?.thumbnail}
 																						width={"100%"}
 																						height={"h-full"}
 																					/>
@@ -517,6 +523,7 @@ export default function NewforyouLayout({ children }) {
 																			) : (
 																				<VideoPlayer
 																					key={i}
+																					poster={d?.urls[0]?.thumbnail}
 																					src={d?.urls[0]?.content}
 																					width={"100%"}
 																					height={"h-full"}
@@ -828,6 +835,7 @@ export default function NewforyouLayout({ children }) {
 					<div className="lg:w-[73%] md:w-[68%] sm:w-[63%] pn:max-sm:hidden"> {children}</div>
 				</div>
 			)}
+
 			{id && <Newforyou id={id} />}
 		</>
 	);
