@@ -29,6 +29,9 @@ import CommunityPost from "@/app/component/CommunityPost";
 import Loader from "@/app/component/Loader";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import Image from "next/image";
+import publicimage from "../../../../assets/public.png";
+import privateimage from "../../../../assets/private.png";
+import deletered from "../../../../assets/reddelete.png";
 import reportspic from "../../../../assets/reports.png";
 import mutepic from "../../../../assets/mute.png";
 import logout from "../../../../assets/logout.png";
@@ -917,7 +920,7 @@ function Components({ params }) {
                     <BsThreeDotsVertical />
                     <div
                       className={`absolute duration-100 ${options
-                        ? "w-auto p-2 px-4 top-7 text-sm h-auto -left-[140px] "
+                        ? "w-auto min-w-[160px] p-2 px-4 top-7 text-sm h-auto -left-[150px] "
                         : "w-0 h-0 text-[0px] top-0 left-0"
                         } z-40 rounded-lg dark:text-white text-[#6e6e6e] bg-white shadow-custom-lg dark:bg-[#0D0F10]`}
                     >
@@ -987,7 +990,19 @@ function Components({ params }) {
                         )}
 
                         {creatorId === data?.id ? (
-                          <div onClick={deleteCommunity}>Delete</div>
+                          <div
+                            className="flex items-center justify-start"
+                            onClick={deleteCommunity}
+                          >
+                            <div className="flex justify-center  items-center">
+                              <Image
+                                src={deletered}
+                                className={`relative top-2 max-w-[40px] max-h-[40px] flex justify-center items-center h-full ${options ? "" : "hidden"
+                                  } `}
+                              />
+                            </div>
+                            <div>Delete</div>
+                          </div>
                         ) : (
                           <div>
                             {isjoined ? (
@@ -1012,13 +1027,32 @@ function Components({ params }) {
                         {data?.id === creatorId && (
                           <div>
                             {comtype === "private" ? (
-                              <div onClick={changeComType}>
-                                {" "}
-                                set to public
+                              <div
+                                onClick={changeComType}
+                                className="flex items-center justify-start"
+                              >
+                                <div className="flex justify-center  items-center">
+                                  <Image
+                                    src={publicimage}
+                                    className={`relative top-2 max-w-[40px] max-h-[40px] flex justify-center items-center h-full ${options ? "" : "hidden"
+                                      } `}
+                                  />
+                                </div>
+                                <div> set to public</div>
                               </div>
                             ) : (
-                              <div onClick={changeComType}>
-                                set to private
+                              <div
+                                onClick={changeComType}
+                                className="flex items-center justify-start"
+                              >
+                                <div className="flex justify-center  items-center">
+                                  <Image
+                                    src={privateimage}
+                                    className={`relative top-2 max-w-[40px] max-h-[40px] flex justify-center items-center h-full ${options ? "" : "hidden"
+                                      } `}
+                                  />
+                                </div>
+                                <div> set to private</div>
                               </div>
                             )}
                           </div>
@@ -1048,37 +1082,39 @@ function Components({ params }) {
               </div>
             </div>
 
+            <div className="flex gap-2 h-[8%] border-b dark:border-[#131619]">
+              <div className="flex gap-6 ml-4 text-sm">
+                {topics.map((d, i) => (
+                  <div
+                    onClick={() => handleFetch(d?._id, d?.nature)}
+                    key={i}
+                    className="flex "
+                  >
+                    <div
+                      className={`flex cursor-pointer items-center px-4 py-4 ${tId === d?._id
+                        ? " dark:text-white border-b font-semibold border-[#0077FF]"
+                        : "text-[#9B9C9E] "
+                        }  `}
+                    >
+                      {d?.title}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             {(!optionType || optionType === "members") && (
               <div
                 className={`w-full relative ${styles.customScrollbar
                   }  overflow-y-scroll ${currentState === "chat"
                     ? reply && replyId
-                      ? "h-[78%]"
-                      : "h-[82%]"
-                    : "h-[90%]"
+                      ? "h-[70%]"
+                      : "h-[74%]"
+                    : "h-[82%]"
                   }`}
               >
 
-                <div className="flex gap-2  border-b dark:border-[#131619]">
-                  <div className="flex gap-6 ml-4 text-sm">
-                    {topics.map((d, i) => (
-                      <div
-                        onClick={() => handleFetch(d?._id, d?.nature)}
-                        key={i}
-                        className="flex "
-                      >
-                        <div
-                          className={`flex cursor-pointer items-center px-4 py-4 ${tId === d?._id
-                            ? " dark:text-white border-b font-semibold border-[#0077FF]"
-                            : "text-[#9B9C9E] "
-                            }  `}
-                        >
-                          {d?.title}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+
 
 
                 {currentState === "post" && (
@@ -1087,7 +1123,7 @@ function Components({ params }) {
                       <div>
                         {com.map((d, i) => (
                           <>
-                            {console.log(d, "post")}
+
                             <CommunityPost
                               id={`${d?.posts?._id}`}
                               key={`${d?.posts?._id}`}
@@ -1358,7 +1394,7 @@ function Components({ params }) {
             )}
 
             {currentState === "chat" && (
-              <div className={`bg-[#fff] duration-75 flex border-t-2 dark:bg-bluelight justify-center ${reply && replyId
+              <div className={`bg-[#fff] duration-75 flex border-t-2 dark:border-[#131619] dark:bg-bluelight justify-center ${reply && replyId
                 ? "h-[12%] gap-2 space-y-2"
                 : "h-[8%] items-center"
                 }`}>

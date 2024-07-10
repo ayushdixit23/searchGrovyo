@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import { HiOutlineDotsVertical } from "react-icons/hi";
 import {
   setReplyFunction,
   setType,
@@ -9,7 +8,10 @@ import axios from "axios";
 import { API } from "@/Essentials";
 import VideoPlayer from "./VideoPlayer";
 import { socketemitfunc } from "../utils/SocketWrapper";
+import deletechat from "../assets/deletechat.png";
+import replypic from "../assets/replypic.png";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import Image from "next/image";
 
 const CommunityChat = ({ d, i, data, dispatch, tId, socket, messages }) => {
   const [click, setClick] = useState(false);
@@ -143,7 +145,7 @@ const CommunityChat = ({ d, i, data, dispatch, tId, socket, messages }) => {
           <div className="flex flex-col items-center justify-center">
             {data?.id !== d?.sender?._id && (
               <div className="h-[40px] w-[40px] overflow-hidden bg-[#fff] rounded-2xl">
-                <img src={d?.dp} className="w-full h-full" />
+                <img src={d?.dp} className="w-full object-cover h-full" />
               </div>
             )}
 
@@ -166,7 +168,7 @@ const CommunityChat = ({ d, i, data, dispatch, tId, socket, messages }) => {
               className={`relative group w-auto h-auto flex justify-start items-center ${
                 data?.id === d?.sender?._id
                   ? "bg-[#5585FF] text-white p-2 px-4 md:text-[14px]  rounded-l-2xl pn:max-sm:text-[14px] max-w-[650px] rounded-br-2xl "
-                  : "bg-[#ffffff] text-[#9B9C9E] font-medium border border-[#DEE1E5]  dark:bg-[#1A1D21] p-2 px-4 rounded-r-2xl md:text-[14px] pn:max-sm:text-[14px] max-w-[650px] rounded-bl-2xl"
+                  : "bg-[#ffffff] text-[#9B9C9E] font-medium border dark:border-none border-[#DEE1E5]  dark:bg-[#1A1D21] p-2 px-4 rounded-r-2xl md:text-[14px] pn:max-sm:text-[14px] max-w-[650px] rounded-bl-2xl"
               } `}
               style={{
                 overflowWrap: "break-word",
@@ -232,33 +234,20 @@ const CommunityChat = ({ d, i, data, dispatch, tId, socket, messages }) => {
                 </div>
               )}
               <div
-                className={`${
-                  popupPosition === "top" ? "bottom-0" : "top-4" // Dynamically set position based on popupPosition state
-                } absolute z-40 ${
+                className={`flex flex-col gap-1 absolute z-40 ${
                   data?.id === d?.sender?._id
                     ? "right-0"
                     : "left-0 bg-[#f3f3f3]"
                 }   shadow-2xl  text-black  duration-100
-                      ${
-                        click === true
-                          ? "rounded-[15px] bg-white shadow-2xl  py-2 w-[80px] h-auto"
-                          : "rounded-[0px] bg-white shadow-0 py-0 w-[0px] h-[0px]"
-                      } `}
+              ${
+                popupPosition === "top" ? "bottom-0" : "top-4" // Dynamically set position based on popupPosition state
+              }
+                ${
+                  click === true
+                    ? "rounded-[15px] bg-white dark:text-white dark:bg-[#0D0F10] text-[#6e6e6e] shadow-md dark:shadow-custom-lg py-2 w-auto h-auto min-w-[150px]"
+                    : "rounded-[0px] bg-white dark:text-white dark:bg-[#0D0F10] text-[#6e6e6e] shadow-0 py-0 w-[0px] h-[0px]"
+                } `}
               >
-                <div
-                  onClick={() => {
-                    deletepopUp(d?.mesId);
-                    setClick(false);
-                  }}
-                  className={`duration-100 ${
-                    click === true
-                      ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
-                      : "text-[0px] my-0 px-0"
-                  }`}
-                >
-                  Delete
-                </div>
-
                 <div
                   onClick={() => {
                     dispatch(setType("reply"));
@@ -270,17 +259,44 @@ const CommunityChat = ({ d, i, data, dispatch, tId, socket, messages }) => {
                     );
                     setClick(false);
                   }}
-                  className={`duration-100 ${
+                  className={`duration-100 flex gap-2 items-center ${
                     click === true
-                      ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                      ? "text-[14px] my-2 px-3 cursor-pointer"
                       : "text-[0px] my-0 px-0"
                   }`}
                 >
-                  Reply
+                  <div>
+                    <Image
+                      src={replypic}
+                      className={`duration-75 ${
+                        click === true ? "w-[19px] h-[17px]" : "h-[0px] w-[0px]"
+                      }`}
+                    />
+                  </div>
+                  <div>Reply</div>
                 </div>
 
-                {/* <div></div>
-				<div></div> */}
+                <div
+                  onClick={() => {
+                    deletepopUp(d?.mesId);
+                    setClick(false);
+                  }}
+                  className={`duration-100 flex gap-2 items-center ${
+                    click === true
+                      ? "text-[14px] my-2 px-3 cursor-pointer"
+                      : "text-[0px] my-0 px-0"
+                  }`}
+                >
+                  <div>
+                    <Image
+                      src={deletechat}
+                      className={`duration-75 ${
+                        click === true ? "w-[19px] h-[17px]" : "h-[0px] w-[0px]"
+                      }`}
+                    />
+                  </div>
+                  <div>Delete</div>
+                </div>
               </div>
             </div>
           )}
@@ -299,7 +315,7 @@ const CommunityChat = ({ d, i, data, dispatch, tId, socket, messages }) => {
               className={`relative group h-auto  flex justify-center items-center ${
                 data?.id === d?.sender?._id
                   ? "bg-[#5585FF]  text-white  rounded-l-2xl pn:max-sm:text-[14px] max-w-[320px] rounded-br-2xl "
-                  : "bg-[#ffffff] text-[#9B9C9E] font-medium border border-[#DEE1E5] dark:bg-[#1A1D21] p-2 rounded-r-2xl pn:max-sm:text-[14px] max-w-[320px] rounded-bl-2xl"
+                  : "bg-[#ffffff] text-[#9B9C9E] font-medium border border-[#DEE1E5] dark:border-none dark:bg-[#1A1D21] rounded-r-2xl pn:max-sm:text-[14px] max-w-[320px] rounded-bl-2xl"
               }`}
             >
               <div className="p-2">
@@ -336,7 +352,7 @@ const CommunityChat = ({ d, i, data, dispatch, tId, socket, messages }) => {
                           </a>
                         ) : (
                           <div key={index}>
-                            <div className="bg-slate-400 p-1 rounded-lg">
+                            <div className="dark:bg-[#ododod] bg-white p-1 rounded-lg">
                               {d?.reply}
                             </div>
                             <div>{part}</div>
@@ -349,7 +365,7 @@ const CommunityChat = ({ d, i, data, dispatch, tId, socket, messages }) => {
                           className={` ${
                             data?.id === d?.sender?._id
                               ? "bg-[#0058e5] text-white  border-r-4 border-[#fff] "
-                              : "bg-[#f9fafb] text-black border-l-4 border-[#5585FF] "
+                              : "bg-[#f9fafb] dark:bg-[#0D0D0D] dark:text-white text-black border-l-4 border-[#5585FF] "
                           }  px-2  p-1 rounded-lg md:text-[12px] pn:max-sm:text-[12px] `}
                           style={{
                             overflowWrap: "break-word",
@@ -365,7 +381,7 @@ const CommunityChat = ({ d, i, data, dispatch, tId, socket, messages }) => {
                             wordWrap: "break-word",
                             wordBreak: "break-word",
                           }}
-                          className="md:text-[14px] pn:max-sm:text-[14px] px-2 "
+                          className="md:text-[14px] pn:max-sm:text-[14px] py-1 px-2 "
                         >
                           {d?.text}
                         </div>
@@ -389,33 +405,20 @@ const CommunityChat = ({ d, i, data, dispatch, tId, socket, messages }) => {
               )}
 
               <div
-                className={`${
-                  popupPosition === "top" ? "bottom-0" : "top-4" // Dynamically set position based on popupPosition state
-                } absolute z-40 ${
+                className={`flex flex-col gap-1 absolute z-40 ${
                   data?.id === d?.sender?._id
                     ? "right-0"
                     : "left-0 bg-[#f3f3f3]"
                 }   shadow-2xl  text-black  duration-100
-                      ${
-                        click === true
-                          ? "rounded-[15px] bg-white shadow-2xl  py-2 w-[80px] h-auto"
-                          : "rounded-[0px] bg-white shadow-0 py-0 w-[0px] h-[0px]"
-                      } `}
-              >
-                <div
-                  onClick={() => {
-                    deletepopUp(d?.mesId);
-                    setClick(false);
-                  }}
-                  className={`duration-100 ${
+                ${
+                  popupPosition === "top" ? "bottom-0" : "top-4" // Dynamically set position based on popupPosition state
+                }
+                  ${
                     click === true
-                      ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
-                      : "text-[0px] my-0 px-0"
-                  }`}
-                >
-                  Delete
-                </div>
-
+                      ? "rounded-[15px] bg-white dark:text-white dark:bg-[#0D0F10] text-[#6e6e6e] shadow-md dark:shadow-custom-lg py-2 w-auto h-auto min-w-[150px]"
+                      : "rounded-[0px] bg-white dark:text-white dark:bg-[#0D0F10] text-[#6e6e6e] shadow-0 py-0 w-[0px] h-[0px]"
+                  } `}
+              >
                 <div
                   onClick={() => {
                     dispatch(setType("reply"));
@@ -427,13 +430,43 @@ const CommunityChat = ({ d, i, data, dispatch, tId, socket, messages }) => {
                     );
                     setClick(false);
                   }}
-                  className={`duration-100 ${
+                  className={`duration-100 flex gap-2 items-center ${
                     click === true
-                      ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                      ? "text-[14px] my-2 px-3 cursor-pointer"
                       : "text-[0px] my-0 px-0"
                   }`}
                 >
-                  Reply
+                  <div>
+                    <Image
+                      src={replypic}
+                      className={`duration-75 ${
+                        click === true ? "w-[19px] h-[17px]" : "h-[0px] w-[0px]"
+                      }`}
+                    />
+                  </div>
+                  <div>Reply</div>
+                </div>
+
+                <div
+                  onClick={() => {
+                    deletepopUp(d?.mesId);
+                    setClick(false);
+                  }}
+                  className={`duration-100 flex gap-2 items-center ${
+                    click === true
+                      ? "text-[14px] my-2 px-3 cursor-pointer"
+                      : "text-[0px] my-0 px-0"
+                  }`}
+                >
+                  <div>
+                    <Image
+                      src={deletechat}
+                      className={`duration-75 ${
+                        click === true ? "w-[19px] h-[17px]" : "h-[0px] w-[0px]"
+                      }`}
+                    />
+                  </div>
+                  <div>Delete</div>
                 </div>
               </div>
             </div>
@@ -452,7 +485,7 @@ const CommunityChat = ({ d, i, data, dispatch, tId, socket, messages }) => {
               className={`relative max-w-[240px] group ${
                 data?.id === d?.sender?._id
                   ? "bg-[#5585FF] text-white p-2  rounded-l-2xl mt-4 rounded-br-2xl "
-                  : "bg-[#ffffff] text-[#9B9C9E] font-medium border border-[#DEE1E5] dark:bg-[#1A1D21] p-2 rounded-r-2xl mt-4 rounded-bl-2xl"
+                  : "bg-[#ffffff] text-[#9B9C9E] font-medium border border-[#DEE1E5] dark:border-none dark:bg-[#1A1D21] p-2 rounded-r-2xl mt-4 rounded-bl-2xl"
               }`}
             >
               <div
@@ -503,33 +536,20 @@ const CommunityChat = ({ d, i, data, dispatch, tId, socket, messages }) => {
               )}
 
               <div
-                className={`${
-                  popupPosition === "top" ? "bottom-0" : "top-4" // Dynamically set position based on popupPosition state
-                } absolute z-40 ${
+                className={`flex flex-col gap-1 absolute z-40 ${
                   data?.id === d?.sender?._id
                     ? "right-0"
                     : "left-0 bg-[#f3f3f3]"
                 }   shadow-2xl  text-black  duration-100
-                      ${
-                        click === true
-                          ? "rounded-[15px] bg-white shadow-2xl  py-2 w-[80px] h-auto"
-                          : "rounded-[0px] bg-white shadow-0 py-0 w-[0px] h-[0px]"
-                      } `}
-              >
-                <div
-                  onClick={() => {
-                    deletepopUp(d?.mesId);
-                    setClick(false);
-                  }}
-                  className={`duration-100 ${
+                ${
+                  popupPosition === "top" ? "bottom-0" : "top-4" // Dynamically set position based on popupPosition state
+                }
+                  ${
                     click === true
-                      ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
-                      : "text-[0px] my-0 px-0"
-                  }`}
-                >
-                  Delete
-                </div>
-
+                      ? "rounded-[15px] bg-white dark:text-white dark:bg-[#0D0F10] text-[#6e6e6e] shadow-md dark:shadow-custom-lg py-2 w-auto h-auto min-w-[150px]"
+                      : "rounded-[0px] bg-white dark:text-white dark:bg-[#0D0F10] text-[#6e6e6e] shadow-0 py-0 w-[0px] h-[0px]"
+                  } `}
+              >
                 <div
                   onClick={() => {
                     dispatch(setType("reply"));
@@ -541,17 +561,44 @@ const CommunityChat = ({ d, i, data, dispatch, tId, socket, messages }) => {
                     );
                     setClick(false);
                   }}
-                  className={`duration-100 ${
+                  className={`duration-100 flex gap-2 items-center ${
                     click === true
-                      ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                      ? "text-[14px] my-2 px-3 cursor-pointer"
                       : "text-[0px] my-0 px-0"
                   }`}
                 >
-                  Reply
+                  <div>
+                    <Image
+                      src={replypic}
+                      className={`duration-75 ${
+                        click === true ? "w-[19px] h-[17px]" : "h-[0px] w-[0px]"
+                      }`}
+                    />
+                  </div>
+                  <div>Reply</div>
                 </div>
 
-                {/* <div></div>
-				<div></div> */}
+                <div
+                  onClick={() => {
+                    deletepopUp(d?.mesId);
+                    setClick(false);
+                  }}
+                  className={`duration-100 flex gap-2 items-center ${
+                    click === true
+                      ? "text-[14px] my-2 px-3 cursor-pointer"
+                      : "text-[0px] my-0 px-0"
+                  }`}
+                >
+                  <div>
+                    <Image
+                      src={deletechat}
+                      className={`duration-75 ${
+                        click === true ? "w-[19px] h-[17px]" : "h-[0px] w-[0px]"
+                      }`}
+                    />
+                  </div>
+                  <div>Delete</div>
+                </div>
               </div>
             </div>
           )}
@@ -569,7 +616,7 @@ const CommunityChat = ({ d, i, data, dispatch, tId, socket, messages }) => {
               className={`relative max-w-[250px] max-h-[250px] group ${
                 data?.id === d?.sender?._id
                   ? " bg-[#5585FF] text-white mt-4 flex justify-center items-center p-2 rounded-l-2xl rounded-br-2xl"
-                  : "bg-[#ffffff] dark:text-black border border-[#DEE1E5] dark:bg-gray-100 mt-4 flex justify-center items-center p-2 rounded-r-2xl rounded-bl-2xl"
+                  : "bg-[#ffffff] dark:text-black border border-[#DEE1E5] dark:border-none dark:bg-gray-100 mt-4 flex justify-center items-center p-2 rounded-r-2xl rounded-bl-2xl"
               }`}
             >
               <div className="group-hover:pr-2">
@@ -601,33 +648,20 @@ const CommunityChat = ({ d, i, data, dispatch, tId, socket, messages }) => {
               )}
 
               <div
-                className={`${
-                  popupPosition === "top" ? "bottom-0" : "top-4" // Dynamically set position based on popupPosition state
-                } absolute z-40 ${
+                className={`flex flex-col gap-1 absolute z-40 ${
                   data?.id === d?.sender?._id
                     ? "right-0"
                     : "left-0 bg-[#f3f3f3]"
                 }   shadow-2xl  text-black  duration-100
-                      ${
-                        click === true
-                          ? "rounded-[15px] bg-white shadow-2xl  py-2 w-[80px] h-auto"
-                          : "rounded-[0px] bg-white shadow-0 py-0 w-[0px] h-[0px]"
-                      } `}
+              ${
+                popupPosition === "top" ? "bottom-0" : "top-4" // Dynamically set position based on popupPosition state
+              }
+                ${
+                  click === true
+                    ? "rounded-[15px] bg-white dark:text-white dark:bg-[#0D0F10] text-[#6e6e6e] shadow-md dark:shadow-custom-lg py-2 w-auto h-auto min-w-[150px]"
+                    : "rounded-[0px] bg-white dark:text-white dark:bg-[#0D0F10] text-[#6e6e6e] shadow-0 py-0 w-[0px] h-[0px]"
+                } `}
               >
-                <div
-                  onClick={() => {
-                    deletepopUp(d?.mesId);
-                    setClick(false);
-                  }}
-                  className={`duration-100 ${
-                    click === true
-                      ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
-                      : "text-[0px] my-0 px-0"
-                  }`}
-                >
-                  Delete
-                </div>
-
                 <div
                   onClick={() => {
                     dispatch(setType("reply"));
@@ -639,13 +673,43 @@ const CommunityChat = ({ d, i, data, dispatch, tId, socket, messages }) => {
                     );
                     setClick(false);
                   }}
-                  className={`duration-100 ${
+                  className={`duration-100 flex gap-2 items-center ${
                     click === true
-                      ? "text-[14px] my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                      ? "text-[14px] my-2 px-3 cursor-pointer"
                       : "text-[0px] my-0 px-0"
                   }`}
                 >
-                  Reply
+                  <div>
+                    <Image
+                      src={replypic}
+                      className={`duration-75 ${
+                        click === true ? "w-[19px] h-[17px]" : "h-[0px] w-[0px]"
+                      }`}
+                    />
+                  </div>
+                  <div>Reply</div>
+                </div>
+
+                <div
+                  onClick={() => {
+                    deletepopUp(d?.mesId);
+                    setClick(false);
+                  }}
+                  className={`duration-100 flex gap-2 items-center ${
+                    click === true
+                      ? "text-[14px] my-2 px-3 cursor-pointer"
+                      : "text-[0px] my-0 px-0"
+                  }`}
+                >
+                  <div>
+                    <Image
+                      src={deletechat}
+                      className={`duration-75 ${
+                        click === true ? "w-[19px] h-[17px]" : "h-[0px] w-[0px]"
+                      }`}
+                    />
+                  </div>
+                  <div>Delete</div>
                 </div>
 
                 {/* <div></div>
@@ -669,7 +733,7 @@ const CommunityChat = ({ d, i, data, dispatch, tId, socket, messages }) => {
                 className={`relative group  ${
                   data?.id === d?.sender?._id
                     ? "bg-[#5585FF] text-white p-2 mt-4 rounded-l-2xl rounded-br-2xl"
-                    : "bg-[#ffffff] text-[#9B9C9E] font-medium border border-[#DEE1E5] dark:bg-[#1A1D21] p-2 mt-4 rounded-r-2xl rounded-bl-2xl"
+                    : "bg-[#ffffff] text-[#9B9C9E] font-medium border border-[#DEE1E5] dark:border-none dark:bg-[#1A1D21] p-2 mt-4 rounded-r-2xl rounded-bl-2xl"
                 }`}
               >
                 <div className="group-hover:pr-2">
@@ -698,25 +762,20 @@ const CommunityChat = ({ d, i, data, dispatch, tId, socket, messages }) => {
                 </div>
                 {click && (
                   <div
-                    className={`${
-                      popupPosition === "top" ? "bottom-20" : "top-4" // Dynamically set position based on popupPosition state
-                    } absolute z-40 ${
+                    className={`flex flex-col gap-1 absolute z-40 ${
                       data?.id === d?.sender?._id
-                        ? "right-0 bg-white"
+                        ? "right-0"
                         : "left-0 bg-[#f3f3f3]"
-                    }   shadow-2xl  text-black  
-                     rounded-lg py-2 w-[80px] h-auto  `}
+                    }   shadow-2xl  text-black  duration-100
+                ${
+                  popupPosition === "top" ? "bottom-0" : "top-4" // Dynamically set position based on popupPosition state
+                }
+                  ${
+                    click === true
+                      ? "rounded-[15px] bg-white dark:text-white dark:bg-[#0D0F10] text-[#6e6e6e] shadow-md dark:shadow-custom-lg py-2 w-auto h-auto min-w-[150px]"
+                      : "rounded-[0px] bg-white dark:text-white dark:bg-[#0D0F10] text-[#6e6e6e] shadow-0 py-0 w-[0px] h-[0px]"
+                  } `}
                   >
-                    <div
-                      onClick={() => {
-                        deletepopUp(d?.mesId);
-                        setClick(false);
-                      }}
-                      className="text-sm my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
-                    >
-                      Delete
-                    </div>
-
                     <div
                       onClick={() => {
                         dispatch(setType("reply"));
@@ -728,9 +787,47 @@ const CommunityChat = ({ d, i, data, dispatch, tId, socket, messages }) => {
                         );
                         setClick(false);
                       }}
-                      className="text-sm my-2 px-3 hover:bg-[#f3f3f3]  cursor-pointer"
+                      className={`duration-100 flex gap-2 items-center ${
+                        click === true
+                          ? "text-[14px] my-2 px-3 cursor-pointer"
+                          : "text-[0px] my-0 px-0"
+                      }`}
                     >
-                      Reply
+                      <div>
+                        <Image
+                          src={replypic}
+                          className={`duration-75 ${
+                            click === true
+                              ? "w-[19px] h-[17px]"
+                              : "h-[0px] w-[0px]"
+                          }`}
+                        />
+                      </div>
+                      <div>Reply</div>
+                    </div>
+
+                    <div
+                      onClick={() => {
+                        deletepopUp(d?.mesId);
+                        setClick(false);
+                      }}
+                      className={`duration-100 flex gap-2 items-center ${
+                        click === true
+                          ? "text-[14px] my-2 px-3 cursor-pointer"
+                          : "text-[0px] my-0 px-0"
+                      }`}
+                    >
+                      <div>
+                        <Image
+                          src={deletechat}
+                          className={`duration-75 ${
+                            click === true
+                              ? "w-[19px] h-[17px]"
+                              : "h-[0px] w-[0px]"
+                          }`}
+                        />
+                      </div>
+                      <div>Delete</div>
                     </div>
                   </div>
                 )}

@@ -4,11 +4,16 @@ import { PiHandsClapping } from "react-icons/pi";
 import { VscSend } from "react-icons/vsc";
 import Comments from "./Comments";
 import { GoArrowRight } from "react-icons/go";
+import liked from "../assets/liked.png";
+import lightunlike from "../assets/lightunlike.png";
+import darkunlike from "../assets/darkunlike.png";
+import Image from "next/image";
+import { useTheme } from "next-themes";
 
 const CommunityPost = forwardRef(
   ({ d, i, title, handleLike, data, comId, setShareValue, setShare }, ref) => {
     const [showComments, setShowComments] = useState(false);
-
+    const { theme } = useTheme();
     return (
       <>
         <div
@@ -243,11 +248,17 @@ const CommunityPost = forwardRef(
                     onClick={() => handleLike(d?.posts?._id, d?.liked)}
                     className={`  dark:bg-graydark flex justify-center rounded-xl ${
                       d?.liked
-                        ? "bg-[#e0a648] dark:text-black dark:bg-yellow-300 text-white"
-                        : "bg-[#f4f4f4] dark:border dark:border-[#1A1D21]"
+                        ? "text-white"
+                        : "dark:border dark:border-[#1A1D21]"
                     } items-center gap-1 p-2 `}
                   >
-                    <PiHandsClapping />
+                    {d?.liked ? (
+                      <Image src={liked} className="w-[20px] h-[20px]" />
+                    ) : theme == "dark" ? (
+                      <Image src={darkunlike} className="w-[20px] h-[20px]" />
+                    ) : (
+                      <Image src={lightunlike} className="w-[20px] h-[20px]" />
+                    )}
                     <div className="text-[12px]">{d?.posts?.likes}</div>
                   </div>
                   <div
