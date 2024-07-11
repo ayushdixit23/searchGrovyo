@@ -1,8 +1,8 @@
 import React from "react";
 
-const page = () => {
+const SettingChat = () => {
   return (
-    <div className="dark:bg-[#0D0D0D] h-full p-6">
+    <div className="dark:bg-[#0D0D0D] pn:max-sm:mt-[60px] sm:h-full p-6">
       <div className="h-full ">
         <div className="dark:bg-[#0D0F10] bg-[#fafafa] flex flex-col gap-5  p-5 rounded-xl">
           <div className="font-semibold text-sm">Blocked Users</div>
@@ -21,4 +21,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default SettingChat;

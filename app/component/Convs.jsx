@@ -32,13 +32,13 @@ const Convs = ({ d, handleMuting, removingchat, href, handleVisible }) => {
           show ? "z-40" : "-z-20"
         }  w-screen h-screen`}
       ></div>
-      <div className="w-[100%] py-3 gap-2 px-2 duration-200 hover:bg-slate-100 hover:dark:bg-[#191B1C] h-[55px]  flex flex-row justify-between items-center ">
+      <div className="w-[100%]  gap-2 px-2 duration-200 hover:bg-slate-100 hover:dark:bg-[#191B1C] flex flex-row justify-between items-center ">
         <Link
           onClick={handleVisible}
           href={href}
-          className=" gap-3 py-2 w-full flex flex-row justify-start items-center "
+          className=" gap-3 py-3 sm:py-2 w-full flex flex-row justify-start items-center "
         >
-          <div className="h-[40px] w-[40px]">
+          <div className="h-[40px] w-[40px]  sm:h-[45px] sm:w-[45px]">
             <img
               src={d?.pic}
               className="h-full w-full object-cover rounded-[17px] ring-1 dark:ring-[#273142] ring-white bg-white dark:bg-bluedark "

@@ -2,10 +2,10 @@
 import { useAuthContext } from "@/app/utils/AuthWrapper";
 import React from "react";
 
-const page = () => {
+const SettingCommunity = () => {
   const { data } = useAuthContext();
   return (
-    <div className="dark:bg-[#0D0D0D] h-full p-6">
+    <div className="dark:bg-[#0D0D0D] pn:max-sm:mt-[59px] sm:h-full p-4 sm:p-6">
       <div className="h-full ">
         <div className="dark:bg-[#0D0F10] bg-[#fafafa] flex flex-col gap-5  p-5 rounded-xl">
           <div className="font-semibold text-sm">Community Analytics</div>
@@ -35,4 +35,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default SettingCommunity;

@@ -430,7 +430,7 @@ export default function NewforyouLayout({ children }) {
 
 								scrollableTarget="scrollableDiv"
 							>
-								<div className="my-1 w-full bg-white dark:bg-graydark">
+								<div className="sm:my-1 my-4 w-full bg-white dark:bg-graydark">
 									{feed.map((d, i) => (
 										<>
 											{/* ads */}

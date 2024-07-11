@@ -14,6 +14,7 @@ import styles from "../../CustomScrollbarComponent.module.css";
 import { setData } from "@/app/redux/slice/lastMessage";
 import ShimmerChat from "@/app/component/ShimmerChat";
 import toast from "react-hot-toast";
+import { setHide } from "@/app/redux/slice/remember";
 
 export default function ChatLayout({ children }) {
   const [checkRequest, setCheckRequest] = useState(false);
@@ -44,9 +45,9 @@ export default function ChatLayout({ children }) {
     }
   };
 
-  useEffect(() => {
-    dispatch(setVisible(false));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(setVisible(true));
+  // }, []);
 
   const fetchallChats = async () => {
     try {
@@ -128,6 +129,18 @@ export default function ChatLayout({ children }) {
   };
 
   useEffect(() => {
+    if (!params.get("id")) {
+      dispatch(setHide(false));
+    }
+  }, [params, id]);
+
+  useEffect(() => {
+    if (id) {
+      dispatch(setHide(true));
+    }
+  }, [params, id]);
+
+  useEffect(() => {
     if (user.id) {
       fetchreqs();
       fetchallChats();
@@ -141,15 +154,15 @@ export default function ChatLayout({ children }) {
 
       {/* mobile */}
       {!id && !con && (
-        <div className="h-[100vh] sm:hidden select-none pn:max-md:w-[100%] bg-white md:min-w-[390px] relative md:[360px] flex flex-col items-center pb-20 pn:max-sm:pt-16 md:border-r-2 dark:border-none border-[#f7f7f7] overflow-auto scrollbar-hide ">
+        <div className="h-[100vh] sm:hidden select-none pn:max-md:w-[100%] bg-white dark:bg-[#0D0D0D] md:min-w-[390px] relative md:[360px] flex flex-col items-center pb-20  md:border-r-2 dark:border-none border-[#f7f7f7] overflow-auto scrollbar-hide ">
           {/* Chat header */}
           <div
-            className={`w-[100%] h-[60px]  flex justify-between absolute dark:bg-bluedark bg-slate-50 items-center px-2`}
+            className={`w-[100%] h-[70px] border-b dark:border-[#131619] flex justify-between absolute dark:bg-bluedark bg-slate-50 items-center px-2`}
           >
-            <div className="text-[24px] text-black font-semibold">Chats</div>
+            <div className="text-[24px] text-black dark:text-white font-semibold">Chats</div>
             <div
               onClick={() => setCheckRequest(true)}
-              className="text-[14px] text-black font-medium light:hover:bg-slate-100 rounded-2xl  w-20 flex justify-center items-center hover:animate-pulse"
+              className="text-[14px] text-black dark:text-white font-medium light:hover:bg-slate-100 rounded-2xl  w-20 flex justify-center items-center hover:animate-pulse"
             >
               Request <span className="text-[#1A85FF]"> ({request.length}) </span>
             </div>
@@ -159,7 +172,9 @@ export default function ChatLayout({ children }) {
             {/* one chat */}
             <>
               {
-                loading ? <ShimmerChat /> : <>
+                loading ? <div className="mt-4 w-full h-full">
+                  <ShimmerChat />
+                </div> : <div className="mt-4 w-full h-full">
                   {data.map((d, i) => (
                     <Convs
                       key={i}
@@ -171,14 +186,14 @@ export default function ChatLayout({ children }) {
                         setTimeout(() => {
                           dispatch(setData(newData))
                         }, 1000)
-                        dispatch(setVisible(false));
+                        dispatch(setHide(false));
                       }}
                       href={`/main/chat?id=${d?.id}&con=${d?.convid}`}
                       handleMuting={handleMuting}
                       removingchat={removingchat}
                     />
                   ))}
-                </>
+                </div>
               }
             </>
             {/* <div className="w-[100%] rounded-xl my-1 bg-slate-100 animate-pulse h-[70px] px-4 flex flex-row "></div>

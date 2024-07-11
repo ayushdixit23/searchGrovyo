@@ -30,7 +30,7 @@ function page() {
   const [seconds, setSeconds] = useState(30);
   const [isActive, setIsActive] = useState(true);
   const [come, setCome] = useState(0);
-  const { f } = useAuthContext();
+  const { f, setData } = useAuthContext();
   const otpInputRef = useRef(null);
   const [change, setChange] = useState(1);
   const [email, setEmail] = useState("");
@@ -156,9 +156,7 @@ function page() {
         expires: expirationDate,
       });
 
-      const token = Cookies.get("access_token");
-
-      await f(token);
+      setData(res.data?.data);
       toast.success("Login Successfull!");
       router.push("/main/feed/newForYou");
     } catch (error) {

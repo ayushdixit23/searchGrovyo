@@ -10,7 +10,7 @@ import { API } from "@/Essentials";
 import toast from "react-hot-toast";
 import { LiaToggleOffSolid, LiaToggleOnSolid } from "react-icons/lia";
 
-const page = () => {
+const Account = () => {
   const { data: user } = useAuthContext();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
@@ -174,12 +174,12 @@ const page = () => {
   const isProfileChangedAnswer = isProfileChanged();
   return (
     <>
-      <div className="p-4 px-7 flex flex-col dark:bg-[#0D0D0D] h-screen gap-5">
+      <div className="p-3 sm:p-4 sm:px-7 flex flex-col pn:max-sm:mt-[70px] dark:bg-[#0D0D0D] sm:h-screen gap-5">
         <div className="h-full flex flex-col gap-8 overflow-y-scroll no-scrollbar">
-          <div className="dark:bg-[#0D0F10] bg-[#fafafa] rounded-xl p-6 pb-10">
+          <div className="dark:bg-[#0D0F10] bg-[#fafafa] rounded-xl p-4 pb-6 sm:p-6 sm:pb-10">
             <div>
               <div className="text-sm font-semibold">Basic details</div>
-              <div className="pl-16 mt-5">
+              <div className="sm:pl-16 mt-5">
                 <div className="flex flex-col gap-6">
                   <div>
                     <div className="flex items-center">
@@ -259,7 +259,7 @@ const page = () => {
                       )}
                     </div>
                   </div>
-                  <div className="w-[80%] flex flex-col gap-6">
+                  <div className="sm:w-[80%] flex flex-col gap-6">
                     <div className="flex p-2 px-4 flex-col rounded-xl  border dark:border-[#1F2228]">
                       <div className="w-full text-[#6C737F] text-xs">
                         Full Name
@@ -368,11 +368,11 @@ const page = () => {
             </div>
           </div>
 
-          <div className="dark:bg-[#0D0F10] bg-[#fafafa] flex flex-col gap-5  p-5 rounded-xl">
+          <div className="dark:bg-[#0D0F10] pn:max-sm:mb-[60px] bg-[#fafafa] flex flex-col gap-5  p-5 rounded-xl">
             <div className="font-semibold text-sm">Social Media Links</div>
 
             <div className="font-medium text-sm ">Social accounts</div>
-            <div className="w-[80%] flex flex-col gap-6">
+            <div className="sm:w-[80%] flex flex-col gap-6">
               <div className="flex items-center gap-3 w-full">
                 <FaLink />
                 <div className="flex p-2 px-4 flex-col rounded-xl  w-full border dark:border-[#1F2228]">
@@ -470,4 +470,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Account;

@@ -275,7 +275,7 @@ export default function CommunityLayout({ children }) {
               className={`h-[92vh] pn:max-sm:h-[87vh] ${styles.customScrollbar} overflow-auto `}
             >
               {/* post 1*/}
-              <div className=" w-full mt-[20px] rounded-xl mb-[6px]">
+              <div className=" w-full mt-[25px] rounded-xl mb-[6px]">
                 <div className="bg-[#151315] bg-com-image bg-cover bg-center w-full rounded-2xl p-2 text-white text-center h-[160px] flex flex-col justify-evenly items-center">
                   <div className="font-semibold">Don't have a community ?</div>
                   <div className="text-[12px] w-[85%]">

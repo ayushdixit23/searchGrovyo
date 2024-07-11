@@ -14,7 +14,7 @@ import searchlottie from "../assets/search.json";
 import searchblack from "../assets/searchblack.json";
 import { useTheme } from "next-themes";
 
-function page() {
+function Search({ setShow }) {
   const [text, setText] = useState("");
   const [data, setData] = useState([]);
   const [dataa, setDataa] = useState([]);
@@ -184,11 +184,16 @@ function page() {
   }, [user.id]);
 
   return (
-    <div className="pn:max-md:w-[100%] md:w-[390px]  h-screen bg-white dark:bg-[#0D0F10] flex flex-col">
+    <div className="pn:max-md:w-[100%] md:w-[390px] z-50 h-screen bg-white dark:bg-[#0D0F10] flex flex-col">
       <div className="flex justify-between items-center my-2 py-2 gap-2 px-2">
         <div className="text-2xl font-semibold">Search</div>
-        <div>
-          <IoIosSearch className="text-xl" />
+        <div className="flex justify-center items-center gap-2">
+          <div className="sm:block hidden">
+            <IoIosSearch className="text-xl" />
+          </div>
+          <div className="block sm:hidden">
+            <RxCross2 className="text-xl" onClick={() => setShow(false)} />
+          </div>
         </div>
       </div>
       <div className="flex flex-row justify-around bg-white dark:bg-transparent items-center px-2 w-[100%]">
@@ -863,4 +868,4 @@ function page() {
   );
 }
 
-export default page;
+export default Search;

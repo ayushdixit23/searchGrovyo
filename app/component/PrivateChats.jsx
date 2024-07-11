@@ -215,8 +215,8 @@ const PrivateChats = React.forwardRef(
                 }}
                 className={`relative group h-auto flex justify-start items-center mt-6 ${
                   data?.id === d?.sender?._id
-                    ? "bg-[#0075ff] text-white p-2 px-4 md:text-[14px] rounded-l-2xl pn:max-sm:text-[14px] max-w-[650px]  rounded-br-2xl "
-                    : "bg-[#ffffff] dark:bg-[#0D0D0D] border dark:border-[#1A1D21] text-[#9B9C9E] p-2 px-4 rounded-r-2xl md:text-[14px] pn:max-sm:text-[14px] max-w-[650px] rounded-bl-2xl"
+                    ? "bg-[#0075ff] text-white p-2  px-4 md:text-[14px] rounded-l-2xl pn:max-sm:text-[14px] max-w-[220px] sm:max-w-[650px] rounded-br-2xl "
+                    : "bg-[#ffffff] dark:bg-[#0D0D0D] border dark:border-[#1A1D21] text-[#9B9C9E] p-2 px-4 rounded-r-2xl md:text-[14px] pn:max-sm:text-[14px] max-w-[220px] sm:max-w-[650px] rounded-bl-2xl"
                 } `}
                 style={{
                   overflowWrap: "break-word",
@@ -422,8 +422,8 @@ const PrivateChats = React.forwardRef(
                 }}
                 className={`relative group h-auto  flex justify-center items-center mt-6 ${
                   data?.id === d?.sender?._id
-                    ? "bg-[#0075ff]  text-white  rounded-l-2xl pn:max-sm:text-[14px] max-w-[320px] rounded-br-2xl "
-                    : "bg-[#ffffff] dark:bg-[#0D0D0D] border dark:border-[#1A1D21] text-[#9B9C9E] rounded-r-2xl pn:max-sm:text-[14px] max-w-[320px] rounded-bl-2xl"
+                    ? "bg-[#0075ff]  text-white  rounded-l-2xl pn:max-sm:text-[14px] max-w-[220px] sm:max-w-[320px] rounded-br-2xl "
+                    : "bg-[#ffffff] dark:bg-[#0D0D0D] border dark:border-[#1A1D21] text-[#9B9C9E] rounded-r-2xl pn:max-sm:text-[14px] max-w-[220px] sm:max-w-[320px] rounded-bl-2xl"
                 }`}
               >
                 <div className="p-2">
@@ -649,7 +649,7 @@ const PrivateChats = React.forwardRef(
                     setReplyFunction({ reply: d?.text, replyId: d?.mesId })
                   );
                 }}
-                className={`relative max-w-[350px] h-[350px] w-full group ${
+                className={`relative sm:max-w-[350px] w-[220px] h-[220px] sm:h-[350px] sm:w-full group ${
                   data?.id === d?.sender?._id
                     ? "bg-[#0075ff] text-white p-2 rounded-l-2xl mt-4 rounded-br-2xl "
                     : "bg-[#ffffff] dark:bg-[#0D0D0D] border dark:border-[#1A1D21] text-[#9B9C9E] p-2 rounded-r-2xl mt-4 rounded-bl-2xl"
@@ -1006,23 +1006,19 @@ const PrivateChats = React.forwardRef(
                     setReplyFunction({ reply: "Video", replyId: d?.mesId })
                   );
                 }}
-                className={`relative max-w-[350px] max-h-[350px] group ${
+                className={`relative max-w-[220px] sm:max-w-[350px] flex justify-center items-center max-h-[350px] sm:w-full group ${
                   data?.id === d?.sender?._id
-                    ? " bg-[#0075ff] text-white mt-4 flex justify-center items-center p-2 rounded-l-2xl rounded-br-2xl"
-                    : "bg-[#ffffff] dark:bg-[#0D0D0D] border dark:border-[#1A1D21] text-[#9B9C9E] mt-4 flex justify-center items-center p-2 rounded-r-2xl rounded-bl-2xl"
+                    ? "bg-[#0075ff] text-white mt-4 p-2 rounded-l-2xl rounded-br-2xl"
+                    : "bg-[#ffffff] dark:bg-[#0D0D0D] border dark:border-[#1A1D21] text-[#9B9C9E] mt-4 p-2 rounded-r-2xl rounded-bl-2xl"
                 }`}
               >
-                <div className="group-hover:pr-2">
+                <div className="overflow-hidden w-full h-full">
                   {d.status === "deleted" ? (
                     <div>This Message was Deleted!</div>
                   ) : (
-                    <div className="rounded-2xl ">
-                      <VideoPlayer
-                        width={"100%"}
-                        height={"h-full"}
-                        src={d?.url}
-                      />
-                      {d?.text && <div>{d?.text}</div>}
+                    <div className="rounded-2xl w-full h-full max-w-full max-h-full">
+                      <VideoPlayer width="100%" height="100%" src={d?.url} />
+                      {d?.text && <div className="mt-2">{d?.text}</div>}
                     </div>
                   )}
                 </div>
@@ -1034,25 +1030,24 @@ const PrivateChats = React.forwardRef(
                       handleIconClick();
                     }}
                     ref={iconRef}
-                    className={` relative group-hover:absolute hidden bg-transparent rounded-2xl group-hover:block group-hover:shadow-2xl shadow-black top-2 right-0`}
+                    className="relative group-hover:absolute hidden bg-transparent rounded-2xl group-hover:block group-hover:shadow-2xl shadow-black top-2 right-0"
                   >
-                    <BsThreeDotsVertical size={16} className="" />
+                    <BsThreeDotsVertical size={16} />
                   </div>
                 )}
 
                 <div
                   className={`flex flex-col gap-1 ${
-                    popupPosition === "top" ? "bottom-0" : "top-4" // Dynamically set position based on popupPosition state
+                    popupPosition === "top" ? "bottom-0" : "top-4"
                   } absolute z-40 ${
                     data?.id === d?.sender?._id
                       ? "right-0"
                       : "left-0 bg-[#f3f3f3]"
-                  }   shadow-2xl  text-black  duration-100
-                      ${
-                        click === true
-                          ? "rounded-[15px] bg-white dark:text-white dark:bg-[#0D0F10] text-[#6e6e6e] shadow-custom-lg py-2 w-auto h-auto min-w-[150px]"
-                          : "rounded-[0px] bg-white dark:text-white dark:bg-[#0D0F10] text-[#6e6e6e] shadow-0 py-0 w-[0px] h-[0px]"
-                      } `}
+                  } shadow-2xl text-black duration-100 ${
+                    click
+                      ? "rounded-[15px] bg-white dark:text-white dark:bg-[#0D0F10] text-[#6e6e6e] shadow-custom-lg py-2 w-auto h-auto min-w-[150px]"
+                      : "rounded-[0px] bg-white dark:text-white dark:bg-[#0D0F10] text-[#6e6e6e] shadow-0 py-0 w-[0px] h-[0px]"
+                  }`}
                 >
                   {d?.hidden?.includes(data?.id) ? (
                     <div
@@ -1061,7 +1056,7 @@ const PrivateChats = React.forwardRef(
                         setClick(false);
                       }}
                       className={`duration-100 flex gap-2 items-center ${
-                        click === true
+                        click
                           ? "text-[14px] my-2 px-3 cursor-pointer"
                           : "text-[0px] my-0 px-0"
                       }`}
@@ -1070,9 +1065,7 @@ const PrivateChats = React.forwardRef(
                         <Image
                           src={hidden}
                           className={`duration-75 ${
-                            click === true
-                              ? "w-[22px] h-[20px]"
-                              : "h-[0px] w-[0px]"
+                            click ? "w-[22px] h-[20px]" : "h-[0px] w-[0px]"
                           }`}
                         />
                       </div>
@@ -1084,9 +1077,9 @@ const PrivateChats = React.forwardRef(
                         hideChats(d?.mesId);
                         setClick(false);
                       }}
-                      className={`duration-100 flex gap-2  items-center ${
-                        click === true
-                          ? "text-[14px] my-2 px-3  cursor-pointer"
+                      className={`duration-100 flex gap-2 items-center ${
+                        click
+                          ? "text-[14px] my-2 px-3 cursor-pointer"
                           : "text-[0px] my-0 px-0"
                       }`}
                     >
@@ -1094,9 +1087,7 @@ const PrivateChats = React.forwardRef(
                         <Image
                           src={hidden}
                           className={`duration-75 ${
-                            click === true
-                              ? "w-[22px] h-[20px]"
-                              : "h-[0px] w-[0px]"
+                            click ? "w-[22px] h-[20px]" : "h-[0px] w-[0px]"
                           }`}
                         />
                       </div>
@@ -1117,7 +1108,7 @@ const PrivateChats = React.forwardRef(
                         setClick(false);
                       }}
                       className={`duration-100 flex gap-2 items-center ${
-                        click === true
+                        click
                           ? "text-[14px] my-2 px-3 cursor-pointer"
                           : "text-[0px] my-0 px-0"
                       }`}
@@ -1126,9 +1117,7 @@ const PrivateChats = React.forwardRef(
                         <Image
                           src={replypic}
                           className={`duration-75 ${
-                            click === true
-                              ? "w-[19px] h-[17px]"
-                              : "h-[0px] w-[0px]"
+                            click ? "w-[19px] h-[17px]" : "h-[0px] w-[0px]"
                           }`}
                         />
                       </div>
@@ -1142,7 +1131,7 @@ const PrivateChats = React.forwardRef(
                       setClick(false);
                     }}
                     className={`duration-100 flex gap-2 items-center ${
-                      click === true
+                      click
                         ? "text-[14px] my-2 px-3 cursor-pointer"
                         : "text-[0px] my-0 px-0"
                     }`}
@@ -1151,9 +1140,7 @@ const PrivateChats = React.forwardRef(
                       <Image
                         src={deletechat}
                         className={`duration-75 ${
-                          click === true
-                            ? "w-[19px] h-[17px]"
-                            : "h-[0px] w-[0px]"
+                          click ? "w-[19px] h-[17px]" : "h-[0px] w-[0px]"
                         }`}
                       />
                     </div>
@@ -1336,7 +1323,7 @@ const PrivateChats = React.forwardRef(
                     setReplyFunction({ reply: d?.text, replyId: d?.mesId })
                   );
                 }}
-                className={`relative group sm:w-[350px] sm:h-[350px] ${
+                className={`relative group w-[250px] sm:w-[350px] sm:h-[350px] ${
                   data?.id === d?.sender?._id
                     ? "bg-[#0075ff] text-white p-2 mt-4 rounded-l-2xl rounded-br-2xl"
                     : "bg-[#ffffff] dark:bg-[#0D0D0D] border dark:border-[#1A1D21] text-[#9B9C9E] p-2 mt-4 rounded-r-2xl rounded-bl-2xl"
@@ -1515,7 +1502,7 @@ const PrivateChats = React.forwardRef(
                 <div className="h-[45px] sm:h-[40px]  rounded-2xl ">
                   {d?.text.length > 20 ? `${d?.text.slice(0, 20)}...` : d?.text}
                 </div>
-                <div className="text-[14px] -mt-1 flex justify-center items-center h-[40px] bg-[#f7f7f7] rounded-xl">
+                <div className="text-[14px] -mt-1 flex justify-center items-center h-[40px] bg-[#f7f7f7] dark:bg-[#0d0d0d] rounded-xl">
                   Visit
                 </div>
               </div>
@@ -1885,7 +1872,7 @@ const PrivateChats = React.forwardRef(
                   <img src={data?.dp} className="w-full h-full object-cover" />
                 </div>
               )}
-              {console.log(d?.timestamp, "d?.timestamp")}
+
               {d?.typ === "post" && (
                 <div className="text-[14px] mt-1">
                   {getHourAndMinutes(d?.timestamp)}
