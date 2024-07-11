@@ -825,65 +825,7 @@ function Components({ params }) {
                     {memcount} {memcount > 1 ? "Members" : "Member"}
                   </div>
                 </div>
-                {/* <div
-                  onClick={() => setOptions(!options)}
-                  className="flex justify-center relative items-center text-3xl"
-                >
-                  <IoReorderThreeOutline />
-
-                  <div className={`absolute duration-100 ${options
-                    ? "w-[200px] p-2 top-7 text-sm h-auto -left-[170px] "
-                    : "w-0 h-0 text-[0px] top-0 left-0"
-                    } z-40 rounded-lg dark:text-white text-[#6e6e6e] bg-white dark:bg-[#4c66ad]`}>
-                    <div className="flex flex-col gap-2 font-semibold h-full">
-                      <Link
-                        href={`/main/feed/community/${params?.id}?type=members`}
-                      >
-                        Members
-                      </Link>
-                      {creatorId !== data?.id && (
-                        <Link
-                          href={`/main/feed/community/${params?.id}?type=reports`}
-                        >
-                          Reports
-                        </Link>
-                      )}
-
-                      {creatorId !== data?.id && (
-                        <div>
-                          {isMuted ? (
-                            <div onClick={handleMute}>Un Mute</div>
-                          ) : (
-                            <div onClick={handleMute}>Mute</div>
-                          )}
-                        </div>
-                      )}
-
-                      {creatorId === data?.id ? (
-                        <div onClick={deleteCommunity}>Delete</div>
-                      ) : (
-                        <div>
-                          {isjoined ? (
-                            <div onClick={() => unjoinmembers()}>Leave</div>
-                          ) : (
-                            <div>Join</div>
-                          )}
-                        </div>
-                      )}
-                      {data?.id === creatorId && (
-                        <div>
-                          {comtype === "private" ? (
-                            <div onClick={changeComType}> set to public</div>
-                          ) : (
-                            <div onClick={changeComType}>set to private</div>
-                          )}
-                        </div>
-                      )}
-                      <div></div>
-                    </div>
-                  </div>
-
-                </div> */}
+              
 
                 <div className="flex justify-center items-center  gap-2">
                   <div className="flex justify-center items-center ">
@@ -1113,8 +1055,6 @@ function Components({ params }) {
                     : "h-[82%]"
                   }`}
               >
-
-
 
 
                 {currentState === "post" && (

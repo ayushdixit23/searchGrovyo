@@ -26,7 +26,6 @@ const CommunityChat = ({ d, i, data, dispatch, tId, socket, messages }) => {
       console.log(error);
     }
   };
-
   const [popupPosition, setPopupPosition] = useState("bottom"); // State to track popup position
 
   const iconRef = useRef(null);
@@ -508,7 +507,7 @@ const CommunityChat = ({ d, i, data, dispatch, tId, socket, messages }) => {
                         className={`${
                           data?.id === d?.sender?._id
                             ? "text-white"
-                            : "text-black"
+                            : "dark:text-white text-black"
                         } md:text-[14px]  py-1   pn:max-sm:text-[14px] `}
                         style={{
                           overflowWrap: "break-word",

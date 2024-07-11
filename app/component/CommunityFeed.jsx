@@ -14,12 +14,23 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import InfiniteScroll from "react-infinite-scroll-component";
+import styles from "@/app/CustomScrollbarComponent.module.css";
 import toast from "react-hot-toast";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import VideoPlayer from "@/app/component/VideoPlayer";
 import CommunityChat from "@/app/component/CommunityChat";
 import { RxCross2 } from "react-icons/rx";
 import { IoReorderThreeOutline } from "react-icons/io5";
+
+import Image from "next/image";
+import publicimage from "@/app/assets/public.png";
+import privateimage from "@/app/assets/private.png";
+import deletered from "@/app/assets/reddelete.png";
+import reportspic from "@/app/assets/reports.png";
+import mutepic from "@/app/assets/mute.png";
+import logout from "@/app/assets/logout.png";
+import unmutepic from "@/app/assets/unmute.png";
+import memberspic from "@/app/assets/members.png";
 import Members from "@/app/component/Members";
 import Link from "next/link";
 import CommunityPost from "@/app/component/CommunityPost";
@@ -28,6 +39,7 @@ import { useSocketContext, socketemitfunc } from "../utils/SocketWrapper";
 import { API } from "@/Essentials";
 import Input from "./Input";
 import Loader from "./Loader";
+import { BsThreeDotsVertical } from "react-icons/bs";
 
 function CommunityFeed({ id }) {
   const { data } = useAuthContext();
@@ -44,6 +56,7 @@ function CommunityFeed({ id }) {
   const [memcount, setMemcount] = useState(0);
   const [isTopicJoined, setIsTopicJoined] = useState(false);
   const [topicData, setTopicData] = useState("");
+  const [members, setMembers] = useState([]);
   const path = usePathname();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -65,6 +78,7 @@ function CommunityFeed({ id }) {
   const [isjoined, setIsjoined] = useState(false);
   const [creatorId, setCreatorId] = useState("");
   const [isMuted, setIsMuted] = useState(false);
+  const preview = useSelector((state) => state.remember.preview);
 
   const fetchCommunity = async () => {
     try {
@@ -75,6 +89,7 @@ function CommunityFeed({ id }) {
       setTopics(res.data.community.topics);
       setDp(res.data?.dp);
       setComtype(res.data?.community?.type);
+      setMembers(res.data?.members);
       setCreatorId(res.data?.community?.creator._id);
       setLoad(false);
     } catch (error) {
@@ -704,113 +719,284 @@ function CommunityFeed({ id }) {
       {load ? (
         <Loader />
       ) : (
-        <div className=" relative">
-          <div className="flex items-center h-[60px] absolute top-0 z-20 w-full  bg-[#f4f4f4]">
-            <div>
-              <img
-                src={dp}
-                className="h-[45px] w-[45px] rounded-[19px] bg-yellow-300 "
-              />
+        <div className="w-full">
+          <div className="flex items-center h-[10%] z-20 w-full pl-2  bg-white dark:border-none border-b-[1px] dark:bg-bluedark">
+            <div className="flex items-center gap-2 justify-center">
+              {/* <div>
+              <MdOutlineArrowBackIosNew className="text-2xl" />
+            </div> */}
+              <div>
+                <img
+                  src={dp}
+                  className="h-[45px] w-[45px] rounded-[14px] bg-slate-300 "
+                />
+              </div>
             </div>
             <div className="flex justify-between w-full items-center gap-2 px-4">
               <div className="flex gap-1 flex-col">
-                <div>{title}</div>
+                <div className="font-bold">{title}</div>
                 <div className="text-[12px]">
                   {memcount} {memcount > 1 ? "Members" : "Member"}
                 </div>
               </div>
-              <div
-                onClick={() => setOptions(!options)}
-                className="flex justify-center relative items-center text-3xl"
-              >
-                <IoReorderThreeOutline />
-                {options && (
-                  <div className="absolute w-[200px] z-40 text-sm h-auto -left-[170px] p-3 top-7 text-white bg-black">
-                    <div className="flex flex-col gap-2 font-semibold h-full">
-                      <Link href={`/main/feed/community/${id}?type=members`}>
-                        Members
+
+              <div className="flex justify-center items-center  gap-2">
+                <div className="flex justify-center items-center ">
+                  {members?.map((m, y) => (
+                    <div
+                      style={{
+                        marginLeft: `-${y + 10}px`,
+                        zIndex: `${y}`,
+                      }}
+                      key={y}
+                      className="w-[32px] h-[32px]"
+                    >
+                      <img
+                        src={m?.dp}
+                        className="h-full object-contain rounded-[22px] w-full"
+                      />
+                    </div>
+                  ))}
+                  <div
+                    style={{
+                      marginLeft: `-${members.length + 10}px`,
+                    }}
+                    className="h-[32px] z-10 flex justify-center items-center text-[10px] text-[#686B6E] rounded-[22px] bg-[#1A1D21] w-[32px]"
+                  >
+                    <div>+</div>
+                    <div>{memcount - members.length}</div>
+                  </div>
+                </div>
+                <div
+                  onClick={() => setOptions(!options)}
+                  className="flex justify-center relative gap-2 items-center "
+                >
+                  <BsThreeDotsVertical />
+                  <div
+                    className={`absolute duration-100 ${
+                      options
+                        ? "w-auto min-w-[160px] p-2 px-4 top-7 text-sm h-auto -left-[150px] "
+                        : "w-0 h-0 text-[0px] top-0 left-0"
+                    } z-40 rounded-lg dark:text-white text-[#6e6e6e] bg-white shadow-custom-lg dark:bg-[#0D0F10]`}
+                  >
+                    {" "}
+                    <div className="flex flex-col font-semibold h-full">
+                      <Link
+                        className="rounded-lg flex items-center justify-start"
+                        href={`/main/feed/community/${id}?type=members`}
+                      >
+                        <div className="flex justify-center  items-center">
+                          <Image
+                            src={memberspic}
+                            className={`relative top-2 max-w-[40px] max-h-[40px] flex justify-center items-center h-full ${
+                              options ? "" : "hidden"
+                            } `}
+                          />
+                        </div>
+                        <div className="">Members</div>
                       </Link>
                       {creatorId !== data?.id && (
-                        <Link href={`/main/feed/community/${id}?type=reports`}>
-                          Reports
+                        <Link
+                          className="flex items-center justify-start"
+                          href={`/main/feed/community/${id}?type=reports`}
+                        >
+                          <div className="flex justify-center  items-center">
+                            <Image
+                              src={reportspic}
+                              className={`relative top-2 max-w-[40px] max-h-[40px] flex justify-center items-center h-full ${
+                                options ? "" : "hidden"
+                              } `}
+                            />
+                          </div>
+                          <div>Reports</div>
                         </Link>
                       )}
 
                       {creatorId !== data?.id && (
-                        <div>
+                        <div className="">
                           {isMuted ? (
-                            <div onClick={handleMute}>Un Mute</div>
+                            <div
+                              onClick={handleMute}
+                              className="flex items-center justify-start"
+                            >
+                              <div className="flex justify-center items-center">
+                                <Image
+                                  src={unmutepic}
+                                  className={`relative top-2 max-w-[40px] max-h-[40px] flex justify-center items-center h-full ${
+                                    options ? "" : "hidden"
+                                  } `}
+                                />
+                              </div>
+                              <div>Un Mute</div>
+                            </div>
                           ) : (
-                            <div onClick={handleMute}>Mute</div>
+                            <div
+                              onClick={handleMute}
+                              className="flex items-center justify-start"
+                            >
+                              <div className="flex justify-center  items-center">
+                                <Image
+                                  src={mutepic}
+                                  className={`relative top-2 max-w-[40px] max-h-[40px] flex justify-center items-center h-full ${
+                                    options ? "" : "hidden"
+                                  } `}
+                                />
+                              </div>
+                              <div>Mute</div>
+                            </div>
                           )}
                         </div>
                       )}
 
                       {creatorId === data?.id ? (
-                        <div onClick={deleteCommunity}>Delete</div>
+                        <div
+                          className="flex items-center justify-start"
+                          onClick={deleteCommunity}
+                        >
+                          <div className="flex justify-center  items-center">
+                            <Image
+                              src={deletered}
+                              className={`relative top-2 max-w-[40px] max-h-[40px] flex justify-center items-center h-full ${
+                                options ? "" : "hidden"
+                              } `}
+                            />
+                          </div>
+                          <div>Delete</div>
+                        </div>
                       ) : (
                         <div>
                           {isjoined ? (
-                            <div onClick={() => unjoinmembers()}>Leave</div>
+                            <div
+                              className="flex items-center justify-start"
+                              onClick={() => unjoinmembers()}
+                            >
+                              <div className="flex justify-center  items-center">
+                                <Image
+                                  src={logout}
+                                  className={`relative top-2 max-w-[40px] max-h-[40px] flex justify-center items-center h-full ${
+                                    options ? "" : "hidden"
+                                  } `}
+                                />
+                              </div>
+                              <div>Leave</div>
+                            </div>
                           ) : (
-                            <div>Join</div>
+                            <div onClick={() => joinmembers()}>Join</div>
                           )}
                         </div>
                       )}
                       {data?.id === creatorId && (
                         <div>
                           {comtype === "private" ? (
-                            <div onClick={changeComType}> set to public</div>
+                            <div
+                              onClick={changeComType}
+                              className="flex items-center justify-start"
+                            >
+                              <div className="flex justify-center  items-center">
+                                <Image
+                                  src={publicimage}
+                                  className={`relative top-2 max-w-[40px] max-h-[40px] flex justify-center items-center h-full ${
+                                    options ? "" : "hidden"
+                                  } `}
+                                />
+                              </div>
+                              <div> set to public</div>
+                            </div>
                           ) : (
-                            <div onClick={changeComType}>set to private</div>
+                            <div
+                              onClick={changeComType}
+                              className="flex items-center justify-start"
+                            >
+                              <div className="flex justify-center  items-center">
+                                <Image
+                                  src={privateimage}
+                                  className={`relative top-2 max-w-[40px] max-h-[40px] flex justify-center items-center h-full ${
+                                    options ? "" : "hidden"
+                                  } `}
+                                />
+                              </div>
+                              <div> set to private</div>
+                            </div>
                           )}
                         </div>
                       )}
                       <div></div>
                     </div>
                   </div>
-                )}
+                </div>
               </div>
             </div>
           </div>
 
-          {optionType === "members" && <Members id={data?.id} comId={id} />}
+          <div
+            className={`z-40 duration-200 flex justify-end items-end h-[100vh] top-0 w-full absolute ${
+              optionType === "members" ? "" : "hidden"
+            }`}
+          >
+            <div
+              className={`pn:max-md:w-[100%] dark:shadow-custom-lg shadow-lg duration-200 max-h-[90%] ${
+                optionType === "members" ? "" : "hidden"
+              } overflow-y-scroll ${
+                styles.customScrollbar
+              }  md:min-w-[340px] md:max-w-[340px] flex-col`}
+            >
+              <Members id={data?.id} comId={id} dash={"community"} />
+            </div>
+          </div>
 
-          {!optionType && (
-            <div className="h-[100%] bg-[#f7f7f7] z-10 pt-[60px] w-full relative overflow-y-scroll">
-              <div
-                className="flex justify-center z-10  w-full py-2
-         items-center
-         "
-              >
-                {topics.map((d, i) => (
+          <div className="flex gap-2 h-[8%] border-b dark:border-[#131619]">
+            <div className="flex gap-6 ml-4 text-sm">
+              {topics.map((d, i) => (
+                <div
+                  onClick={() => handleFetch(d?._id, d?.nature)}
+                  key={i}
+                  className="flex "
+                >
                   <div
-                    onClick={() => handleFetch(d?._id, d?.nature)}
-                    key={i}
-                    className="w-full flex justify-center"
+                    className={`flex cursor-pointer items-center px-4 py-4 ${
+                      tId === d?._id
+                        ? " dark:text-white border-b font-semibold border-[#0077FF]"
+                        : "text-[#9B9C9E] "
+                    }  `}
                   >
-                    <div className="flex items-center bg-[#f2f2f2] px-4 rounded-lg ">
-                      {d?.title}
-                    </div>
+                    {d?.title}
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
+            </div>
+          </div>
 
+          {(!optionType || optionType === "members") && (
+            <div
+              className={`w-full relative ${
+                styles.customScrollbar
+              }  overflow-y-scroll ${
+                currentState === "chat"
+                  ? reply && replyId
+                    ? "h-[70%]"
+                    : "h-[74%]"
+                  : "h-[82%]"
+              }`}
+            >
               {currentState === "post" && (
                 <>
                   {isTopicJoined ? (
                     <div>
                       {com.map((d, i) => (
-                        <CommunityPost
-                          id={`${d?.posts?._id}`}
-                          key={`${d?.posts?._id}`}
-                          d={d}
-                          i={i}
-                          title={title}
-                          setShare={setShare}
-                          data={data}
-                          setShareValue={setShareValue}
-                        />
+                        <>
+                          <CommunityPost
+                            id={`${d?.posts?._id}`}
+                            key={`${d?.posts?._id}`}
+                            d={d}
+                            i={i}
+                            comId={id}
+                            title={title}
+                            setShare={setShare}
+                            data={data}
+                            setShareValue={setShareValue}
+                            handleLike={handleLike}
+                          />
+                        </>
                       ))}
                     </div>
                   ) : (
@@ -827,102 +1013,298 @@ function CommunityFeed({ id }) {
                 </>
               )}
 
-              <div className="w-full relative ">
-                {currentState === "chat" && (
-                  <div
-                    id="scrollableDiv"
-                    style={{
-                      overflow: "auto",
-                      display: "flex",
-                      flexDirection: "column-reverse",
-                    }}
-                    className="relative"
-                  >
-                    {/*Put the scroll bar always on the bottom*/}
-                    <InfiniteScroll
-                      dataLength={messages.length}
-                      // next={fetchTopics}
-                      style={{
-                        display: "flex",
-                        flexDirection: "column-reverse",
-                        position: "relative",
-                      }}
-                      loader={<h4>Loading...</h4>}
-                      scrollableTarget="scrollableDiv"
-                    >
-                      <div className="relative h-full w-full">
-                        {messages?.map((d, i) => (
-                          <CommunityChat
-                            d={d}
-                            data={data}
-                            i={i}
-                            dispatch={dispatch}
-                            tId={tId}
-                            socket={socket}
-                            messages={messages}
-                          />
-                        ))}
+              {/* {currentState === "chat" && (
+          <div className="w-full  ">
+            <div
+              id="scrollableDiv"
+              style={{
+                overflow: "auto",
+                display: "flex",
+                flexDirection: "column-reverse",
+              }}
+              className=""
+            >
+            
+              <InfiniteScroll
+                dataLength={messages.length}
+                
+                style={{
+                  display: "flex",
+                  flexDirection: "column-reverse",
+                  position: "relative",
+                }}
+                loader={<h4>Loading...</h4>}
+                scrollableTarget="scrollableDiv"
+              >
+                <div className="relative h-full w-full">
+                  {messages?.map((d, i) => (
+                    <CommunityChat
+                      d={d}
+                      data={data}
+                      i={i}
+                      dispatch={dispatch}
+                      tId={tId}
+                      socket={socket}
+                      messages={messages}
+                    />
+                  ))}
 
-                        <div className="h-full">
-                          {isTopicJoined && (
-                            <div className="bg-pink-300 sticky bottom-0 left-0 h-full">
-                              {reply && replyId && (
-                                <div className="flex justify-between px-4 items-center">
-                                  <div>{reply}</div>
-                                  <div>
-                                    <RxCross2
-                                      onClick={() => {
-                                        dispatch(setType(""));
-                                        dispatch(
-                                          setReplyFunction({
-                                            reply: "",
-                                            replyId: "",
-                                          })
-                                        );
-                                      }}
-                                    />
-                                  </div>
-                                </div>
-                              )}
-                              <Input
-                                sendMessages={sendMessage}
-                                sendgif={sendgif}
-                                senderId={data?.id}
-                                sender_fullname={data?.fullname}
-                                handleSend={handleSend}
-                                dispatch={dispatch}
-                                setContent={setContent}
-                                setMessage={setMessage}
-                                image={data?.dp}
-                                setType={setType}
-                                setincommsgs={setincommsgs}
-                                type={type}
-                                reply={replyFunc}
-                                name={name}
-                                setMessages={setMessages}
-                                content={content}
-                                size={size}
-                                message={msgs}
+                  <div className="h-full">
+                    {isTopicJoined && (
+                      <div className="bg-pink-300 sticky bottom-0 left-0 h-full">
+                        {reply && replyId && (
+                          <div className="flex justify-between px-4 items-center">
+                            <div>{reply}</div>
+                            <div>
+                              <RxCross2
+                                onClick={() => {
+                                  dispatch(setType(""));
+                                  dispatch(
+                                    setReplyFunction({
+                                      reply: "",
+                                      replyId: "",
+                                    })
+                                  );
+                                }}
+                              />
+                            </div>
+                          </div>
+                        )}
+                        <Input
+                          sendMessages={sendMessage}
+                          sendgif={sendgif}
+                          senderId={data?.id}
+                          sender_fullname={data?.fullname}
+                          handleSend={handleSend}
+                          dispatch={dispatch}
+                          setContent={setContent}
+                          setMessage={setMessage}
+                          image={data?.dp}
+                          setType={setType}
+                          setincommsgs={setincommsgs}
+                          type={type}
+                          reply={replyFunc}
+                          name={name}
+                          setMessages={setMessages}
+                          content={content}
+                          size={size}
+                          message={msgs}
+                        />
+                      </div>
+                    )}
+                    {!isTopicJoined && (
+                      <div className="flex justify-center h-full items-end ">
+                        <div
+                          onClick={() => handleTopicPurchase()}
+                          className="bg-blue-600 flex justify-center items-center text-white w-full p-2 px-5 rounded-lg"
+                        >
+                        
+                          Unlock Topic at ₹{topicData?.price}/month
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </InfiniteScroll>
+            </div>
+          </div>
+        )} */}
+
+              {currentState === "chat" && (
+                <div className=" w-full px-2">
+                  {preview === false && (
+                    <>
+                      {messages?.map((d, i) => (
+                        <CommunityChat
+                          d={d}
+                          data={data}
+                          i={i}
+                          dispatch={dispatch}
+                          tId={tId}
+                          socket={socket}
+                          messages={messages}
+                        />
+                      ))}
+                    </>
+                  )}
+
+                  {preview && (
+                    <div className="w-full h-[70vh]">
+                      <div className="flex flex-col w-full justify-center items-center h-full ">
+                        <div
+                          onClick={() => {
+                            dispatch(setType(""));
+                            dispatch(setContent(""));
+
+                            dispatch(setPreview(false));
+                          }}
+                          className="flex justify-end items-end mr-7 w-full"
+                        >
+                          <RxCross2 className="text-2xl" />
+                        </div>
+                        <div className="h-full justify-center items-center flex">
+                          {type === "image" && content && (
+                            <div className="h-full flex w-full justify-center items-center">
+                              <img
+                                className="max-h-[500px] max-w-[500px] flex"
+                                src={
+                                  typeof content === "string"
+                                    ? content
+                                    : URL.createObjectURL(content)
+                                }
                               />
                             </div>
                           )}
-                          {!isTopicJoined && (
-                            <div className="flex justify-center h-full items-end ">
-                              <div
-                                onClick={() => handleTopicPurchase()}
-                                className="bg-blue-600 flex justify-center items-center text-white w-full p-2 px-5 rounded-lg"
-                              >
-                                {" "}
-                                Unlock Topic at ₹{topicData?.price}/month
+                          {type === "video" && content && (
+                            <div className="h-full flex w-full justify-center items-center">
+                              <video
+                                className="max-h-[500px] max-w-[500px] flex"
+                                src={URL.createObjectURL(content)}
+                                controls
+                              />
+                            </div>
+                          )}
+                          {type === "gif" && content && (
+                            <div className="h-full flex w-full bg-green-200 justify-center items-center">
+                              <img
+                                className="max-h-[500px] max-w-[500px] bg-red-300 flex"
+                                src={
+                                  typeof content === "string"
+                                    ? content
+                                    : URL.createObjectURL(content)
+                                }
+                              />
+                            </div>
+                          )}
+                          {type === "doc" && content && (
+                            <div className="h-full flex gap-4 flex-col w-full justify-center items-center">
+                              <div className="flex gap-1 justify-center items-center">
+                                <div className="">
+                                  <IoDocument className="w-[50px] h-[50px]" />
+                                </div>
+                                <div className="text-xl">{name}</div>
+                              </div>
+                              <div className="text-xl">
+                                No Preview Available
                               </div>
                             </div>
                           )}
                         </div>
                       </div>
-                    </InfiniteScroll>
+                    </div>
+                  )}
+
+                  {/* {isTopicJoined && (
+                <div className="bg-pink-300 absolute mt-[60px]">
+                  {reply && replyId && (
+                    <div className="flex justify-between px-4 items-center">
+                      <div>{reply}</div>
+                      <div>
+                        <RxCross2
+                          onClick={() => {
+                            dispatch(setType(""));
+                            dispatch(
+                              setReplyFunction({
+                                reply: "",
+                                replyId: "",
+                              })
+                            );
+                          }}
+                        />
+                      </div>
+                    </div>
+                  )}
+                  <Input
+                    sendMessages={sendMessage}
+                    sendgif={sendgif}
+                    handleSend={handleSend}
+                    setContent={setContent}
+                    setMessage={setMessage}
+                    senderId={data?.id}
+                    sender_fullname={data?.fullname}
+                    setType={setType}
+                    type={type}
+                    name={name}
+                    setMessages={setMessages}
+                    setincommsgs={setincommsgs}
+                    content={content}
+                    size={size}
+                    message={msgs}
+                    dispatch={dispatch}
+                    image={data?.dp}
+                    reply={replyFunc}
+                  />
+                </div>
+              )} */}
+
+                  {!isTopicJoined && (
+                    <>
+                      <div className="flex justify-center h-full items-end ">
+                        <div className="bg-blue-600 flex justify-center items-center text-white w-full p-2 px-5 rounded-lg">
+                          {" "}
+                          Unlock Topic at ₹{topicData?.price}/month
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+
+          {currentState === "chat" && (
+            <div
+              className={`bg-[#fff] duration-75 flex border-t-2 dark:border-[#131619] dark:bg-bluelight justify-center ${
+                reply && replyId
+                  ? "h-[12%] gap-2 space-y-2"
+                  : "h-[8%] items-center"
+              }`}
+            >
+              {isTopicJoined && (
+                <div className="bg-white dark:bg-bluelight flex flex-col items-center w-full justify-center h-[100%]">
+                  {reply && replyId && (
+                    <div className="flex justify-between w-full px-3 h-[40px] items-center">
+                      <div>{reply}</div>
+                      <div>
+                        <RxCross2
+                          onClick={() => {
+                            dispatch(setType(""));
+                            dispatch(
+                              setReplyFunction({
+                                reply: "",
+                                replyId: "",
+                              })
+                            );
+                          }}
+                        />
+                      </div>
+                    </div>
+                  )}
+                  <div className="w-full px-2">
+                    <Input
+                      sendMessages={sendMessage}
+                      sendgif={sendgif}
+                      handleSend={handleSend}
+                      setContent={setContent}
+                      setMessage={setMessage}
+                      senderId={data?.id}
+                      sender_fullname={data?.fullname}
+                      setType={setType}
+                      type={type}
+                      name={name}
+                      setMessages={setMessages}
+                      setincommsgs={setincommsgs}
+                      content={content}
+                      size={size}
+                      message={msgs}
+                      dispatch={dispatch}
+                      image={data?.dp}
+                      reply={replyFunc}
+                      stt
+                    />
                   </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           )}
         </div>

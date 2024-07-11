@@ -38,13 +38,13 @@ import Loader from "@/app/component/Loader";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import Image from "next/image";
 import reportspic from "../../../../assets/reports.png";
-import mutepic from "../../../../assets/mute.png";
+import memberspic from "../../../../assets/members.png";
 import publicimage from "../../../../assets/public.png";
 import privateimage from "../../../../assets/private.png";
 import deletered from "../../../../assets/reddelete.png";
+import mutepic from "../../../../assets/mute.png";
 import unmutepic from "../../../../assets/unmute.png";
 import logout from "../../../../assets/logout.png";
-import memberspic from "../../../../assets/members.png";
 import { MdOutlineArrowBackIosNew } from "react-icons/md";
 import { setPreview } from "@/app/redux/slice/remember";
 // import memberspic from "../../../../assets/members.svg";
@@ -130,7 +130,6 @@ function Components({ params }) {
         `${API}/compostfeed/${data?.id}/${params?.id}`
       );
       if (res.data.success) {
-        console.log(res.data, "newforyo");
         setMembers(res.data.members);
         setMemcount(res?.data?.community?.memberscount);
         setIsMuted(res.data.muted[0]?.muted);
@@ -577,6 +576,10 @@ function Components({ params }) {
 
   return (
     <>
+      <div
+        onClick={() => setOptions(false)}
+        className={`${options ? "fixed inset-0 z-20" : "hidden -z-40"}`}
+      ></div>
       {optionType === "reports" && (
         <div className="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
           <div className="bg-white dark:bg-bluedark rounded-lg shadow-lg w-11/12 md:w-1/3 p-6">
@@ -1314,7 +1317,6 @@ function Components({ params }) {
                           dispatch={dispatch}
                           image={data?.dp}
                           reply={replyFunc}
-                          stt
                         />
                       </div>
                     </div>
@@ -1498,8 +1500,8 @@ function Components({ params }) {
                 </div>
               </div>
 
-              <div className="w-full z-10 h-[100%] justify-center  items-center flex absolute bottom-0 ">
-                <div className="flex bg-[#F1F1F1] sm:min-w-[350px]  sm:max-w-[400px] dark:bg-[#1A1D21] justify-center items-center px-4 gap-4 py-4 rounded-2xl flex-col">
+              <div className="w-full z-10 h-[100%] justify-center backdrop-blur-sm items-center flex absolute bottom-0 ">
+                <div className="flex bg-[#F1F1F1] sm:min-w-[350px] shadow-custom-lg sm:max-w-[400px] dark:bg-[#1A1D21] justify-center items-center px-4 gap-4 py-4 rounded-2xl flex-col">
                   <div className=" mt-3 w-[60px] h-[60px] rounded-[18px]">
                     <img
                       src={dp}

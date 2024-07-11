@@ -11,8 +11,16 @@ import toast from "react-hot-toast";
 import VideoPlayer from "@/app/component/VideoPlayer";
 import CommunityChat from "@/app/component/CommunityChat";
 import { RxCross2 } from "react-icons/rx";
-import { IoReorderThreeOutline } from "react-icons/io5";
+import { IoDocument, IoReorderThreeOutline } from "react-icons/io5";
 import Link from "next/link";
+
+import reportspic from "@/app/assets/reports.png";
+import memberspic from "@/app/assets/members.png";
+import deletered from "@/app/assets/reddelete.png";
+import mutepic from "@/app/assets/mute.png";
+import unmutepic from "@/app/assets/unmute.png";
+import styles from "@/app/CustomScrollbarComponent.module.css";
+import logout from "@/app/assets/logout.png";
 import Members from "@/app/component/Members";
 import { useRouter, useSearchParams } from "next/navigation";
 import CommunityPost from "@/app/component/CommunityPost";
@@ -29,6 +37,8 @@ import {
 } from "../redux/slice/comChatSlice";
 import { API } from "@/Essentials";
 import Loader from "./Loader";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import Image from "next/image";
 
 function Newforyou({ id }) {
   const { data } = useAuthContext();
@@ -45,12 +55,14 @@ function Newforyou({ id }) {
   const [currentState, setCurrentState] = useState("post");
   const [shareValue, setShareValue] = useState("");
   const [share, setShare] = useState(false);
+  const preview = useSelector((state) => state.remember.preview);
   const postsRefs = useRef({});
   const [options, setOptions] = useState(false);
   const [refsSet, setRefsSet] = useState(false);
   const searchParams = useSearchParams();
   const optionType = searchParams.get("type");
   const [creatorId, setCreatorId] = useState("");
+  const [members, setMembers] = useState([]);
   const router = useRouter();
   const [comtype, setComtype] = useState("");
   const reply = useSelector((state) => state.comChat.reply);
@@ -102,6 +114,7 @@ function Newforyou({ id }) {
       setLoading(true);
       const res = await axios.get(`${API}/compostfeed/${data?.id}/${id}`);
       if (res.data.success) {
+        setMembers(res.data.members);
         setMemcount(res?.data?.community?.memberscount);
         setIsMuted(res.data.muted[0]?.muted);
         setTitle(res.data.community.title);
@@ -544,97 +557,175 @@ function Newforyou({ id }) {
 
   return (
     <>
+      <div
+        onClick={() => setOptions(false)}
+        className={`${options ? "fixed inset-0 z-20" : "hidden -z-40"}`}
+      ></div>
       {optionType === "reports" && (
-        <div className="fixed inset-0 z-40 flex bg-green-300 justify-center items-center w-screen h-screen">
-          <div className="flex justify-center flex-col items-center h-full w-[40%]">
-            <div className="text-xl">Reports</div>
-            <div>
+        <div className="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
+          <div className="bg-white dark:bg-bluedark rounded-lg shadow-lg w-11/12 md:w-1/3 p-6">
+            <div className="text-2xl font-semibold mb-4 text-center">
+              Reports
+            </div>
+            <div className="space-y-3 text-sm">
               <div
-                onClick={() =>
-                  !reports.includes("CopyRight Infringment") &&
-                  setReports([...reports, "CopyRight Infringment"])
-                }
-                className="p-2 px-5 rounded-xl bg-black text-white"
+                onClick={() => {
+                  if (reports.includes("CopyRight Infringement")) {
+                    setReports(
+                      reports.filter(
+                        (report) => report !== "CopyRight Infringement"
+                      )
+                    );
+                  } else {
+                    setReports([...reports, "CopyRight Infringement"]);
+                  }
+                }}
+                className={`p-3 ${
+                  reports.includes("CopyRight Infringement")
+                    ? "bg-[#0077ff85]"
+                    : "bg-gray-200 dark:bg-[#1A1D21]"
+                } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
-                CopyRight Infringment
+                CopyRight Infringement
               </div>
               <div
-                onClick={() =>
-                  !reports.includes("Harrasment") &&
-                  setReports([...reports, "Harrasment"])
-                }
-                className="p-2 px-5 rounded-xl bg-black text-white"
+                onClick={() => {
+                  if (reports.includes("Harrassment")) {
+                    setReports(
+                      reports.filter((report) => report !== "Harrassment")
+                    );
+                  } else {
+                    setReports([...reports, "Harrassment"]);
+                  }
+                }}
+                className={`p-3 ${
+                  reports.includes("Harrassment")
+                    ? "bg-[#0077ff85]"
+                    : "bg-gray-200 dark:bg-[#1A1D21]"
+                } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
-                Harrasment
+                Harrassment
               </div>
               <div
-                onClick={() =>
-                  !reports.includes("Nudity") &&
-                  setReports([...reports, "Nudity"])
-                }
-                className="p-2 px-5 rounded-xl bg-black text-white"
+                onClick={() => {
+                  if (reports.includes("Nudity")) {
+                    setReports(reports.filter((report) => report !== "Nudity"));
+                  } else {
+                    setReports([...reports, "Nudity"]);
+                  }
+                }}
+                className={`p-3 ${
+                  reports.includes("Nudity")
+                    ? "bg-[#0077ff85]"
+                    : "bg-gray-200 dark:bg-[#1A1D21]"
+                } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
                 Nudity
               </div>
               <div
-                onClick={() =>
-                  !reports.includes("Sexual Content") &&
-                  setReports([...reports, "Sexual Content"])
-                }
-                className="p-2 px-5 rounded-xl bg-black text-white"
+                onClick={() => {
+                  if (reports.includes("Sexual Content")) {
+                    setReports(
+                      reports.filter((report) => report !== "Sexual Content")
+                    );
+                  } else {
+                    setReports([...reports, "Sexual Content"]);
+                  }
+                }}
+                className={`p-3 ${
+                  reports.includes("Sexual Content")
+                    ? "bg-[#0077ff85]"
+                    : "bg-gray-200 dark:bg-[#1A1D21]"
+                } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
                 Sexual Content
               </div>
               <div
-                onClick={() =>
-                  !reports.includes("Spam") && setReports([...reports, "Spam"])
-                }
-                className="p-2 px-5 rounded-xl bg-black text-white"
+                onClick={() => {
+                  if (reports.includes("Spam")) {
+                    setReports(reports.filter((report) => report !== "Spam"));
+                  } else {
+                    setReports([...reports, "Spam"]);
+                  }
+                }}
+                className={`p-3 ${
+                  reports.includes("Spam")
+                    ? "bg-[#0077ff85]"
+                    : "bg-gray-200 dark:bg-[#1A1D21]"
+                } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
                 Spam
               </div>
               <div
-                onClick={() =>
-                  !reports.includes("Violence") &&
-                  setReports([...reports, "Violence"])
-                }
-                className="p-2 px-5 rounded-xl bg-black text-white"
+                onClick={() => {
+                  if (reports.includes("Violence")) {
+                    setReports(
+                      reports.filter((report) => report !== "Violence")
+                    );
+                  } else {
+                    setReports([...reports, "Violence"]);
+                  }
+                }}
+                className={`p-3 ${
+                  reports.includes("Violence")
+                    ? "bg-[#0077ff85]"
+                    : "bg-gray-200 dark:bg-[#1A1D21]"
+                } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
                 Violence
               </div>
               <div
-                onClick={() =>
-                  !reports.includes("Hate Speech") &&
-                  setReports([...reports, "Hate Speech"])
-                }
-                className="p-2 px-5 rounded-xl bg-black text-white"
+                onClick={() => {
+                  if (reports.includes("Hate Speech")) {
+                    setReports(
+                      reports.filter((report) => report !== "Hate Speech")
+                    );
+                  } else {
+                    setReports([...reports, "Hate Speech"]);
+                  }
+                }}
+                className={`p-3 ${
+                  reports.includes("Hate Speech")
+                    ? "bg-[#0077ff85]"
+                    : "bg-gray-200 dark:bg-[#1A1D21]"
+                } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
                 Hate Speech
               </div>
               <div
-                onClick={() =>
-                  !reports.includes("Other") &&
-                  setReports([...reports, "Other"])
-                }
-                className="p-2 px-5 rounded-xl bg-black text-white"
+                onClick={() => {
+                  if (reports.includes("Other")) {
+                    setReports(reports.filter((report) => report !== "Other"));
+                  } else {
+                    setReports([...reports, "Other"]);
+                  }
+                }}
+                className={`p-3 ${
+                  reports.includes("Other")
+                    ? "bg-[#0077ff85]"
+                    : "bg-gray-200 dark:bg-[#1A1D21]"
+                } rounded-lg  dark:text-white  text-gray-800 cursor-pointer`}
               >
                 Other
               </div>
-
-              <Link
-                href={`/main/feed/newForYou/${id}`}
-                className="p-2 px-5 rounded-xl bg-black text-white"
-              >
-                Cancel
-              </Link>
-
-              <Link
-                onClick={handleReport}
-                href={`/main/feed/newForYou/${id}`}
-                className="p-2 px-5 rounded-xl bg-black text-white"
-              >
-                Submit
-              </Link>
+              <div className="flex justify-between mt-4">
+                <Link
+                  onClick={() => {
+                    setReports([]);
+                  }}
+                  href={`/main/feed/newForYou?id=${id}`}
+                  className="px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600"
+                >
+                  Cancel
+                </Link>
+                <Link
+                  onClick={handleReport}
+                  href={`/main/feed/newForYou?id=${id}`}
+                  className="px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600"
+                >
+                  Submit
+                </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -759,60 +850,167 @@ function Newforyou({ id }) {
       ) : (
         <>
           {isjoined ? (
-            <div className=" relative">
+            <div className="w-full">
               {/* header */}
-              <div className="flex items-center h-[8%] px-2 w-screen  bg-[#f1f1f1] border-b-[1px] ">
-                <div>
-                  <img
-                    src={dp}
-                    className="h-[45px] w-[45px] rounded-[19px] bg-slate-300 "
-                  />
-                </div>
-                <div className="flex pl-2 justify-between w-full items-center gap-2">
+              <div className="flex items-center justify-between h-[10%] px-2 min-w-full dark:bg-bluedark  border-b dark:border-[#131619]">
+                <div className="flex items-center gap-2 justify-center">
+                  {/* <div>
+                  <MdOutlineArrowBackIosNew className="text-2xl" />
+                </div> */}
+                  <div className="h-[46px] w-[46px]">
+                    <img
+                      src={dp}
+                      className="w-full h-full object-cover rounded-[14px] bg-red-300 "
+                    />
+                  </div>
                   <div className="flex gap-1 flex-col">
-                    <div>{title}</div>
+                    <div className="font-bold">{title}</div>
                     <div className="text-[12px]">
                       {memcount} {memcount > 1 ? "Members" : "Member"}
                     </div>
                   </div>
-                  <div
-                    onClick={() => setOptions(!options)}
-                    className="flex justify-center relative items-center text-3xl"
-                  >
-                    <IoReorderThreeOutline />
-                    {options && (
-                      <div className="absolute w-[200px] z-40 text-sm h-auto -left-[170px] p-2 rounded-lg top-7 text-[#6e6e6e] bg-white">
-                        <div className="flex flex-col gap-2 font-semibold h-full">
+                </div>
+                <div className="flex  items-center gap-2">
+                  <div className="flex justify-center items-center  gap-2">
+                    <div className="flex justify-center  items-center ">
+                      {members?.map((m, y) => (
+                        <div
+                          style={{
+                            marginLeft: `-${y + 10}px`,
+                            zIndex: `${y}`,
+                          }}
+                          key={y}
+                          className="w-[32px] h-[32px]"
+                        >
+                          <img
+                            src={m?.dp}
+                            className="h-full object-contain rounded-[22px] w-full"
+                          />
+                        </div>
+                      ))}
+                      <div
+                        style={{
+                          marginLeft: `-${members.length + 10}px`,
+                        }}
+                        className="h-[32px] z-10 flex justify-center items-center text-[10px] text-[#686B6E] rounded-[22px] bg-[#1A1D21] w-[32px]"
+                      >
+                        <div>+</div>
+                        <div>{memcount - members.length}</div>
+                      </div>
+                    </div>
+                    <div
+                      onClick={() => setOptions(!options)}
+                      className="flex justify-center relative gap-2 items-center "
+                    >
+                      <BsThreeDotsVertical />
+                      <div
+                        className={`absolute duration-100 ${
+                          options
+                            ? "w-auto min-w-[160px] p-2 px-4 top-7 text-sm h-auto -left-[150px] "
+                            : "w-0 h-0 text-[0px] top-0 left-0"
+                        } z-40 rounded-lg dark:text-white text-[#6e6e6e] bg-white shadow-custom-lg dark:bg-[#0D0F10]`}
+                      >
+                        {" "}
+                        <div className="flex flex-col font-semibold h-full">
                           <Link
-                            className="hover:bg-slate-200 rounded-lg pl-1"
-                            href={`/main/feed/newForYou/${id}?type=members`}
+                            className="rounded-lg flex items-center justify-start"
+                            href={`/main/feed/newForYou?id=${id}&type=members`}
                           >
-                            Members
+                            <div className="flex justify-center  items-center">
+                              <Image
+                                src={memberspic}
+                                className={`relative top-2 max-w-[40px] max-h-[40px] flex justify-center items-center h-full ${
+                                  options ? "" : "hidden"
+                                } `}
+                              />
+                            </div>
+                            <div className="">Members</div>
                           </Link>
                           {creatorId !== data?.id && (
                             <Link
-                              href={`/main/feed/newForYou/${id}?type=reports`}
+                              className="flex items-center justify-start"
+                              href={`/main/feed/newForYou?id=${id}&type=reports`}
                             >
-                              Reports
+                              <div className="flex justify-center  items-center">
+                                <Image
+                                  src={reportspic}
+                                  className={`relative top-2 max-w-[40px] max-h-[40px] flex justify-center items-center h-full ${
+                                    options ? "" : "hidden"
+                                  } `}
+                                />
+                              </div>
+                              <div>Reports</div>
                             </Link>
                           )}
 
                           {creatorId !== data?.id && (
-                            <div>
+                            <div className="">
                               {isMuted ? (
-                                <div onClick={handleMute}>Un Mute</div>
+                                <div
+                                  onClick={handleMute}
+                                  className="flex items-center justify-start"
+                                >
+                                  <div className="flex justify-center items-center">
+                                    <Image
+                                      src={unmutepic}
+                                      className={`relative top-2 max-w-[40px] max-h-[40px] flex justify-center items-center h-full ${
+                                        options ? "" : "hidden"
+                                      } `}
+                                    />
+                                  </div>
+                                  <div>Un Mute</div>
+                                </div>
                               ) : (
-                                <div onClick={handleMute}>Mute</div>
+                                <div
+                                  onClick={handleMute}
+                                  className="flex items-center justify-start"
+                                >
+                                  <div className="flex justify-center  items-center">
+                                    <Image
+                                      src={mutepic}
+                                      className={`relative top-2 max-w-[40px] max-h-[40px] flex justify-center items-center h-full ${
+                                        options ? "" : "hidden"
+                                      } `}
+                                    />
+                                  </div>
+                                  <div>Mute</div>
+                                </div>
                               )}
                             </div>
                           )}
 
                           {creatorId === data?.id ? (
-                            <div onClick={deleteCommunity}>Delete</div>
+                            <div
+                              className="flex items-center justify-start"
+                              onClick={deleteCommunity}
+                            >
+                              <div className="flex justify-center  items-center">
+                                <Image
+                                  src={deletered}
+                                  className={`relative top-2 max-w-[40px] max-h-[40px] flex justify-center items-center h-full ${
+                                    options ? "" : "hidden"
+                                  } `}
+                                />
+                              </div>
+                              <div>Delete</div>
+                            </div>
                           ) : (
                             <div>
                               {isjoined ? (
-                                <div onClick={() => unjoinmembers()}>Leave</div>
+                                <div
+                                  className="flex items-center justify-start"
+                                  onClick={() => unjoinmembers()}
+                                >
+                                  <div className="flex justify-center  items-center">
+                                    <Image
+                                      src={logout}
+                                      className={`relative top-2 max-w-[40px] max-h-[40px] flex justify-center items-center h-full ${
+                                        options ? "" : "hidden"
+                                      } `}
+                                    />
+                                  </div>
+                                  <div>Leave</div>
+                                </div>
                               ) : (
                                 <div onClick={() => joinmembers()}>Join</div>
                               )}
@@ -821,13 +1019,34 @@ function Newforyou({ id }) {
                           {data?.id === creatorId && (
                             <div>
                               {comtype === "private" ? (
-                                <div onClick={changeComType}>
-                                  {" "}
-                                  set to public
+                                <div
+                                  onClick={changeComType}
+                                  className="flex items-center justify-start"
+                                >
+                                  <div className="flex justify-center  items-center">
+                                    <Image
+                                      src={publicimage}
+                                      className={`relative top-2 max-w-[40px] max-h-[40px] flex justify-center items-center h-full ${
+                                        options ? "" : "hidden"
+                                      } `}
+                                    />
+                                  </div>
+                                  <div> set to public</div>
                                 </div>
                               ) : (
-                                <div onClick={changeComType}>
-                                  set to private
+                                <div
+                                  onClick={changeComType}
+                                  className="flex items-center justify-start"
+                                >
+                                  <div className="flex justify-center  items-center">
+                                    <Image
+                                      src={privateimage}
+                                      className={`relative top-2 max-w-[40px] max-h-[40px] flex justify-center items-center h-full ${
+                                        options ? "" : "hidden"
+                                      } `}
+                                    />
+                                  </div>
+                                  <div> set to private</div>
                                 </div>
                               )}
                             </div>
@@ -835,41 +1054,59 @@ function Newforyou({ id }) {
                           <div></div>
                         </div>
                       </div>
-                    )}
+                    </div>
                   </div>
                 </div>
               </div>
 
-              {optionType === "members" && <Members id={data?.id} comId={id} />}
-
-              {!optionType && (
+              <div
+                className={`z-40 duration-200 flex justify-end items-end h-[100vh] top-0 w-full absolute ${
+                  optionType === "members" ? "" : "hidden"
+                }`}
+              >
                 <div
-                  className={`${
+                  className={`pn:max-md:w-[100%] dark:shadow-custom-lg shadow-lg duration-200 max-h-[90%] ${
+                    optionType === "members" ? "" : "hidden"
+                  } overflow-y-scroll  md:min-w-[340px] md:max-w-[340px] flex-col`}
+                >
+                  <Members id={data?.id} comId={id} dash={"newForYou"} />
+                </div>
+              </div>
+
+              <div className="flex gap-2  border-b h-[8%] dark:border-[#131619]">
+                <div className="flex gap-6 ml-4 text-sm">
+                  {topics.map((d, i) => (
+                    <div
+                      onClick={() => handleFetch(d?._id, d?.nature)}
+                      key={i}
+                      className="flex"
+                    >
+                      <div
+                        className={`flex cursor-pointer items-center px-4 py-4 ${
+                          tId === d?._id
+                            ? " dark:text-white border-b font-semibold border-[#0077FF]"
+                            : "text-[#9B9C9E] "
+                        }  `}
+                      >
+                        {d?.title}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {(!optionType || optionType === "members") && (
+                <div
+                  className={` w-full relative ${
+                    styles.customScrollbar
+                  } overflow-y-scroll ${
                     currentState === "chat"
-                      ? "h-[84%] w-screen sm:w-full relative overflow-y-scroll"
-                      : "h-[92%] w-screen sm:w-full relative overflow-y-scroll"
+                      ? reply && replyId
+                        ? "h-[70%]"
+                        : "h-[74%]"
+                      : "h-[82%]"
                   }`}
                 >
-                  <div className="flex justify-center w-full items-center py-2">
-                    {topics.map((d, i) => (
-                      <div
-                        onClick={() => handleFetch(d?._id, d?.nature)}
-                        key={i}
-                        className="w-full flex justify-center"
-                      >
-                        <div
-                          className={`flex items-center px-4 ${
-                            tId === d?._id
-                              ? "bg-blue-600 text-white"
-                              : "bg-[#f2f2f2]"
-                          } rounded-lg `}
-                        >
-                          {d?.title}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-
                   {currentState === "post" && (
                     <>
                       {isTopicJoined ? (
@@ -877,6 +1114,7 @@ function Newforyou({ id }) {
                           {com.map((d, i) => {
                             return (
                               <CommunityPost
+                                comId={id}
                                 id={`${d?.posts?._id}`}
                                 ref={(el) => {
                                   if (el) {
@@ -884,6 +1122,7 @@ function Newforyou({ id }) {
                                   }
                                 }}
                                 key={`${d?.posts?._id}`}
+                                handleLike={handleLike}
                                 d={d}
                                 i={i}
                                 title={title}
@@ -909,61 +1148,88 @@ function Newforyou({ id }) {
                   )}
 
                   {currentState === "chat" && (
-                    <div className=" w-full ">
-                      {messages?.map((d, i) => (
-                        <CommunityChat
-                          d={d}
-                          data={data}
-                          i={i}
-                          dispatch={dispatch}
-                          tId={tId}
-                          socket={socket}
-                          messages={messages}
-                        />
-                      ))}
-                      {/* {isTopicJoined && (
-                    <div className="bg-pink-300 absolute mt-[60px]">
-                      {reply && replyId && (
-                        <div className="flex justify-between px-4 items-center">
-                          <div>{reply}</div>
-                          <div>
-                            <RxCross2
+                    <div className=" w-full p-2">
+                      {preview === false && (
+                        <>
+                          {messages?.map((d, i) => (
+                            <CommunityChat
+                              d={d}
+                              data={data}
+                              i={i}
+                              dispatch={dispatch}
+                              tId={tId}
+                              socket={socket}
+                              messages={messages}
+                            />
+                          ))}
+                        </>
+                      )}
+
+                      {preview && (
+                        <div className="w-full h-[70vh]">
+                          <div className="flex flex-col w-full justify-center items-center h-full ">
+                            <div
                               onClick={() => {
                                 dispatch(setType(""));
-                                dispatch(
-                                  setReplyFunction({
-                                    reply: "",
-                                    replyId: "",
-                                  })
-                                );
+                                dispatch(setContent(""));
+
+                                dispatch(setPreview(false));
                               }}
-                            />
+                              className="flex justify-end items-end mr-7 w-full"
+                            >
+                              <RxCross2 className="text-2xl" />
+                            </div>
+                            <div className="h-full justify-center items-center flex">
+                              {type === "image" && content && (
+                                <div className="h-full flex w-full justify-center items-center">
+                                  <img
+                                    className="max-h-[500px] max-w-[500px] flex"
+                                    src={
+                                      typeof content === "string"
+                                        ? content
+                                        : URL.createObjectURL(content)
+                                    }
+                                  />
+                                </div>
+                              )}
+                              {type === "video" && content && (
+                                <div className="h-full flex w-full justify-center items-center">
+                                  <video
+                                    className="max-h-[500px] max-w-[500px] flex"
+                                    src={URL.createObjectURL(content)}
+                                    controls
+                                  />
+                                </div>
+                              )}
+                              {type === "gif" && content && (
+                                <div className="h-full flex w-full bg-green-200 justify-center items-center">
+                                  <img
+                                    className="max-h-[500px] max-w-[500px] bg-red-300 flex"
+                                    src={
+                                      typeof content === "string"
+                                        ? content
+                                        : URL.createObjectURL(content)
+                                    }
+                                  />
+                                </div>
+                              )}
+                              {type === "doc" && content && (
+                                <div className="h-full flex gap-4 flex-col w-full justify-center items-center">
+                                  <div className="flex gap-1 justify-center items-center">
+                                    <div className="">
+                                      <IoDocument className="w-[50px] h-[50px]" />
+                                    </div>
+                                    <div className="text-xl">{name}</div>
+                                  </div>
+                                  <div className="text-xl">
+                                    No Preview Available
+                                  </div>
+                                </div>
+                              )}
+                            </div>
                           </div>
                         </div>
                       )}
-                      <Input
-                        sendMessages={sendMessage}
-                        sendgif={sendgif}
-                        handleSend={handleSend}
-                        setContent={setContent}
-                        setMessage={setMessage}
-                        senderId={data?.id}
-                        sender_fullname={data?.fullname}
-                        setType={setType}
-                        type={type}
-                        name={name}
-                        setMessages={setMessages}
-                        setincommsgs={setincommsgs}
-                        content={content}
-                        size={size}
-                        message={msgs}
-                        dispatch={dispatch}
-                        image={data?.dp}
-                        reply={replyFunc}
-                      />
-                    </div>
-                  )} */}
-
                       {!isTopicJoined && (
                         <>
                           <div className="flex justify-center h-full items-end ">
@@ -978,13 +1244,20 @@ function Newforyou({ id }) {
                   )}
                 </div>
               )}
+
               {/* Footer  */}
               {currentState === "chat" && (
-                <div className="h-[8%]">
+                <div
+                  className={`bg-[#fff] duration-75 flex border-t-2 dark:border-[#131619] dark:bg-bluelight justify-center ${
+                    reply && replyId
+                      ? "h-[12%] gap-2 space-y-2"
+                      : "h-[8%] items-center"
+                  }`}
+                >
                   {isTopicJoined && (
-                    <div className="bg-[#efefef] flex items-center w-full  justify-center h-[100%]">
+                    <div className="bg-white flex-col flex items-center w-full dark:bg-bluelight justify-center h-[100%]">
                       {reply && replyId && (
-                        <div className="flex justify-between items-center">
+                        <div className="flex justify-between w-full h-[40px] px-3 items-center">
                           <div>{reply}</div>
                           <div>
                             <RxCross2
@@ -1021,7 +1294,6 @@ function Newforyou({ id }) {
                           dispatch={dispatch}
                           image={data?.dp}
                           reply={replyFunc}
-                          stt
                         />
                       </div>
                     </div>
@@ -1030,44 +1302,203 @@ function Newforyou({ id }) {
               )}
             </div>
           ) : (
-            <div className=" relative">
-              <div className="flex items-center h-[60px] absolute top-0 z-20 w-full  bg-[#f4f4f4]">
-                <div>
-                  <img
-                    src={dp}
-                    className="h-[45px] w-[45px] rounded-[19px]  "
-                  />
+            <div className="h-screen w-full relative">
+              {/* header */}
+              <div className="flex items-center h-[10%] border-b-[1px] px-2 w-full dark:bg-bluedark">
+                <div className="flex items-center gap-2 justify-center">
+                  {/* <div>
+                  <MdOutlineArrowBackIosNew className="text-2xl" />
+                </div> */}
+                  <div>
+                    <img
+                      src={dp}
+                      className="h-[45px] w-[55px] rounded-[14px] bg-slate-300 "
+                    />
+                  </div>
                 </div>
-                <div className="pl-2">
-                  <div>{title}</div>
-                  <div className="text-[12px]">
-                    {memcount} {memcount > 1 ? "Members" : "Member"}
+                <div className="flex pl-2 justify-between w-full items-center gap-2">
+                  <div className="flex gap-1 flex-col">
+                    <div>{title}</div>
+                    <div className="text-[12px]">
+                      {memcount} {memcount > 1 ? "Members" : "Member"}
+                    </div>
+                  </div>
+                  <div className="flex justify-center items-center  gap-2">
+                    <div className="flex justify-center items-center ">
+                      {members?.map((m, y) => (
+                        <div
+                          style={{
+                            marginLeft: `-${y + 10}px`,
+                            zIndex: `${y}`,
+                          }}
+                          key={y}
+                          className="w-[32px] h-[32px]"
+                        >
+                          <img
+                            src={m?.dp}
+                            className="h-full object-contain rounded-[22px] w-full"
+                          />
+                        </div>
+                      ))}
+                      <div
+                        style={{
+                          marginLeft: `-${members.length + 10}px`,
+                        }}
+                        className="h-[32px] z-10 flex justify-center items-center text-[10px] bg-[#DEE1E5] text-[#686B6E] rounded-[22px] dark:bg-[#1A1D21] w-[32px]"
+                      >
+                        <div>+</div>
+                        <div>{memcount - members.length}</div>
+                      </div>
+                    </div>
+                    <div
+                      onClick={() => setOptions(!options)}
+                      className="flex justify-center relative gap-2 items-center "
+                    >
+                      <BsThreeDotsVertical />
+                      <div
+                        className={`absolute duration-100 ${
+                          options
+                            ? "w-auto p-2 px-4 top-7 text-sm h-auto -left-[140px] "
+                            : "w-0 h-0 text-[0px] top-0 left-0"
+                        } z-40 rounded-lg dark:text-white text-[#6e6e6e] bg-white shadow-custom-lg dark:bg-[#0D0F10]`}
+                      >
+                        {" "}
+                        <div className="flex flex-col font-semibold h-full">
+                          <Link
+                            className="rounded-lg flex items-center justify-start"
+                            href={`/main/feed/newForYou/${id}?type=members`}
+                          >
+                            <div className="flex justify-center  items-center">
+                              <Image
+                                src={memberspic}
+                                className={`relative top-2 max-w-[40px] max-h-[40px] flex justify-center items-center h-full ${
+                                  options ? "" : "hidden"
+                                } `}
+                              />
+                            </div>
+                            <div className="">Members</div>
+                          </Link>
+                          {creatorId !== data?.id && (
+                            <Link
+                              className="flex items-center justify-start"
+                              href={`/main/feed/newForYou/${id}?type=reports`}
+                            >
+                              <div className="flex justify-center  items-center">
+                                <Image
+                                  src={reportspic}
+                                  className={`relative top-2 max-w-[40px] max-h-[40px] flex justify-center items-center h-full ${
+                                    options ? "" : "hidden"
+                                  } `}
+                                />
+                              </div>
+                              <div>Reports</div>
+                            </Link>
+                          )}
+
+                          {creatorId !== data?.id && (
+                            <div className="">
+                              {isMuted ? (
+                                <div
+                                  onClick={handleMute}
+                                  className="flex items-center justify-start"
+                                >
+                                  <div className="flex justify-center items-center">
+                                    <Image
+                                      src={unmutepic}
+                                      className={`relative top-2 max-w-[40px] max-h-[40px] flex justify-center items-center h-full ${
+                                        options ? "" : "hidden"
+                                      } `}
+                                    />
+                                  </div>
+                                  <div>Un Mute</div>
+                                </div>
+                              ) : (
+                                <div
+                                  onClick={handleMute}
+                                  className="flex items-center justify-start"
+                                >
+                                  <div className="flex justify-center  items-center">
+                                    <Image
+                                      src={mutepic}
+                                      className={`relative top-2 max-w-[40px] max-h-[40px] flex justify-center items-center h-full ${
+                                        options ? "" : "hidden"
+                                      } `}
+                                    />
+                                  </div>
+                                  <div>Mute</div>
+                                </div>
+                              )}
+                            </div>
+                          )}
+
+                          {creatorId === data?.id ? (
+                            <div onClick={deleteCommunity}>Delete</div>
+                          ) : (
+                            <div>
+                              {isjoined ? (
+                                <div
+                                  className="flex items-center justify-start"
+                                  onClick={() => unjoinmembers()}
+                                >
+                                  <div className="flex justify-center  items-center">
+                                    <Image
+                                      src={logout}
+                                      className={`relative top-2 max-w-[40px] max-h-[40px] flex justify-center items-center h-full ${
+                                        options ? "" : "hidden"
+                                      } `}
+                                    />
+                                  </div>
+                                  <div>Leave</div>
+                                </div>
+                              ) : (
+                                <div onClick={() => joinmembers()}>Join</div>
+                              )}
+                            </div>
+                          )}
+                          {data?.id === creatorId && (
+                            <div>
+                              {comtype === "private" ? (
+                                <div onClick={changeComType}>
+                                  {" "}
+                                  set to public
+                                </div>
+                              ) : (
+                                <div onClick={changeComType}>
+                                  set to private
+                                </div>
+                              )}
+                            </div>
+                          )}
+                          <div></div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div className="w-full bg-[#17171750] z-10 h-[100%] justify-center items-center flex absolute bottom-0 ">
-                <div className="flex bg-white px-4 gap-2 py-4 rounded-2xl flex-col">
-                  <div className="flex gap-1 items-center">
-                    <div className="h-[40px] w-[40px] rounded-[18px] ">
-                      <img
-                        src={dp}
-                        className="h-full w-full rounded-[19px]  "
-                      />
-                    </div>
-                    <div>
-                      <div className="text-[14px] font-semibold">{title}</div>
-                      <div className="text-[11px] font-medium">
-                        {memcount} {memcount > 1 ? "Members" : "Member"}
-                      </div>
-                    </div>
+              <div className="w-full z-10 h-[100%] justify-center items-center backdrop-blur-sm flex absolute bottom-0 ">
+                <div className="flex bg-[#F1F1F1] max-w-[90%] shadow-custom-lg dark:bg-[#1A1D21] justify-center items-center px-4 gap-4 py-4 rounded-2xl flex-col">
+                  <div className=" mt-3 w-[60px] h-[60px] rounded-[18px]">
+                    <img
+                      src={dp}
+                      className="h-full w-full rounded-[19px] bg-slate-300 "
+                    />
                   </div>
-                  <div className="bg-[#f5f5f5] p-4 rounded-2xl  max-w-[290px]">
+
+                  <div className="sm:text-[18px] text-center font-semibold">
+                    {title}
+                  </div>
+                  <div className="text-[11px] font-medium">
+                    {memcount} {memcount > 1 ? "members" : "member"}
+                  </div>
+
+                  <div className="max-w-full text-sm text-[#9B9C9E]">
                     {desc}
                   </div>
                   <div
                     onClick={() => joinmembers()}
-                    className="flex bg-blue-600 items-center justify-center z-10 rounded-2xl max-w-[290px] hover:bg-blue-400 select-none p-3 text-white "
+                    className="flex bg-[#131619]  text-white w-full text-[15px] items-center justify-center z-10 rounded-2xl p-3 "
                   >
                     Join Community
                   </div>
@@ -1075,123 +1506,50 @@ function Newforyou({ id }) {
               </div>
 
               {/* // for unjoined community */}
-              <div className="h-[100%] bg-[#f7f7f7] pt-[60px] pb-[100px] w-full overflow-y-scroll">
+              <div
+                className={`h-[90%]  dark:bg-bluedark pb-[100px] w-full ${styles.customScrollbar} relative overflow-y-scroll`}
+              >
                 <div className=" z-0 w-full  h-full  bottom-0 right-0 top-0 left-0">
-                  <div
-                    className="flex justify-center w-full 
-         items-center py-2
-         "
-                  >
-                    {topics.map((d, i) => (
-                      <div
-                        onClick={() => handleFetch(d?._id, d?.nature)}
-                        key={i}
-                        className="w-full flex justify-center"
-                      >
-                        <div className="flex items-center bg-[#f2f2f2] px-4 rounded-lg ">
-                          {d?.title}
+                  <div className="flex gap-2  border-b dark:border-[#131619]">
+                    <div className="flex gap-6 ml-4 text-sm">
+                      {topics.map((d, i) => (
+                        <div
+                          onClick={() => handleFetch(d?._id, d?.nature)}
+                          key={i}
+                          className="flex "
+                        >
+                          <div
+                            className={`flex cursor-pointer items-center px-4 py-4 ${
+                              tId === d?._id
+                                ? " dark:text-white border-b font-semibold border-[#0077FF]"
+                                : " "
+                            }  `}
+                          >
+                            {d?.title}
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                   {currentState === "post" && (
                     <div>
                       {com.map((d, i) => (
-                        <div
+                        <CommunityPost
                           id={`${d?.posts?._id}`}
-                          key={`${d?.posts?._id}`}
                           ref={(el) => {
                             if (el) {
                               postsRefs.current[`${d?.posts?._id}`] = el;
-                              checkAndSetRefs(); // Check if refs are set after each ref assignment
                             }
                           }}
-                          className="  pt-2 pn:max-sm:p-3 p-4 pn:max-md:rounded-2xl "
-                        >
-                          {/* POst */}
-                          <div className="bg-white p-2 max-w-[360px] rounded-xl">
-                            {/* header */}
-                            <div className="w-[100%] rounded-2xl flex flex-col items-center ">
-                              <div className=" w-[100%] flex flex-row items-center ">
-                                <div className=" flex object-scale-down items-center h-[100%] ">
-                                  {/* <div className="h-[45px] w-[45px] rounded-2xl bg-slate-200 animate-pulse "></div> */}
-                                  <img
-                                    src={d?.dpdata}
-                                    className="h-[40px] w-[40px] rounded-2xl bg-yellow-300 "
-                                  />
-                                </div>
-                                {/* Community name */}
-                                <div className="flex flex-col justify-center px-2 items-start">
-                                  <div className="flex flex-col ">
-                                    <div className="text-[14px] font-semibold">
-                                      {title}
-                                    </div>
-                                    <div className="font-medium text-[#414141] text-[12px]">
-                                      By {d?.posts?.sender?.fullname}
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="h-[200px] mt-2 rounded-2xl bg-slate-200 flex justify-center items-center w-full">
-                              {d?.urls.map((f) => (
-                                <div className="h-full">
-                                  {f?.type.startsWith("image") ? (
-                                    <img
-                                      src={f?.content}
-                                      className="max-h-full"
-                                    />
-                                  ) : (
-                                    <div className="w-full h-full min-w-[360px]">
-                                      <VideoPlayer
-                                        src={f?.content}
-                                        width={"100%"}
-                                        height={"h-full"}
-                                      />
-                                    </div>
-                                    // <MediaPlayer
-                                    //   src={f?.content}
-                                    //   onQualitiesChange={480}
-                                    // >
-                                    //   <MediaProvider />
-                                    //   <DefaultVideoLayout
-                                    //     thumbnails={f?.content}
-                                    //     icons={defaultLayoutIcons}
-                                    //   />
-                                    // </MediaPlayer>
-                                  )}
-                                </div>
-                              ))}
-                            </div>
-                            <div className=" px-2 mt-2 py-1 w-[100%] rounded-lg flex flex-col">
-                              <div className="text-[14px] truncate text-black w-full ">
-                                {d?.posts.title}
-                              </div>
-                              <div className="text-[14px] truncate">
-                                {d?.posts.desc}
-                              </div>
-                            </div>
-                            <div className=" px-2 mt-1  py-1 w-[100%] rounded-lg flex items-center">
-                              <div className="text-[14px] text-black w-full ">
-                                liked by divyansh
-                              </div>
-                              <div className="flex gap-2">
-                                <div className="flex justify-center rounded-xl items-center gap-1 p-2 bg-[#f4f4f4]">
-                                  <PiHandsClapping />
-                                  <div className="text-[12px]">12</div>
-                                </div>
-                                <div className="rounded-xl bg-[#f4f4f4] p-2">
-                                  <VscSend />
-                                </div>
-                              </div>
-                            </div>
-                            <div className=" px-2 mt-1  py-1 w-[100%] rounded-lg bg-slate-200  flex items-center">
-                              <div className="text-[14px] text-black w-full ">
-                                comment .... .... ...
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                          key={`${d?.posts?._id}`}
+                          d={d}
+                          handleLike={handleLike}
+                          i={i}
+                          title={title}
+                          setShare={setShare}
+                          data={data}
+                          setShareValue={setShareValue}
+                        />
                       ))}
                     </div>
                   )}
