@@ -14,7 +14,14 @@ import { BsChevronLeft, BsChevronRight, BsPip } from "react-icons/bs";
 import { IoMdSkipForward } from "react-icons/io";
 import { FaMinus, FaPlus } from "react-icons/fa";
 
-const VideoPlayer = ({ src, adSrc, width, height, poster }) => {
+const VideoPlayer = ({
+  src,
+  adSrc,
+  width,
+  height,
+  poster,
+  object = "object-contain",
+}) => {
   const videoRef = useRef();
   const containerRef = useRef();
   const [isplaying, setIsplaying] = useState(false);
@@ -277,7 +284,7 @@ const VideoPlayer = ({ src, adSrc, width, height, poster }) => {
           // src={src}
           poster={poster ? poster : null}
           onEnded={handleVideoEnd}
-          className="w-full bg-black object-contain rounded-2xl h-full"
+          className={`w-full bg-black ${object} rounded-2xl h-full`}
         />
 
         <div

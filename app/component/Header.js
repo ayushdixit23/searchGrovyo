@@ -28,7 +28,7 @@ function Header() {
             {/* <div className="h-[40px] w-[40px] rounded-2xl bg-[#f5f5f5] ring-1 ring-white shadow-sm animate-pulse "></div> */}
             <img
               src={data?.dp}
-              className="object-cover shadow-sm rounded-2xl  "
+              className="object-cover w-full h-full shadow-sm rounded-2xl  "
               alt={data?.fullname}
             />
           </div>

@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
-// import box from "../../assets/Images/Box.png";
 import Link from "next/link";
-import { FaCartPlus } from "react-icons/fa";
 import { useRouter } from "next/navigation";
-
 
 function Store(props) {
   const [productt, setProductt] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const router = useRouter()
 
   const calculateDif = (a, b) => {
     const dif = Number(b) - Number(a);
@@ -36,14 +31,14 @@ function Store(props) {
           {productt.map((d, i) => (
             <div
               key={i}
-              className="flex flex-col justify-center border-[2px] dark:border-[#323d4e] light:border-[#f9f9f9] rounded-xl w-full sm:max-w-[220px] p-2 "
+              className="flex flex-col justify-center border-[2px] dark:border-[#1A1D21] light:border-[#f9f9f9] rounded-xl w-full sm:max-w-[220px] p-2 "
             >
               <div className="bg-[#f9f9f9] dark:bg-bluedark dark:text-white flex-wrap flex justify-center items-center rounded-lg py-3">
                 <div className="h-[170px] w-[200px] flex justify-center items-center ">
                   <img
                     src={`${d?.dp}`}
                     alt="img"
-                    className="sm:w-[170px] w-full h-[170px] "
+                    className=" w-full h-full object-contain"
                   />
                 </div>
               </div>
@@ -67,14 +62,14 @@ function Store(props) {
                 </div>
                 <div className="font-semibold dark:text-white text-sm">
                   M.R.P:
-                  <del className="font-medium p-2 text-[#FF0000]">
+                  <del className="font-semibold p-2 text-[#FF0000]">
                     ₹{d?.isvariant ? d?.variants[0].category[0].price : d?.price}
                   </del>
                 </div>
               </div>
 
 
-              < Link
+              <Link
                 href={`/product/${d?._id}`}
                 className="text-black ring-1 ring-black bg-white rounded-2xl flex justify-center items-center space-x-2 h-8 sm:h-12 w-full"
               >

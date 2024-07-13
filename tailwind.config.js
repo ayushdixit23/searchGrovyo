@@ -30,7 +30,9 @@ module.exports = {
         chatslightbg: "url('./assets/bgchatlightmode.png')",
         chatsdarkbg: "url('./assets/bgchatdarkmode.png')",
         lightlogin: "url('./assets/lightlogin.png')",
-        lightpiclogin: "url('./assets/lightpiclogin.png')"
+        lightpiclogin: "url('./assets/lightpiclogin.png')",
+        defaultprositelight: "url('./assets/defaultprositelight.png')",
+        defaultprositedark: "url('./assets/defaultprositedark.png')"
       },
       boxShadow: {
         'custom-lg': '0 10px 15px -3px rgba(255, 255, 255, 0.07), 0 4px 6px -2px rgba(255, 255, 255, 0.07)',

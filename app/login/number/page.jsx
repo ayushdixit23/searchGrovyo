@@ -173,7 +173,6 @@ function page() {
             await cookiesSetter(res);
           } else {
             toast.error("Seems like you don't have an account in the app.");
-            router.push(`/login/singUp?no=${number}`);
           }
         } else {
           toast.error("Something went wrong...");

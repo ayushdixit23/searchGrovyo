@@ -195,9 +195,9 @@ export default function NewforyouLayout({ children }) {
 					className="fixed inset-0 z-50 bg-black/70 flex justify-center items-center w-screen md:inset-0 h-screen max-h-full"
 				>
 					<div className="relative p-4 flex justify-center items-center w-full max-w-lg max-h-full">
-						<div className="relative bg-white dark:bg-bluelight rounded-lg shadow ">
+						<div className="relative bg-white dark:bg-[#0d0d0d] rounded-lg shadow ">
 							<div className="flex items-center justify-between p-4 md:p-5">
-								<h3 className="text-lg text-gray-500 dark:text-white ">Share course</h3>
+								<h3 className="text-lg text-gray-500 dark:text-white ">Share Post</h3>
 								<button
 									type="button"
 									onClick={() => setShare(false)}
@@ -226,15 +226,15 @@ export default function NewforyouLayout({ children }) {
 
 							<div className="px-4 pb-4 md:px-5 md:pb-5">
 								<label
-									for="course-url"
+									for="post-url"
 									className="text-sm font-medium dark:text-slate-300 text-gray-900 mb-2 block"
 								>
-									Share the course link below with your friends:
+									Share the Post link below with your friends:
 								</label>
 								<div className="flex justify-center dark:bg-bluelight  items-center
 								  border rounded-lg bg-transparent border-gray-300 text-gray-500 mb-4">
 									<input
-										id="course-url"
+										id="post-url"
 										type="text"
 										className="col-span-6 dark:bg-bluelight rounded-lg  text-sm  block w-full p-2.5  dark:text-selectdark "
 										value={shareValue}
@@ -811,9 +811,16 @@ export default function NewforyouLayout({ children }) {
 															</div>
 															<div
 																onClick={() => {
-																	setShareValue(
-																		`https://grovyo.com/main/feed/newForYou/${d?.posts?.community?._id}#${d?.posts?._id}`
-																	);
+																	if (isMobile) {
+																		setShareValue(
+																			`https://grovyo.com/main/feed/newForYou?id=${d?.posts?.community?._id}#${d?.posts?._id}`
+																		);
+																	} else {
+																		setShareValue(
+																			`https://grovyo.com/main/feed/newForYou/${d?.posts?.community?._id}#${d?.posts?._id}`
+																		);
+																	}
+
 																	setShare(true);
 																}}
 																className="rounded-xl bg-[#f4f4f4] dark:bg-bluedark p-2"

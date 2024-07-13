@@ -159,15 +159,14 @@ export default function CommunityLayout({ children }) {
           className="fixed inset-0 z-50 bg-black/70 flex justify-center items-center w-screen md:inset-0 h-screen max-h-full"
         >
           <div className="relative p-4 flex justify-center items-center w-full max-w-lg max-h-full">
-            <div className="relative bg-white rounded-lg shadow  dark:bg-bluelight">
+            <div className="relative bg-white dark:bg-[#0d0d0d] rounded-lg shadow ">
               <div className="flex items-center justify-between p-4 md:p-5">
-                <h3 className="text-lg text-gray-500 dark:text-white">
-                  Share course
-                </h3>
+                <h3 className="text-lg text-gray-500 dark:text-white ">Share Post</h3>
                 <button
                   type="button"
                   onClick={() => setShare(false)}
-                  className="text-gray-400 hover:dark:bg-gray-400   hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center "
+                  className="text-gray-400 hover:dark:bg-gray-400   hover:bg-gray-200
+									 hover:text-gray-900 rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center "
                   data-modal-toggle="course-modal"
                 >
                   <svg
@@ -191,16 +190,17 @@ export default function CommunityLayout({ children }) {
 
               <div className="px-4 pb-4 md:px-5 md:pb-5">
                 <label
-                  for="course-url"
-                  className="text-sm dark:text-slate-300 font-medium text-gray-900 mb-2 block"
+                  for="post-url"
+                  className="text-sm font-medium dark:text-slate-300 text-gray-900 mb-2 block"
                 >
-                  Share the course link below with your friends:
+                  Share the Post link below with your friends:
                 </label>
-                <div className="flex justify-center dark:bg-bluelight  items-center  border rounded-lg bg-transparent border-gray-300 text-gray-500 mb-4">
+                <div className="flex justify-center dark:bg-bluelight  items-center
+								  border rounded-lg bg-transparent border-gray-300 text-gray-500 mb-4">
                   <input
-                    id="course-url"
+                    id="post-url"
                     type="text"
-                    className="col-span-6 dark:bg-bluelight  dark:text-selectdark rounded-lg  text-sm  block w-full p-2.5 "
+                    className="col-span-6 dark:bg-bluelight rounded-lg  text-sm  block w-full p-2.5  dark:text-selectdark "
                     value={shareValue}
                     disabled
                     readonly
@@ -209,7 +209,7 @@ export default function CommunityLayout({ children }) {
                     onClick={handleCopyToClipboard}
                     data-copy-to-clipboard-target="course-url"
                     data-tooltip-target="tooltip-course-url"
-                    className=" p-2 inline-flex items-center justify-center"
+                    className=" p-2 inline-flex items-center justify-center "
                   >
                     <span id="default-icon-course-url">
                       <svg
@@ -227,7 +227,7 @@ export default function CommunityLayout({ children }) {
                       className="hidden inline-flex items-center"
                     >
                       <svg
-                        className="w-3.5 h-3.5 text-blue-700 "
+                        className="w-3.5 h-3.5 text-blue-700"
                         aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -246,7 +246,8 @@ export default function CommunityLayout({ children }) {
                   <div
                     id="tooltip-course-url"
                     role="tooltip"
-                    className="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip "
+                    className="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium
+										 text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip "
                   >
                     <span id="default-tooltip-message-course-url">
                       Copy to clipboard
@@ -260,6 +261,7 @@ export default function CommunityLayout({ children }) {
                     <div className="tooltip-arrow" data-popper-arrow></div>
                   </div>
                 </div>
+                {/* <button type="button" data-modal-hide="course-modal" className="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Close</button> */}
               </div>
             </div>
           </div>
@@ -608,9 +610,16 @@ export default function CommunityLayout({ children }) {
                             </div>
                             <div
                               onClick={() => {
-                                setShareValue(
-                                  `https://grovyo.com/main/feed/newForYou/${d?.posts?.community?._id}#${d?.posts?._id}`
-                                );
+                                if (isMobile) {
+                                  setShareValue(
+                                    `https://grovyo.com/main/feed/newForYou?id=${d?.posts?.community?._id}#${d?.posts?._id}`
+                                  );
+                                } else {
+                                  setShareValue(
+                                    `https://grovyo.com/main/feed/newForYou/${d?.posts?.community?._id}#${d?.posts?._id}`
+                                  );
+                                }
+
                                 setShare(true);
                               }}
                               className="rounded-xl bg-[#f4f4f4] p-2 dark:bg-bluedark "
