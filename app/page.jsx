@@ -484,21 +484,6 @@ function page() {
                 </div>
                 <div className="mt-1 flex items-center gap-5 flex-wrap md:gap-4 justify-center md:items-center">
                   {recentSearch.map((d, i) => (
-                    // <div
-                    //   key={d?.id}
-                    //   href={`/${d?.id}`}
-                    //   onClick={() => changeOrder(d?.id)}
-                    //   className={`flex flex-col items-center w-[150px] justify-center bg-[#121212] ring-1 rounded-2xl p-3`}
-                    // >
-                    //   <img
-                    //     className="h-[50px] w-[50px] rounded-2xl bg-slate-50"
-                    //     src={d?.dp}
-                    //     alt="image"
-                    //   />
-
-                    //   <div className="font-semibold mt-1 text-sm">{d?.fullname}</div>
-                    //   <div className="text-[12px]">{d?.username}</div>
-                    // </div>
                     <Link
                       key={d?.id}
                       href={`/${d?.username}`}
@@ -508,11 +493,11 @@ function page() {
                       <div className="h-[50px] w-[50px] rounded-[20px] ">
                         <img
                           className="w-full h-full object-cover rounded-[20px] "
-                          src={d?.dps}
+                          src={d?.dp}
                           alt="image"
                         />
                       </div>
-
+                      {console.log(d, "fghj")}
                       <div className="font-semibold flex items-center mt-1 pn:max-sm:hidden text-sm">
                         <div className="pr-[2px]">
                           {d?.fullname.length > 12
