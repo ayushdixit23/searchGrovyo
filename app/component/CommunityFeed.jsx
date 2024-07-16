@@ -79,6 +79,47 @@ function CommunityFeed({ id }) {
   const [creatorId, setCreatorId] = useState("");
   const [isMuted, setIsMuted] = useState(false);
   const preview = useSelector((state) => state.remember.preview);
+  const [isMobile, setIsMobile] = useState(null);
+
+  useEffect(() => {
+    const initialWidth = window.innerWidth;
+    if (initialWidth > 821) {
+      setIsMobile(false);
+    } else {
+      setIsMobile(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const initialWidth = window.innerWidth;
+      if (initialWidth > 821) {
+        setIsMobile(false);
+      } else {
+        setIsMobile(true);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isMobile) {
+      if (id) {
+        router.push(`/main/feed/community?id=${id}`);
+      } else {
+        router.push(`/main/feed/community`);
+      }
+    } else {
+      if (id) {
+        router.push(`/main/feed/community/${id}`);
+      } else {
+        router.push(`/main/feed/community`);
+      }
+    }
+  }, [isMobile]);
 
   const fetchCommunity = async () => {
     try {

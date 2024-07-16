@@ -46,7 +46,7 @@ import mutepic from "../../../../assets/mute.png";
 import unmutepic from "../../../../assets/unmute.png";
 import logout from "../../../../assets/logout.png";
 import { MdOutlineArrowBackIosNew } from "react-icons/md";
-import { setPreview } from "@/app/redux/slice/remember";
+import { setPathForSharing, setPreview } from "@/app/redux/slice/remember";
 // import memberspic from "../../../../assets/members.svg";
 // const SearchExperienceComNewForYou = ({ params }) => (
 //   <SearchContextManager apiKey={"BhiAZ1DOyIHjZlGxrtP2NozVsmpJ27Kz"}>
@@ -87,6 +87,7 @@ function Components({ params }) {
   const [isMuted, setIsMuted] = useState(false);
   const messages = useSelector((state) => state.comChat.messages);
   const [isMobile, setIsMobile] = useState(null);
+  const compath = useSelector((state) => state.remember.compath);
 
   useEffect(() => {
     const initialWidth = window.innerWidth;
@@ -113,20 +114,10 @@ function Components({ params }) {
   }, []);
 
   useEffect(() => {
-    if (isMobile) {
-      if (params?.id) {
-        router.push(`/main/feed/newForYou?id=${params?.id}`);
-      } else {
-        router.push(`/main/feed/newForYou`);
-      }
-    } else {
-      if (params?.id) {
-        router.push(`/main/feed/newForYou/${params?.id}`);
-      } else {
-        router.push(`/main/feed/newForYou`);
-      }
+    if (refsSet) {
+      router.push(compath);
     }
-  }, [isMobile]);
+  }, [isMobile, compath]);
 
   const checkAndSetRefs = () => {
     if (
@@ -147,15 +138,50 @@ function Components({ params }) {
       setTimeout(() => {
         const hash = window.location.hash.substring(1); // Get the hash part of the URL
         if (hash && postsRefs.current[hash]) {
+          if (isMobile) {
+            if (params?.id) {
+              dispatch(
+                setPathForSharing(
+                  `/main/feed/newForYou?id=${params?.id}#${hash}`
+                )
+              );
+            } else {
+              dispatch(setPathForSharing(`/main/feed/newForYou`));
+            }
+          } else {
+            if (params?.id) {
+              dispatch(
+                setPathForSharing(`/main/feed/newForYou/${params?.id}#${hash}`)
+              );
+            } else {
+              dispatch(setPathForSharing(`/main/feed/newForYou`));
+            }
+          }
           postsRefs.current[hash].scrollIntoView({ behavior: "smooth" });
         } else {
+          if (isMobile) {
+            if (params?.id) {
+              dispatch(
+                setPathForSharing(`/main/feed/newForYou?id=${params?.id}`)
+              );
+            } else {
+              dispatch(setPathForSharing(`/main/feed/newForYou`));
+            }
+          } else {
+            if (params?.id) {
+              dispatch(setPathForSharing(`/main/feed/newForYou/${params?.id}`));
+            } else {
+              dispatch(setPathForSharing(`/main/feed/newForYou`));
+            }
+          }
+
           console.log(
             "Hash not found or refs not set correctly in delayed check"
           );
         }
       }, 1000);
     }
-  }, [refsSet]);
+  }, [refsSet, isMobile]);
 
   const dispatch = useDispatch();
   const type = useSelector((state) => state.comChat.type);

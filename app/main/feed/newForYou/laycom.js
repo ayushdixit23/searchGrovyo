@@ -23,7 +23,7 @@ import toast from "react-hot-toast";
 import VideoPlayer from "@/app/component/VideoPlayer";
 import Newforyou from "@/app/component/Newforyou";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setHide } from "@/app/redux/slice/remember";
 //import { PauseIcon, PlayIcon } from '@vidstack/react/icons';
 
@@ -38,6 +38,8 @@ export default function NewforyouLayout({ children }) {
 	const [shareValue, setShareValue] = useState("");
 	const [share, setShare] = useState(false);
 	const router = useRouter()
+	const compath = useSelector((state) => state.remember.compath);
+
 
 	const fetchfeed = async () => {
 		try {
@@ -175,20 +177,23 @@ export default function NewforyouLayout({ children }) {
 	}, []);
 
 	useEffect(() => {
-		if (isMobile) {
-			if (id) {
-				router.push(`/main/feed/newForYou?id=${id}`)
-			} else {
-				router.push(`/main/feed/newForYou`)
-			}
-		} else {
-			if (id) {
-				router.push(`/main/feed/newForYou/${id}`)
-			} else {
-				router.push(`/main/feed/newForYou`)
-			}
+		// if (isMobile) {
+		// 	if (id) {
+		// 		router.push(`/main/feed/newForYou?id=${id}`)
+		// 	} else {
+		// 		router.push(`/main/feed/newForYou`)
+		// 	}
+		// } else {
+		// 	if (id) {
+		// 		router.push(`/main/feed/newForYou/${id}`)
+		// 	} else {
+		// 		router.push(`/main/feed/newForYou`)
+		// 	}
+		// }
+		if (compath) {
+			router.push(compath)
 		}
-	}, [isMobile])
+	}, [isMobile, compath])
 
 	useEffect(() => {
 		if (!searchParams.get("id")) {
@@ -832,12 +837,17 @@ export default function NewforyouLayout({ children }) {
 																		setShareValue(
 																			`https://grovyo.com/main/feed/newForYou?id=${d?.posts?.community?._id}#${d?.posts?._id}`
 																		);
+																		// setShareValue(
+																		// 	`http://172.20.10.3:3000/main/feed/newForYou?id=${d?.posts?.community?._id}#${d?.posts?._id}`
+																		// );
 																	} else {
 																		setShareValue(
 																			`https://grovyo.com/main/feed/newForYou/${d?.posts?.community?._id}#${d?.posts?._id}`
 																		);
+																		// setShareValue(
+																		// 	`http://172.20.10.3:3000/main/feed/newForYou?id=${d?.posts?.community?._id}#${d?.posts?._id}`
+																		// );
 																	}
-
 																	setShare(true);
 																}}
 																className="rounded-xl bg-[#f4f4f4] dark:bg-bluedark p-2"

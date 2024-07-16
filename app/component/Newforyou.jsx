@@ -39,6 +39,7 @@ import { API } from "@/Essentials";
 import Loader from "./Loader";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import Image from "next/image";
+import { setPathForSharing } from "../redux/slice/remember";
 
 function Newforyou({ id }) {
   const { data } = useAuthContext();
@@ -72,6 +73,38 @@ function Newforyou({ id }) {
   const [loading, setLoading] = useState(true);
   const [desc, setDesc] = useState("");
   const messages = useSelector((state) => state.comChat.messages);
+  const [isMobile, setIsMobile] = useState(null);
+  const compath = useSelector((state) => state.remember.compath);
+
+  useEffect(() => {
+    const initialWidth = window.innerWidth;
+    if (initialWidth > 821) {
+      setIsMobile(false);
+    } else {
+      setIsMobile(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const initialWidth = window.innerWidth;
+      if (initialWidth > 821) {
+        setIsMobile(false);
+      } else {
+        setIsMobile(true);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (refsSet) {
+      router.push(compath);
+    }
+  }, [isMobile, compath]);
 
   const checkAndSetRefs = () => {
     if (
@@ -92,15 +125,44 @@ function Newforyou({ id }) {
       setTimeout(() => {
         const hash = window.location.hash.substring(1); // Get the hash part of the URL
         if (hash && postsRefs.current[hash]) {
+          if (isMobile) {
+            if (id) {
+              dispatch(
+                setPathForSharing(`/main/feed/newForYou?id=${id}#${hash}`)
+              );
+            } else {
+              dispatch(setPathForSharing(`/main/feed/newForYou`));
+            }
+          } else {
+            if (id) {
+              dispatch(setPathForSharing(`/main/feed/newForYou/${id}#${hash}`));
+            } else {
+              dispatch(setPathForSharing(`/main/feed/newForYou`));
+            }
+          }
           postsRefs.current[hash].scrollIntoView({ behavior: "smooth" });
         } else {
+          if (isMobile) {
+            if (id) {
+              dispatch(setPathForSharing(`/main/feed/newForYou?id=${id}`));
+            } else {
+              dispatch(setPathForSharing(`/main/feed/newForYou`));
+            }
+          } else {
+            if (id) {
+              dispatch(setPathForSharing(`/main/feed/newForYou/${id}`));
+            } else {
+              dispatch(setPathForSharing(`/main/feed/newForYou`));
+            }
+          }
+
           console.log(
             "Hash not found or refs not set correctly in delayed check"
           );
         }
       }, 1000);
     }
-  }, [refsSet]);
+  }, [refsSet, isMobile]);
 
   const dispatch = useDispatch();
   const type = useSelector((state) => state.comChat.type);
