@@ -78,6 +78,47 @@ function Components({ params }) {
   const replyId = useSelector((state) => state.comChat.replyId);
   const [creatorId, setCreatorId] = useState("");
   const [isMuted, setIsMuted] = useState(false);
+  const [isMobile, setIsMobile] = useState(null);
+
+  useEffect(() => {
+    const initialWidth = window.innerWidth;
+    if (initialWidth > 821) {
+      setIsMobile(false);
+    } else {
+      setIsMobile(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const initialWidth = window.innerWidth;
+      if (initialWidth > 821) {
+        setIsMobile(false);
+      } else {
+        setIsMobile(true);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isMobile) {
+      if (params?.id) {
+        router.push(`/main/feed/community?id=${params?.id}`);
+      } else {
+        router.push(`/main/feed/community`);
+      }
+    } else {
+      if (params?.id) {
+        router.push(`/main/feed/community/${params?.id}`);
+      } else {
+        router.push(`/main/feed/community`);
+      }
+    }
+  }, [isMobile]);
 
   const fetchCommunity = async () => {
     try {
@@ -825,7 +866,7 @@ function Components({ params }) {
                     {memcount} {memcount > 1 ? "Members" : "Member"}
                   </div>
                 </div>
-              
+
 
                 <div className="flex justify-center items-center  gap-2">
                   <div className="flex justify-center items-center ">

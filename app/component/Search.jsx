@@ -184,7 +184,7 @@ function Search({ setShow }) {
   }, [user.id]);
 
   return (
-    <div className="pn:max-md:w-[100%] md:w-[390px] z-50 h-screen bg-white dark:bg-[#0D0F10] flex flex-col">
+    <div className="pn:max-pp:w-[100%] pp:w-[390px] z-50 h-screen bg-white dark:bg-[#0D0F10] flex flex-col">
       <div className="flex justify-between items-center my-2 py-2 gap-2 px-2">
         <div className="text-2xl font-semibold">Search</div>
         <div className="flex justify-center items-center gap-2">

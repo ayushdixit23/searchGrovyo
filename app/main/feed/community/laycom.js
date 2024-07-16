@@ -17,7 +17,7 @@ import { socketemitfunc, useSocketContext } from "../../../utils/SocketWrapper";
 import { formatDate } from "../../../utils/useful";
 import toast from "react-hot-toast";
 import VideoPlayer from "@/app/component/VideoPlayer";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import CommunityFeed from "@/app/component/CommunityFeed";
 import { setHide } from "@/app/redux/slice/remember";
 import { useDispatch } from "react-redux";
@@ -30,6 +30,7 @@ export default function CommunityLayout({ children }) {
   const id = searchParams.get("id");
   const [isMobile, setIsMobile] = useState(false);
   const [share, setShare] = useState(false);
+  const router = useRouter()
   const [loading, setLoading] = useState(true)
 
   const dispatch = useDispatch();
@@ -130,6 +131,22 @@ export default function CommunityLayout({ children }) {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  useEffect(() => {
+    if (isMobile) {
+      if (id) {
+        router.push(`/main/feed/community?id=${id}`)
+      } else {
+        router.push(`/main/feed/community`)
+      }
+    } else {
+      if (id) {
+        router.push(`/main/feed/community/${id}`)
+      } else {
+        router.push(`/main/feed/community`)
+      }
+    }
+  }, [isMobile])
 
   useEffect(() => {
     if (data.id) {

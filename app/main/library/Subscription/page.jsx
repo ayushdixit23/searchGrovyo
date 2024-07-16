@@ -28,7 +28,7 @@ const page = () => {
 
   return (
     <div className="md:flex h-[85.5vh]">
-      <div className="md:w-[390px] pn:max-md:pt-[20vh] pn:max-md:w-[100%] border-r-2  px-4 overflow-y-auto scrollbar-hide">
+      <div className="md:w-[390px] pn:max-md:pt-[20vh] pn:max-md:w-[100%] border-r-2 px-2 sm:px-4 overflow-y-auto scrollbar-hide">
         {sub.map((d, i) => (
           <div
             key={i}
@@ -40,7 +40,7 @@ const page = () => {
                 className="h-[100%] w-[100%] rounded-lg resize"
               />
             </div>
-            <div className="w-[50%] h-[100%] justify-evenly flex flex-col px-2 py-2">
+            <div className="w-[50%] h-[100%] justify-evenly px-1 flex flex-col py-2">
               <div className="flex text-[12px] font-semibold truncate">
                 Topic {d?.status?.topic}
               </div>
@@ -50,19 +50,19 @@ const page = () => {
             </div>
             {/* Status */}
             <div className="w-[35%] h-[100%]  justify-evenly items-center flex flex-col px-2 py-2">
-              <div className="flex text-[12px] font-semibold justify-center">
+              <div className="flex sm:text-sm -mt-0.5 text-xs font-semibold justify-center">
                 Status :
                 <span
-                  className={`${d?.status?.validity === "Expired"
-                    ? "text-red-600"
-                    : "text-green-800"
-                    }`}
+                  className={`sm:text-sm pl-1 text-xs ${
+                    d?.status?.validity === "Expired"
+                      ? "text-red-600"
+                      : "text-green-800"
+                  }`}
                 >
-                  {" "}
                   {d?.status?.validity}
                 </span>
               </div>
-              <div className="flex justify-center text-[9px] font-normal">
+              <div className="flex justify-center text-[8px] font-normal">
                 Bought On : 18/03/2024
               </div>
             </div>

@@ -392,7 +392,7 @@ const page = ({ params }) => {
                 <img
                   src={`${bio?.dp}`}
                   alt="dp"
-                  className="rounded-2xl h-[45px] w-[45px] "
+                  className="rounded-2xl w-full h-full object-cover "
                 />
               </div>
               <div className="px-2 pr-4 ">

@@ -26,12 +26,12 @@ function page() {
   const [popUp, setPopUp] = useState(false);
   const router = useRouter();
   const [updateAddress, setUpdateAddress] = useState({
-    streetaddress: "A/19 Shanti Nagar Cantt",
-    city: "kanpur",
-    state: "Uttar Pradesh",
-    pincode: 208004,
-    landmark: "Pandit Hotel",
-    country: "India",
+    streetaddress: "",
+    city: "",
+    state: "",
+    pincode: null,
+    landmark: "",
+    country: "",
   });
   const [mrpPrice, setMrpPrice] = useState(null);
   const [discountedPrice, setDiscountedPrice] = useState(null);
@@ -209,7 +209,7 @@ function page() {
     <>
       {addressPopup && (
         <div className="fixed inset-0 z-50 w-screen h-screen flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-md">
-          <div className="flex flex-col items-center justify-center h-5/6 bg-white dark:bg-bluedark w-2/5 rounded-3xl shadow-lg">
+          <div className="flex flex-col items-center justify-center h-[80%] sm:h-5/6 bg-white dark:bg-bluedark sm:w-[75%] w-[95%] md:w-2/5 rounded-xl sm:rounded-3xl shadow-lg">
             <h2 className="text-2xl font-semibold mb-6">Address</h2>
             <div className="space-y-4 w-3/4">
               <input
@@ -308,7 +308,7 @@ function page() {
               className="h-[150px] w-[100%] justify-evenly flex flex-col  items-center"
             >
               <div
-                className="text-black  dark:text-white
+                className="text-black pn:max-pp:my-1  dark:text-white
                font-semibold pl-2 w-[100%] text-[14px] flex items-start"
               >
                 Shipping details
@@ -419,18 +419,66 @@ function page() {
               </div>
             ))}
 
+            <div className="w-full px-3 gap-3 mt-4 bg-white dark:bg-[#0D0F10] dark:text-white flex flex-col justify-between">
+              <div className="text-[16px] font-semibold text-black dark:text-white">
+                PRICE DETAILS{" "}
+                {data.map((d, i) => (
+                  <div key={i}>{d?.length}</div>
+                ))}
+              </div>
+              {/* MRP */}
+              <div className="flex flex-row justify-between items-center">
+                <div className="text-[#737373] text-[14px]">Total MRP</div>
+                <div className="text-black dark:text-white text-[14px]">
+                  Rs. {mrpPrice}
+                </div>
+              </div>
+
+              {/* Discount */}
+              <div className="flex flex-row justify-between items-center">
+                <div className="text-[#737373] text-[14px]">
+                  Discount on MRP
+                </div>
+                <div className="text-[#2DC071] text-[14px]">
+                  -Rs. {discountedPrice}
+                </div>
+              </div>
+
+              {/* Coupon Discount */}
+              <div className="flex flex-row justify-between items-center">
+                <div className="text-[#737373] text-[14px]">
+                  Coupon Discount
+                </div>
+                <div className="text-black dark:text-white text-[14px]">
+                  Rs. 0
+                </div>
+              </div>
+
+              {/* delivery charge */}
+              <div className="flex flex-row justify-between items-center">
+                <div className="text-[#737373] text-[14px]">
+                  Delivery Charge
+                </div>
+                <div className="text-[#2DC071] text-[14px]">Free</div>
+              </div>
+
+              {/* Total charge */}
+            </div>
+
             {/* button for bill */}
             <div
-              className="bg-white md:hidden sm:max-md:w-[80%] shadow-3xl sm:max-md:rounded-xl fixed bottom-14 w-full py-4 px-4 rounded-t-xl flex justify-between items-center
+              className="bg-white dark:bg-[#0a0303] dark:text-white md:hidden sm:max-md:w-[80%] shadow-3xl sm:max-md:rounded-xl fixed bottom-14 w-full py-4 px-4 rounded-t-xl flex justify-between items-center
            "
             >
-              <div className="font-bold text-[16px]">Total Price: ₹</div>
+              <div className="font-bold text-[14px]">
+                Total Price: ₹{actualPrice}
+              </div>
 
               <div
                 onClick={() => {
                   placeOrderWithCash();
                 }}
-                className="py-2 flex justify-center items-center bg-[#171717] text-[#171717] rounded-xl px-6"
+                className="py-2 flex justify-center font-semibold text-[13px] items-center bg-[#2e7eef] text-white rounded-xl px-4"
               >
                 Place order
               </div>
@@ -570,7 +618,7 @@ function page() {
                       <div className="px-2">
                         <div className="w-[100%] mt-2 bg-[#f9f9f9]  p-2 rounded-2xl">
                           <div className="">To</div>
-                          <div>guyghu.gyguyg.gggui</div>
+                          <div> {updateAddress?.streetaddress}</div>
                           <div className="text-[#569aff] font-medium w-full text-right">
                             Change..
                           </div>
@@ -844,7 +892,7 @@ function page() {
               <div className="px-4">
                 <div className="w-[100%] mt-2 bg-[#f9f9f9]  p-2 rounded-2xl">
                   <div className="">To</div>
-                  <div>guyghu.gyguyg.gggui</div>
+                  <div> {updateAddress?.streetaddress}</div>
                   <div className="text-[#569aff] font-medium w-full text-right">
                     Change..
                   </div>

@@ -22,7 +22,7 @@ import { socketemitfunc, useSocketContext } from "../../../utils/SocketWrapper";
 import toast from "react-hot-toast";
 import VideoPlayer from "@/app/component/VideoPlayer";
 import Newforyou from "@/app/component/Newforyou";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setHide } from "@/app/redux/slice/remember";
 //import { PauseIcon, PlayIcon } from '@vidstack/react/icons';
@@ -37,6 +37,7 @@ export default function NewforyouLayout({ children }) {
 	const [feed, setFeed] = useState([]);
 	const [shareValue, setShareValue] = useState("");
 	const [share, setShare] = useState(false);
+	const router = useRouter()
 
 	const fetchfeed = async () => {
 		try {
@@ -172,6 +173,22 @@ export default function NewforyouLayout({ children }) {
 			window.removeEventListener("resize", handleResize);
 		};
 	}, []);
+
+	useEffect(() => {
+		if (isMobile) {
+			if (id) {
+				router.push(`/main/feed/newForYou?id=${id}`)
+			} else {
+				router.push(`/main/feed/newForYou`)
+			}
+		} else {
+			if (id) {
+				router.push(`/main/feed/newForYou/${id}`)
+			} else {
+				router.push(`/main/feed/newForYou`)
+			}
+		}
+	}, [isMobile])
 
 	useEffect(() => {
 		if (!searchParams.get("id")) {

@@ -86,6 +86,47 @@ function Components({ params }) {
   const [reports, setReports] = useState([]);
   const [isMuted, setIsMuted] = useState(false);
   const messages = useSelector((state) => state.comChat.messages);
+  const [isMobile, setIsMobile] = useState(null);
+
+  useEffect(() => {
+    const initialWidth = window.innerWidth;
+    if (initialWidth > 821) {
+      setIsMobile(false);
+    } else {
+      setIsMobile(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const initialWidth = window.innerWidth;
+      if (initialWidth > 821) {
+        setIsMobile(false);
+      } else {
+        setIsMobile(true);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isMobile) {
+      if (params?.id) {
+        router.push(`/main/feed/newForYou?id=${params?.id}`);
+      } else {
+        router.push(`/main/feed/newForYou`);
+      }
+    } else {
+      if (params?.id) {
+        router.push(`/main/feed/newForYou/${params?.id}`);
+      } else {
+        router.push(`/main/feed/newForYou`);
+      }
+    }
+  }, [isMobile]);
 
   const checkAndSetRefs = () => {
     if (

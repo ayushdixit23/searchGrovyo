@@ -432,11 +432,13 @@ function page() {
                               : null
                           }  gap-2 p-3`}
                         >
-                          <img
-                            className="h-[50px] w-[50px] rounded-[20px] "
-                            src={d?.dps}
-                            alt="image"
-                          />
+                          <div className="h-[50px] w-[50px] rounded-[20px] ">
+                            <img
+                              className="w-full h-full object-cover rounded-[20px] "
+                              src={d?.dps}
+                              alt="image"
+                            />
+                          </div>
                           <div className="flex flex-col">
                             <div className="font-semibold flex gap-1 items-center">
                               <div>{d?.p.fullname} </div>
@@ -503,11 +505,13 @@ function page() {
                       onClick={() => changeOrder(d?.id)}
                       className={`flex flex-col items-center sm:w-[150px] justify-center bg-[#f9f9f9] sm:px-4 relative text-white shadow-lg shadow-white-500/5 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 ring-1 ring-[#f4f4f452] sm:py-2 rounded-[24px] p-2`}
                     >
-                      <img
-                        className="h-[50px] w-[50px] rounded-[20px] bg-slate-50"
-                        src={d?.dp}
-                        alt="image"
-                      />
+                      <div className="h-[50px] w-[50px] rounded-[20px] ">
+                        <img
+                          className="w-full h-full object-cover rounded-[20px] "
+                          src={d?.dps}
+                          alt="image"
+                        />
+                      </div>
 
                       <div className="font-semibold flex items-center mt-1 pn:max-sm:hidden text-sm">
                         <div className="pr-[2px]">
