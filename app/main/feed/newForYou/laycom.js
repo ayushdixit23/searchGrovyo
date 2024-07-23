@@ -41,6 +41,25 @@ export default function NewforyouLayout({ children }) {
 	const compath = useSelector((state) => state.remember.compath);
 
 
+	const [datas, setDatas] = useState([])
+
+	const calculateDif = (a, b) => {
+		const dif = Number(b) - Number(a);
+		const per = Math.ceil((dif / b) * 100);
+		return per;
+	};
+
+	useEffect(() => {
+		axios.get(`${API}/web/products`).then((res) => {
+			// axios.get(`http://192.168.1.6:7190/api/web/products`).then((res) => {
+			console.log(res.data, "data")
+			setDatas(res.data?.products)
+		}).catch((err) => {
+			console.log(err)
+		})
+	}, [])
+
+
 	const fetchfeed = async () => {
 		try {
 			const res = await axios.get(`${API}/newfetchfeeds3/${data?.id}`);
@@ -332,7 +351,8 @@ export default function NewforyouLayout({ children }) {
 					<div className=" pn:max-md:h-[96vh] lg:w-[27%] md:w-[32%] sm:w-[37%] h-screen md:overflow-auto scrollbar-hide select-none dark:border:[#273142] flex flex-col w-full items-center md:border-r-2 border-[#f7f7f7] dark:border-[#131619] self-end ">
 						{/* post 1*/}
 						{/* <div className="h-[10vh]"></div> */}
-						<div className="md:h-[100vh] h-[10vh]"></div>
+
+						{/* <div className="md:h-[100vh] h-[10vh]"></div> */}
 						<div
 							id="scrollableDiv"
 							style={{
@@ -454,317 +474,197 @@ export default function NewforyouLayout({ children }) {
 								scrollableTarget="scrollableDiv"
 							>
 								<div className="sm:my-1 my-4 w-full bg-white dark:bg-graydark">
-									{feed.map((d, i) => (
-										<>
-											{/* ads */}
-											{d?.posts?.kind === "ad" ? (
-												<div className="bg-white dark:bg-[#0d0d0d] pn:max-md:rounded-2xl ">
-													<div className="w-[100%] bg-white dark:bg-graydark flex px-1 justify-between items-center ">
-														<div className="h-[55px] pn:max-sm:h-[50px] flex flex-row items-center ">
-															<div className=" flex object-scale-down items-center h-[100%] ">
-																<img
-																	src={d?.dps}
-																	className="h-[35px] w-[35px] pn:max-sm:w-[30px] pn:max-sm:h-[30px] pn:max-sm:rounded-[13px] rounded-[15px] ring-1 ring-white bg-yellow-300 "
-																/>
-															</div>
-															{/* Community name */}
-															<div className="flex flex-col justify-center px-2 items-start">
-																<div className="flex flex-col space-y-[0.5px] justify-start items-start">
-																	<div className="text-[14px] dark:text-[#f5f5f5] pn:max-sm:text-[12px] font-semibold">
-																		{d?.posts?.community?.title}
-																	</div>
-																	<div className="flex">
-																		<div className="text-[10px] dark:text-[#f5f5f5] pn:max-sm:text-[10px] font-medium text-[#5C5C5C]">
-																			By {d?.posts?.sender?.fullname}
+
+									<div className="md:flex gap-2 mt-[40px] w-full grid h-full max-h-full grid-cols-2 p-3 items-center md:justify-center">
+										{datas.map((d, i) => (
+											<div
+												key={i}
+												className="flex flex-col justify-center border-[2px] dark:border-[#1A1D21] light:border-[#f9f9f9] rounded-xl w-full p-2 "
+											>
+												<div className="bg-[#f9f9f9] w-full dark:bg-bluedark dark:text-white flex-wrap flex justify-center items-center rounded-lg py-2">
+													<div className="w-full h-[90px] flex justify-center items-center ">
+														<img
+															src={`${d?.productImage}`}
+															alt="img"
+															className=" w-full h-full object-cover"
+														/>
+													</div>
+												</div>
+												<div className="flex flex-col gap-1 text-lg font-medium">
+													<div className="text-[12px] dark:text-white font-semibold ">
+														{d?.name?.length > 20 ? `${d?.name.slice(0, 20)}...` : d?.name}
+													</div>
+													{/* <div className="text-[#737373] text-[14px]">
+                  sold by {d?.brandname}
+                </div> */}
+													<div className="text-[12px] dark:text-white flex gap-1 items-center font-bold">
+														<div>₹ {d?.isvariant ? d?.variants[0].category[0]?.discountedprice : d?.discountedprice}</div>
+														{d?.isvariant ?
+															<span className="text-sm dark:text-white font-semibold text-[#5585FF]">
+																{calculateDif(d?.variants[0].category[0]?.discountedprice, d?.variants[0].category[0]?.price)}% off
+															</span> :
+															<span className="text-sm font-semibold text-[#5585FF]">
+																{calculateDif(d?.discountedprice, d?.price)}% off
+															</span>
+														}
+													</div>
+													<div className="font-semibold dark:text-white text-[12px]">
+														M.R.P:
+														<del className="font-semibold px-2 text-[#FF0000]">
+															₹{d?.isvariant ? d?.variants[0].category[0].price : d?.price}
+														</del>
+													</div>
+												</div>
+
+
+												<Link
+													href={`/product/${d?._id}`}
+													className="text-black ring-1 ring-black bg-white rounded-2xl flex justify-center items-center space-x-2 p-2 w-full"
+												>
+													View
+												</Link>
+
+											</div>
+										))}
+									</div >
+									<>
+										{feed.map((d, i) => (
+											<>
+												{/* ads */}
+												{d?.posts?.kind === "ad" ? (
+													<div className="bg-white dark:bg-[#0d0d0d] pn:max-md:rounded-2xl ">
+														<div className="w-[100%] bg-white dark:bg-graydark flex px-1 justify-between items-center ">
+															<div className="h-[55px] pn:max-sm:h-[50px] flex flex-row items-center ">
+																<div className=" flex object-scale-down items-center h-[100%] ">
+																	<img
+																		src={d?.dps}
+																		className="h-[35px] w-[35px] pn:max-sm:w-[30px] pn:max-sm:h-[30px] pn:max-sm:rounded-[13px] rounded-[15px] ring-1 ring-white bg-yellow-300 "
+																	/>
+																</div>
+																{/* Community name */}
+																<div className="flex flex-col justify-center px-2 items-start">
+																	<div className="flex flex-col space-y-[0.5px] justify-start items-start">
+																		<div className="text-[14px] dark:text-[#f5f5f5] pn:max-sm:text-[12px] font-semibold">
+																			{d?.posts?.community?.title}
 																		</div>
-																		<div className="text-[10px] dark:text-[#f5f5f5] font-bold text-[#5C5C5C]">
-																			. Sponsored
+																		<div className="flex">
+																			<div className="text-[10px] dark:text-[#f5f5f5] pn:max-sm:text-[10px] font-medium text-[#5C5C5C]">
+																				By {d?.posts?.sender?.fullname}
+																			</div>
+																			<div className="text-[10px] dark:text-[#f5f5f5] font-bold text-[#5C5C5C]">
+																				. Sponsored
+																			</div>
 																		</div>
 																	</div>
 																</div>
 															</div>
-														</div>
-														{/* Animation of join nd bell */}
-														{d?.subs === "unsubscribed" ? (
-															<div
-																onClick={() =>
-																	joinmembers(d?.posts?.community._id)
-																}
-																className="bg-[#f5f5f5] dark:text-[#f5f5f5] dark:bg-graydark
+															{/* Animation of join nd bell */}
+															{d?.subs === "unsubscribed" ? (
+																<div
+																	onClick={() =>
+																		joinmembers(d?.posts?.community._id)
+																	}
+																	className="bg-[#f5f5f5] dark:text-[#f5f5f5] dark:bg-graydark
 																 p-2 px-4 rounded-xl text-[12px] font-medium text-[#5c5c5c]"
-															>
-																Join
-															</div>
-														) : (
-															<div
-																onClick={() =>
-																	unjoinmembers(d?.posts?.community._id)
-																}
-																className="rounded-xl dark:text-[#f5f5f5] text-[14px] text-[#5c5c5c]"
-															></div>
-														)}
-													</div>
+																>
+																	Join
+																</div>
+															) : (
+																<div
+																	onClick={() =>
+																		unjoinmembers(d?.posts?.community._id)
+																	}
+																	className="rounded-xl dark:text-[#f5f5f5] text-[14px] text-[#5c5c5c]"
+																></div>
+															)}
+														</div>
 
-													{/* POst */}
-													<div className="">
-														<div className="bg-[#f4f4f4] dark:bg-graydark rounded-xl w-full flex flex-col px-2 ">
-															<>
-																{d?.urls.length > 1 ? (
-																	<>
-																		{d?.urls.map((f) => (
-																			<div className="sm:h-[260px] h-[300px] w-full rounded-xl ">
-																				{f?.type.startsWith("image") ? (
-																					<div className="h-full w-full">
-																						<img
+														{/* POst */}
+														<div className="">
+															<div className="bg-[#f4f4f4] dark:bg-graydark rounded-xl w-full flex flex-col px-2 ">
+																<>
+																	{d?.urls.length > 1 ? (
+																		<>
+																			{d?.urls.map((f) => (
+																				<div className="sm:h-[260px] h-[300px] w-full rounded-xl ">
+																					{f?.type.startsWith("image") ? (
+																						<div className="h-full w-full">
+																							<img
+																								src={f?.content}
+																								className="h-full object-contain bg-black rounded-t-xl w-full"
+																							/>
+																						</div>
+																					) : (
+
+																						<VideoPlayer
+																							key={i}
 																							src={f?.content}
+																							poster={f?.thumbnail}
+																							width={"100%"}
+																							height={"h-full"}
+																						/>
+																					)}
+																				</div>
+																			))}
+																		</>
+																	) : (
+																		<>
+																			<div className="sm:h-[260px] h-[300px] w-full rounded-xl ">
+																				{d?.urls[0]?.type.startsWith("image") ? (
+																					<div className="h-full w-full ">
+																						<img
+																							src={d?.urls[0]?.content}
 																							className="h-full object-contain bg-black rounded-t-xl w-full"
 																						/>
 																					</div>
 																				) : (
-
 																					<VideoPlayer
 																						key={i}
-																						src={f?.content}
-																						poster={f?.thumbnail}
+																						poster={d?.urls[0]?.thumbnail}
+																						src={d?.urls[0]?.content}
 																						width={"100%"}
 																						height={"h-full"}
 																					/>
+																					// <video src={f?.content} controls className="max-h-full" />
 																				)}
 																			</div>
-																		))}
-																	</>
-																) : (
-																	<>
-																		<div className="sm:h-[260px] h-[300px] w-full rounded-xl ">
-																			{d?.urls[0]?.type.startsWith("image") ? (
-																				<div className="h-full w-full ">
-																					<img
-																						src={d?.urls[0]?.content}
-																						className="h-full object-contain bg-black rounded-t-xl w-full"
-																					/>
-																				</div>
-																			) : (
-																				<VideoPlayer
-																					key={i}
-																					poster={d?.urls[0]?.thumbnail}
-																					src={d?.urls[0]?.content}
-																					width={"100%"}
-																					height={"h-full"}
-																				/>
-																				// <video src={f?.content} controls className="max-h-full" />
-																			)}
-																		</div>
-																	</>
-																)}
-															</>
+																		</>
+																	)}
+																</>
 
-															<div className="flex justify-start w-full rounded-b-xl text-sm  bg-blue-700 animate-pulse text-white p-2 px-3 items-center">
-																<a
-																	href={d?.posts?.ctalink}
-																	target="_blank"
-																	className="flex w-full  cursor-pointer items-center gap-2"
-																>
-																	<div>{d?.posts?.cta}</div>
-																	<div>
-																		<GoArrowRight />
-																	</div>
-																</a>
-															</div>
-															<div className="h-[45px] mt-2 sm:h-[55px] w-[100%] flex flex-col">
-																<div className="text-[10px] dark:text-[#b6b0b0] pn:max-sm:text-[10px] text-black w-[100%] font-bold px-1">
-																	{d?.posts.title}
+																<div className="flex justify-start w-full rounded-b-xl text-sm  bg-blue-700 animate-pulse text-white p-2 px-3 items-center">
+																	<a
+																		href={d?.posts?.ctalink}
+																		target="_blank"
+																		className="flex w-full  cursor-pointer items-center gap-2"
+																	>
+																		<div>{d?.posts?.cta}</div>
+																		<div>
+																			<GoArrowRight />
+																		</div>
+																	</a>
 																</div>
-																<div className="text-[10px] dark:text-[#b6b0b0] truncate pn:max-sm:text-[10px] text-black w-[100%] font-medium px-1">
-																	{d?.posts?.desc}
+																<div className="h-[45px] mt-2 sm:h-[55px] w-[100%] flex flex-col">
+																	<div className="text-[10px] dark:text-[#b6b0b0] pn:max-sm:text-[10px] text-black w-[100%] font-bold px-1">
+																		{d?.posts.title}
+																	</div>
+																	<div className="text-[10px] dark:text-[#b6b0b0] truncate pn:max-sm:text-[10px] text-black w-[100%] font-medium px-1">
+																		{d?.posts?.desc}
+																	</div>
 																</div>
 															</div>
 														</div>
+
+														{/* end */}
+														<div className="w-full border-b-[0.5px] pt-1"></div>
 													</div>
+												) : (
+													// normal posts
 
-													{/* end */}
-													<div className="w-full border-b-[0.5px] pt-1"></div>
-												</div>
-											) : (
-												// normal posts
-												<div
-													key={i}
-													className="bg-slate-50 dark:bg-transparent pn:max-md:rounded-2xl"
-												>
-													<Link
-														onClick={() => {
-															if (isMobile) {
-																dispatch(setHide(true));
-															}
-														}}
-														href={
-															isMobile
-																? `/main/feed/newForYou?id=${d?.posts?.community?._id}`
-																: `/main/feed/newForYou/${d?.posts?.community._id}`
-														}
-														className="w-[100%] bg-white dark:bg-transparent flex px-1 justify-between items-center "
+													<div
+														key={i}
+														className="bg-slate-50 dark:bg-transparent pn:max-md:rounded-2xl"
 													>
-														<div className="h-[55px] pn:max-sm:h-[50px] flex flex-row items-center ">
-															<div className=" flex object-scale-down items-center h-[100%] ">
-																<img
-																	src={d?.dps}
-																	className="h-[35px] w-[35px] pn:max-sm:w-[30px] pn:max-sm:h-[30px] pn:max-sm:rounded-[13px] 
-																	rounded-[15px]  ring-1 ring-white dark:ring-[#273142] bg-white dark:bg-bluelight "
-																/>
-															</div>
-															{/* Community name */}
-															<div className="flex flex-col justify-center px-2 items-start">
-																<div className="flex flex-col space-y-[0.5px] justify-start items-start">
-																	<div className="text-[14px] dark:text-[#f5f5f5]  pn:max-sm:text-[12px] font-semibold">
-																		{d?.posts?.community?.title}
-																	</div>
-																	<div className="flex">
-																		<div className="text-[10px] dark:text-[#f5f5f5] pn:max-sm:text-[10px] font-medium text-[#5C5C5C]">
-																			By {d?.posts?.sender?.fullname}
-																		</div>
-																		<div className="text-[10px] dark:text-[#f5f5f5] font-medium text-[#5C5C5C]">
-																			. {formatDate(d?.posts?.createdAt)}
-																		</div>
-																	</div>
-																</div>
-															</div>
-														</div>
-														{/* Animation of join nd bell */}
-														{d?.subs === "unsubscribed" ? (
-															<div
-																onClick={() =>
-																	joinmembers(d?.posts?.community._id, i)
-																}
-																className="bg-[#f5f5f5] dark:bg-selectdark dark:text-[#fff]  p-2 px-4 rounded-xl text-[12px] font-medium text-[#5c5c5c]"
-															>
-																Join
-															</div>
-														) : (
-															<div
-																onClick={() =>
-																	unjoinmembers(d?.posts?.community._id, i)
-																}
-																className=" rounded-xl dark:bg-selectlight dark:text-[#2f2f2f] text-[14px] text-[#5c5c5c]"
-															></div>
-														)}
-													</Link>
-
-													{/* POst */}
-													<Link
-														onClick={() => {
-															if (isMobile) {
-																dispatch(setHide(true));
-															}
-														}}
-														href={
-															isMobile
-																? `/main/feed/newForYou?id=${d?.posts?.community?._id}`
-																: `/main/feed/newForYou/${d?.posts?.community._id}`
-														}
-														className=""
-													>
-														<div
-															className={`bg-[#f4f4f4] dark:bg-[#121212] rounded-xl w-full ${d?.urls.length > 1
-																? "overflow-x-scroll no-scrollbar"
-																: null
-																} flex flex-col justify-center items-center `}
-														>
-															<div className="flex w-full">
-																{d?.urls.length > 1 ? (
-																	<>
-																		{d?.urls.map((f, i) => (
-																			<div className="sm:h-[260px] flex lg:min-w-[360px] h-[300px] w-full rounded-xl ">
-																				{f?.type.startsWith("image") ? (
-																					<div className="h-full w-full relative p-1">
-																						<img
-																							src={f?.content}
-																							className="h-full object-contain bg-black rounded-2xl w-full"
-																						/>
-																						<div className="absolute top-3 right-2">
-																							<div className="w-9  h-9 flex justify-center items-center text-sm font-medium dark:bg-graydark bg-white text-black rounded-full">
-																								{i + 1}/{d?.urls.length}
-																							</div>
-																						</div>
-																					</div>
-																				) : (
-																					<div className="p-1 h-full">
-																						<div className=" rounded-2xl relative h-full overflow-hidden">
-																							<div className="absolute z-10 h-[300px] sm:h-[260px] w-full"></div>
-
-																							<VideoPlayer
-																								key={i}
-																								src={f?.content}
-																								width={"100%"}
-																								height={"h-full"}
-																							/>
-
-																							{/* <video controls src={f?.content}></video> */}
-																							<div className="absolute top-3 right-2">
-																								<div
-																									className="w-9 flex justify-center items-center text-sm font-medium h-9 
-                                                 text-black rounded-full"
-																								>
-																									{i + 1}/{d?.urls.length}
-																								</div>
-																							</div>
-																						</div>
-																					</div>
-																				)}
-																			</div>
-																		))}
-																	</>
-																) : (
-																	<div className="sm:h-[260px] h-[300px] w-full rounded-xl ">
-																		{
-																			d?.urls[0]?.type.startsWith("image") ? (
-																				<div className="h-full w-full p-1">
-																					<img
-																						src={d?.urls[0]?.content}
-																						className="h-full object-contain bg-black rounded-2xl w-full"
-																					/>
-																				</div>
-																			) : (
-																				<div className="p-1 h-full">
-																					<div className=" rounded-2xl h-full overflow-hidden relative ">
-																						<div className="absolute z-10 h-[300px] sm:h-[260px] w-full"></div>
-
-																						{/* <MediaPlayer
-                                            src={d?.urls[0]?.content}
-                                            onQualitiesChange={480}
-                                            className=" z-0 h-[300px] sm:h-[260px]"
-                                          >
-                                            <MediaProvider />
-                                            <DefaultVideoLayout
-                                              thumbnails={d?.urls[0]?.content}
-                                              icons={defaultLayoutIcons}
-                                            />
-                                          </MediaPlayer> */}
-																						<VideoPlayer
-																							key={i}
-																							src={d?.urls[0]?.content}
-																							width={"100%"}
-																							height={"h-full"}
-																						/>
-
-																						{/* <video controls src={d?.urls[0]?.content}></video> */}
-																					</div>
-																				</div>
-																			)
-																			// <video src={f?.content} controls className="max-h-full" />
-																		}
-																	</div>
-																)}
-															</div>
-
-															<div className="h-[20px] sm:h-[25px] px-2 w-[100%] flex flex-col">
-																<div className="text-[14px] pn:max-sm:text-[12px] dark:text-[#f5f5f5] text-black w-[100%] font-medium text-ellipsis overflow-hidden px-1">
-																	{d?.posts.title}
-																</div>
-															</div>
-														</div>
-													</Link>
-
-													{/* end */}
-													<div className="px-2 w-full h-[40px] flex justify-between items-center">
 														<Link
 															onClick={() => {
 																if (isMobile) {
@@ -776,92 +676,270 @@ export default function NewforyouLayout({ children }) {
 																	? `/main/feed/newForYou?id=${d?.posts?.community?._id}`
 																	: `/main/feed/newForYou/${d?.posts?.community._id}`
 															}
-															className="flex flex-row gap-2 items-center  w-[100%]"
+															className="w-[100%] bg-white dark:bg-transparent flex px-1 justify-between items-center "
 														>
-															<div className="flex flex-row justify-start mt-1 z-0">
-																<div className="h-[20px] w-[20px] rounded-lg z-30  bg-slate-200 ">
+															<div className="h-[55px] pn:max-sm:h-[50px] flex flex-row items-center ">
+																<div className=" flex object-scale-down items-center h-[100%] ">
 																	<img
-																		src={d?.memdps[0]}
-																		className="h-[20px] w-[20px] rounded-2xl bg-white dark:bg-bluelight "
+																		src={d?.dps}
+																		className="h-[35px] w-[35px] pn:max-sm:w-[30px] pn:max-sm:h-[30px] pn:max-sm:rounded-[13px] 
+																	rounded-[15px]  ring-1 ring-white dark:ring-[#273142] bg-white dark:bg-bluelight "
 																	/>
 																</div>
-																<div className="h-[20px] w-[20px] rounded-lg z-20 -ml-[10px]  bg-slate-300 ">
-																	{" "}
-																	<img
-																		src={d?.memdps[1]}
-																		className="h-[20px] w-[20px] rounded-2xl bg-white dark:bg-bluelight "
-																	/>
-																</div>
-																<div className="h-[20px] w-[20px] rounded-lg z-10 -ml-[10px] bg-slate-400 ">
-																	{" "}
-																	<img
-																		src={d?.memdps[2]}
-																		className="h-[20px] w-[20px] rounded-2xl bg-white dark:bg-blueligh "
-																	/>
-																</div>
-																<div className="h-[20px] w-[20px] rounded-lg z-0 -ml-[10px] bg-slate-500 ">
-																	{" "}
-																	<img
-																		src={d?.memdps[3]}
-																		className="h-[20px] w-[20px] rounded-2xl bg-white dark:bg-blueligh "
-																	/>
+																{/* Community name */}
+																<div className="flex flex-col justify-center px-2 items-start">
+																	<div className="flex flex-col space-y-[0.5px] justify-start items-start">
+																		<div className="text-[14px] dark:text-[#f5f5f5]  pn:max-sm:text-[12px] font-semibold">
+																			{d?.posts?.community?.title}
+																		</div>
+																		<div className="flex">
+																			<div className="text-[10px] dark:text-[#f5f5f5] pn:max-sm:text-[10px] font-medium text-[#5C5C5C]">
+																				By {d?.posts?.sender?.fullname}
+																			</div>
+																			<div className="text-[10px] dark:text-[#f5f5f5] font-medium text-[#5C5C5C]">
+																				. {formatDate(d?.posts?.createdAt)}
+																			</div>
+																		</div>
+																	</div>
 																</div>
 															</div>
-															<div className="text-[12px] self-center mt-1 font-medium">
-																{d?.posts?.community?.memberscount}{" "}
-																<span>
-																	{d?.posts?.community?.memberscount > 1
-																		? "Members"
-																		: "Member"}
-																</span>
+															{/* Animation of join nd bell */}
+															{d?.subs === "unsubscribed" ? (
+																<div
+																	onClick={() =>
+																		joinmembers(d?.posts?.community._id, i)
+																	}
+																	className="bg-[#f5f5f5] dark:bg-selectdark dark:text-[#fff]  p-2 px-4 rounded-xl text-[12px] font-medium text-[#5c5c5c]"
+																>
+																	Join
+																</div>
+															) : (
+																<div
+																	onClick={() =>
+																		unjoinmembers(d?.posts?.community._id, i)
+																	}
+																	className=" rounded-xl dark:bg-selectlight dark:text-[#2f2f2f] text-[14px] text-[#5c5c5c]"
+																></div>
+															)}
+														</Link>
+
+														{/* POst */}
+														<Link
+															onClick={() => {
+																if (isMobile) {
+																	dispatch(setHide(true));
+																}
+															}}
+															href={
+																isMobile
+																	? `/main/feed/newForYou?id=${d?.posts?.community?._id}`
+																	: `/main/feed/newForYou/${d?.posts?.community._id}`
+															}
+															className=""
+														>
+															<div
+																className={`bg-[#f4f4f4] dark:bg-[#121212] rounded-xl w-full ${d?.urls.length > 1
+																	? "overflow-x-scroll no-scrollbar"
+																	: null
+																	} flex flex-col justify-center items-center `}
+															>
+																<div className="flex w-full">
+																	{d?.urls.length > 1 ? (
+																		<>
+																			{d?.urls.map((f, i) => (
+																				<div className="sm:h-[260px] flex lg:min-w-[360px] h-[300px] w-full rounded-xl ">
+																					{f?.type.startsWith("image") ? (
+																						<div className="h-full w-full relative p-1">
+																							<img
+																								src={f?.content}
+																								className="h-full object-contain bg-black rounded-2xl w-full"
+																							/>
+																							<div className="absolute top-3 right-2">
+																								<div className="w-9  h-9 flex justify-center items-center text-sm font-medium dark:bg-graydark bg-white text-black rounded-full">
+																									{i + 1}/{d?.urls.length}
+																								</div>
+																							</div>
+																						</div>
+																					) : (
+																						<div className="p-1 h-full">
+																							<div className=" rounded-2xl relative h-full overflow-hidden">
+																								<div className="absolute z-10 h-[300px] sm:h-[260px] w-full"></div>
+
+																								<VideoPlayer
+																									key={i}
+																									src={f?.content}
+																									width={"100%"}
+																									height={"h-full"}
+																								/>
+
+																								{/* <video controls src={f?.content}></video> */}
+																								<div className="absolute top-3 right-2">
+																									<div
+																										className="w-9 flex justify-center items-center text-sm font-medium h-9 
+                                                 text-black rounded-full"
+																									>
+																										{i + 1}/{d?.urls.length}
+																									</div>
+																								</div>
+																							</div>
+																						</div>
+																					)}
+																				</div>
+																			))}
+																		</>
+																	) : (
+																		<div className="sm:h-[260px] h-[300px] w-full rounded-xl ">
+																			{
+																				d?.urls[0]?.type.startsWith("image") ? (
+																					<div className="h-full w-full p-1">
+																						<img
+																							src={d?.urls[0]?.content}
+																							className="h-full object-contain bg-black rounded-2xl w-full"
+																						/>
+																					</div>
+																				) : (
+																					<div className="p-1 h-full">
+																						<div className=" rounded-2xl h-full overflow-hidden relative ">
+																							<div className="absolute z-10 h-[300px] sm:h-[260px] w-full"></div>
+
+																							{/* <MediaPlayer
+                                            src={d?.urls[0]?.content}
+                                            onQualitiesChange={480}
+                                            className=" z-0 h-[300px] sm:h-[260px]"
+                                          >
+                                            <MediaProvider />
+                                            <DefaultVideoLayout
+                                              thumbnails={d?.urls[0]?.content}
+                                              icons={defaultLayoutIcons}
+                                            />
+                                          </MediaPlayer> */}
+																							<VideoPlayer
+																								key={i}
+																								src={d?.urls[0]?.content}
+																								width={"100%"}
+																								height={"h-full"}
+																							/>
+
+																							{/* <video controls src={d?.urls[0]?.content}></video> */}
+																						</div>
+																					</div>
+																				)
+																				// <video src={f?.content} controls className="max-h-full" />
+																			}
+																		</div>
+																	)}
+																</div>
+
+																<div className="h-[20px] sm:h-[25px] px-2 w-[100%] flex flex-col">
+																	<div className="text-[14px] pn:max-sm:text-[12px] dark:text-[#f5f5f5] text-black w-[100%] font-medium text-ellipsis overflow-hidden px-1">
+																		{d?.posts.title}
+																	</div>
+																</div>
 															</div>
 														</Link>
-														<div className="flex gap-2  ">
-															{/* Like button */}
-															<div
-																onClick={() =>
-																	handleLike(d?.posts?._id, d?.liked)
-																}
-																className={`flex   justify-center rounded-xl items-center gap-1 ${d?.liked
-																	? "bg-yellow-200 dark:text-black dark:bg-yellow-300 text-white"
-																	: "bg-[#f4f4f4] dark:bg-bluedark"
-																	}  p-2`}
-															>
-																<PiHandsClapping className={``} />
-																<div className="text-[12px] ">
-																	{d?.posts?.likes}
-																</div>
-															</div>
-															<div
+
+														{/* end */}
+														<div className="px-2 w-full h-[40px] flex justify-between items-center">
+															<Link
 																onClick={() => {
 																	if (isMobile) {
-																		setShareValue(
-																			`https://grovyo.com/main/feed/newForYou?id=${d?.posts?.community?._id}#${d?.posts?._id}`
-																		);
-																		// setShareValue(
-																		// 	`http://172.20.10.3:3000/main/feed/newForYou?id=${d?.posts?.community?._id}#${d?.posts?._id}`
-																		// );
-																	} else {
-																		setShareValue(
-																			`https://grovyo.com/main/feed/newForYou/${d?.posts?.community?._id}#${d?.posts?._id}`
-																		);
-																		// setShareValue(
-																		// 	`http://172.20.10.3:3000/main/feed/newForYou?id=${d?.posts?.community?._id}#${d?.posts?._id}`
-																		// );
+																		dispatch(setHide(true));
 																	}
-																	setShare(true);
 																}}
-																className="rounded-xl bg-[#f4f4f4] dark:bg-bluedark p-2"
+																href={
+																	isMobile
+																		? `/main/feed/newForYou?id=${d?.posts?.community?._id}`
+																		: `/main/feed/newForYou/${d?.posts?.community._id}`
+																}
+																className="flex flex-row gap-2 items-center  w-[100%]"
 															>
-																<VscSend />
+																<div className="flex flex-row justify-start mt-1 z-0">
+																	<div className="h-[20px] w-[20px] rounded-lg z-30  bg-slate-200 ">
+																		<img
+																			src={d?.memdps[0]}
+																			className="h-[20px] w-[20px] rounded-2xl bg-white dark:bg-bluelight "
+																		/>
+																	</div>
+																	<div className="h-[20px] w-[20px] rounded-lg z-20 -ml-[10px]  bg-slate-300 ">
+																		{" "}
+																		<img
+																			src={d?.memdps[1]}
+																			className="h-[20px] w-[20px] rounded-2xl bg-white dark:bg-bluelight "
+																		/>
+																	</div>
+																	<div className="h-[20px] w-[20px] rounded-lg z-10 -ml-[10px] bg-slate-400 ">
+																		{" "}
+																		<img
+																			src={d?.memdps[2]}
+																			className="h-[20px] w-[20px] rounded-2xl bg-white dark:bg-blueligh "
+																		/>
+																	</div>
+																	<div className="h-[20px] w-[20px] rounded-lg z-0 -ml-[10px] bg-slate-500 ">
+																		{" "}
+																		<img
+																			src={d?.memdps[3]}
+																			className="h-[20px] w-[20px] rounded-2xl bg-white dark:bg-blueligh "
+																		/>
+																	</div>
+																</div>
+																<div className="text-[12px] self-center mt-1 font-medium">
+																	{d?.posts?.community?.memberscount}{" "}
+																	<span>
+																		{d?.posts?.community?.memberscount > 1
+																			? "Members"
+																			: "Member"}
+																	</span>
+																</div>
+															</Link>
+															<div className="flex gap-2  ">
+																{/* Like button */}
+																<div
+																	onClick={() =>
+																		handleLike(d?.posts?._id, d?.liked)
+																	}
+																	className={`flex   justify-center rounded-xl items-center gap-1 ${d?.liked
+																		? "bg-yellow-200 dark:text-black dark:bg-yellow-300 text-white"
+																		: "bg-[#f4f4f4] dark:bg-bluedark"
+																		}  p-2`}
+																>
+																	<PiHandsClapping className={``} />
+																	<div className="text-[12px] ">
+																		{d?.posts?.likes}
+																	</div>
+																</div>
+																<div
+																	onClick={() => {
+																		if (isMobile) {
+																			setShareValue(
+																				`https://grovyo.com/main/feed/newForYou?id=${d?.posts?.community?._id}#${d?.posts?._id}`
+																			);
+																			// setShareValue(
+																			// 	`http://172.20.10.3:3000/main/feed/newForYou?id=${d?.posts?.community?._id}#${d?.posts?._id}`
+																			// );
+																		} else {
+																			setShareValue(
+																				`https://grovyo.com/main/feed/newForYou/${d?.posts?.community?._id}#${d?.posts?._id}`
+																			);
+																			// setShareValue(
+																			// 	`http://172.20.10.3:3000/main/feed/newForYou?id=${d?.posts?.community?._id}#${d?.posts?._id}`
+																			// );
+																		}
+																		setShare(true);
+																	}}
+																	className="rounded-xl bg-[#f4f4f4] dark:bg-bluedark p-2"
+																>
+																	<VscSend />
+																</div>
 															</div>
 														</div>
+														<div className="w-full border-b-[0.5px] "></div>
 													</div>
-													<div className="w-full border-b-[0.5px] "></div>
-												</div>
-											)}
-										</>
-									))}
+
+
+												)}
+											</>
+										))}
+									</>
 								</div>
 							</InfiniteScroll>
 						</div>
