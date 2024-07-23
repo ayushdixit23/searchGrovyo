@@ -48,11 +48,13 @@ function Sidebar() {
       border-r-2 absolute flex flex-col justify-evenly items-center">
         {data?.dp !== null ? (
           <div className="h-[40px] w-[40px] ">
-            <img
-              className="w-full h-full object-cover rounded-[18px] ring-1 ring-white dark:ring-[#273142] bg-white dark:bg-bluedark "
-              src={data?.dp}
-            //alt="pix"
-            />
+            <Link href={`/${data?.username}`} className="w-full h-full">
+              <img
+                className="w-full h-full object-cover rounded-[18px] ring-1 ring-white dark:ring-[#273142] bg-white dark:bg-bluedark "
+                src={data?.dp}
+              //alt="pix"
+              />
+            </Link>
           </div>
         ) : (
           <div className="h-[40px] w-[40px] rounded-[18px] bg-[#f5f5f5] ring-1 ring-white shadow-sm animate-pulse "></div>
