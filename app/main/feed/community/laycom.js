@@ -288,13 +288,14 @@ export default function CommunityLayout({ children }) {
       {!id && (
         <div className="w-[100%] h-screen bg-white dark:bg-graydark flex pn:max-md:justify-center ">
           <div className=" select-none lg:w-[27%] md:w-[32%] sm:w-[37%] flex flex-col items-center md:border-r-2 border-[#f7f7f7] dark:border-[#131619] self-end ">
+            {/* <div className="h-[100vh] pn:max-sm:h-[16vh]"></div> */}
             <div className="h-[10vh] pn:max-sm:h-[16vh]"></div>
 
             <div
               className={`h-[92vh] pn:max-sm:h-[87vh] ${styles.customScrollbar} overflow-auto `}
             >
               {/* post 1*/}
-              <div className=" w-full mt-[25px] rounded-xl mb-[6px]">
+              <div className=" w-full mt-[25px] md:mt-[125px] rounded-xl mb-[6px]">
                 <div className="bg-[#151315] bg-com-image bg-cover bg-center w-full rounded-2xl p-2 text-white text-center h-[160px] flex flex-col justify-evenly items-center">
                   <div className="font-semibold">Don't have a community ?</div>
                   <div className="text-[12px] w-[85%]">
@@ -581,20 +582,20 @@ export default function CommunityLayout({ children }) {
                         <div className="px-2 w-full h-[40px] flex justify-between items-center">
                           <div className="flex flex-row gap-2 items-center  w-[100%]">
                             <div className="flex flex-row justify-start mt-1 ">
-                              <div className="h-[20px] w-[20px] rounded-lg z-30 bg-slate-200 ">
+                              <div className="h-[20px] w-[20px] rounded-lg  bg-slate-200 ">
                                 <img
                                   src={d?.memdps[0]}
                                   className="h-[20px] w-[20px] rounded-2xl bg-yellow-300 "
                                 />
                               </div>
-                              <div className="h-[20px] w-[20px] rounded-lg z-20 -ml-[10px] bg-slate-300 ">
+                              <div className="h-[20px] w-[20px] rounded-lg -ml-[10px] bg-slate-300 ">
                                 {" "}
                                 <img
                                   src={d?.memdps[1]}
                                   className="h-[20px] w-[20px] rounded-2xl bg-yellow-300 "
                                 />
                               </div>
-                              <div className="h-[20px] w-[20px] rounded-lg z-10 -ml-[10px] bg-slate-400 ">
+                              <div className="h-[20px] w-[20px] rounded-lg  -ml-[10px] bg-slate-400 ">
                                 {" "}
                                 <img
                                   src={d?.memdps[2]}
