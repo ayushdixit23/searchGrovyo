@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import VideoPlayer from "./VideoPlayer";
 // import wait from "../../assets/Images/wait.png";
+import styles from "../CustomScrollbarComponent.module.css";
 
 function Community(props) {
   const [community, setCommunity] = useState([]);
@@ -71,11 +72,9 @@ function Community(props) {
                   </div>
 
                   <div
-
-
                     // ref={i === 0 ? scrollContainerRef : null}
                     // ref={scrollContainerRef}
-                    className="w-full sm:px-7 overflow-x-scroll sm:justify-start justify-center items-center no-scrollbar flex gap-6">
+                    className={`w-full sm:px-7 overflow-auto dark:${styles.customScrollbar} sm:justify-start justify-center items-center flex gap-6`}>
                     {
                       d?.communityWithPosts.map((f, j) => (
                         <div key={j} className="flex flex-col gap-2 w-full min-w-full pp:max-w-[400px] pp:min-w-[250px] justify-center ">
@@ -91,7 +90,6 @@ function Community(props) {
                                 <img src={f?.dp} className=" h-full w-full min-w-full pp:min-w-[250px] rounded-xl" />
                               </a>
                               :
-
                               <a
                                 href={`https://grovyo.com/main/feed/newForYou/${d?._id}#${f?.id}`}
                                 className="w-full absolute top-0 left-0 z-50 h-full"

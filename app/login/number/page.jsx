@@ -16,20 +16,17 @@ import { decryptaes } from "@/app/utils/useful";
 import { FaPhoneAlt } from "react-icons/fa";
 import { MdEmail, MdOutlineMailOutline } from "react-icons/md";
 import dynamic from "next/dynamic";
+import { initOTPless } from "@/app/utils/initOTPless";
 const DynamicOtpInput = dynamic(() => import("otp-input-react"), {
   ssr: false,
 });
 
 function page() {
   const [otp, setOtp] = useState("");
-  const otpElementRef = useRef(null);
   const router = useRouter();
   const [number, setNumber] = useState("");
   const [loading, setLoading] = useState(false);
   const [showOTP, setShowOTP] = useState(false);
-  const [seconds, setSeconds] = useState(30);
-  const [isActive, setIsActive] = useState(true);
-  const [come, setCome] = useState(0);
   const { f, setData } = useAuthContext();
   const otpInputRef = useRef(null);
   const [change, setChange] = useState(1);
@@ -51,33 +48,6 @@ function page() {
       toast.error("Something Went Wrong!");
       console.log(error);
     }
-  };
-
-  useEffect(() => {
-    let interval;
-    if (seconds === 0) {
-      setSeconds(0);
-      setIsActive(true);
-      setCome(come + 1);
-    }
-    if (isActive) {
-      interval = setInterval(() => {
-        setSeconds((prevSeconds) => prevSeconds - 1);
-      }, 1000);
-      if (seconds === 0) {
-        setSeconds(0);
-        setCome(1);
-      }
-    } else if (!isActive && seconds !== 0) {
-      clearInterval(interval);
-    }
-
-    return () => clearInterval(interval);
-  }, [isActive, seconds]);
-
-  const toggleTimer = () => {
-    onSignup();
-    setSeconds(30);
   };
 
   function generateRandomString(length) {
@@ -184,55 +154,55 @@ function page() {
       });
   };
 
-  function onCaptchaVerify() {
-    if (!window.recaptchaVerifier) {
-      window.recaptchaVerifier = new RecaptchaVerifier(
-        auth,
-        "recaptcha-container",
-        {
-          size: "invisible",
-          callback: (response) => {
-            onSignup();
-          },
-          "expired-callback": () => {},
-        }
-      );
-    }
-  }
+  // function onCaptchaVerify() {
+  //   if (!window.recaptchaVerifier) {
+  //     window.recaptchaVerifier = new RecaptchaVerifier(
+  //       auth,
+  //       "recaptcha-container",
+  //       {
+  //         size: "invisible",
+  //         callback: (response) => {
+  //           onSignup();
+  //         },
+  //         "expired-callback": () => {},
+  //       }
+  //     );
+  //   }
+  // }
 
-  function onSignup() {
-    setLoading(true);
-    onCaptchaVerify();
-    setSeconds(30);
-    const appVerifier = window.recaptchaVerifier;
+  // function onSignup() {
+  //   setLoading(true);
+  //   onCaptchaVerify();
+  //   setSeconds(30);
+  //   const appVerifier = window.recaptchaVerifier;
 
-    const formatPh = "+91" + number;
-    signInWithPhoneNumber(auth, formatPh, appVerifier)
-      .then((confirmationResult) => {
-        window.confirmationResult = confirmationResult;
-        setLoading(false);
-        setShowOTP(true);
-        toast.success("Successfully!");
-      })
-      .catch((error) => {
-        console.log(error);
-        setLoading(false);
-      });
-  }
+  //   const formatPh = "+91" + number;
+  //   signInWithPhoneNumber(auth, formatPh, appVerifier)
+  //     .then((confirmationResult) => {
+  //       window.confirmationResult = confirmationResult;
+  //       setLoading(false);
+  //       setShowOTP(true);
+  //       toast.success("Successfully!");
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //       setLoading(false);
+  //     });
+  // }
 
-  function onOTPVerify() {
-    setLoading(true);
-    window.confirmationResult
-      .confirm(otp)
-      .then(async (res) => {
-        setLoading(false);
-        fetchid();
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-      });
-  }
+  // function verifyOTP() {
+  //   setLoading(true);
+  //   window.confirmationResult
+  //     .confirm(otp)
+  //     .then(async (res) => {
+  //       setLoading(false);
+  //       fetchid();
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       setLoading(false);
+  //     });
+  // }
   const handleCreate = async () => {
     setLoad(true);
 
@@ -264,7 +234,7 @@ function page() {
       if (event.key === "Enter") {
         event.preventDefault();
         if (number.length === 10) {
-          onSignup();
+          phoneAuth(event);
         }
       }
     };
@@ -285,7 +255,7 @@ function page() {
       if (event.key === "Enter") {
         event.preventDefault();
         if (otp.length === 6) {
-          onOTPVerify();
+          verifyOTP(event);
         }
       }
     };
@@ -300,6 +270,65 @@ function page() {
       }
     };
   }, [otp, otpInputRef]);
+
+  const phoneAuth = (e) => {
+    e.preventDefault();
+
+    if (number.length !== 10) {
+      return toast.error("Please Enter 10 digit number");
+    }
+    setLoading(true);
+
+    window?.OTPlessSignin.initiate({
+      channel: "PHONE",
+      phone: number,
+      countryCode: "+91",
+    });
+
+    setLoading(false);
+    setShowOTP(true);
+    toast.success("Otp Sent Successfully!");
+  };
+
+  const verifyOTP = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    // Assuming OTPlessSignin.verify returns a promise
+    try {
+      const result = await window?.OTPlessSignin.verify({
+        channel: "PHONE",
+        phone: number,
+        otp: otp,
+        countryCode: "+91",
+      });
+
+      // console.log(result, result.status, "result");
+      if (result.success) {
+        await fetchid();
+      } else {
+        toast.error("OTP Verification Failed");
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error("OTP Verification Error:", error);
+      toast.error("An error occurred during OTP verification");
+      setLoading(false);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const callback = (userinfo) => {
+    const mobileMap = otplessUser?.identities.find(
+      (item) => item.identityType === "MOBILE"
+    )?.identityValue;
+
+    const token = otplessUser?.token;
+
+    const mobile = mobileMap?.identityValue;
+  };
+  useEffect(() => initOTPless(callback), []);
 
   return (
     <div
@@ -401,7 +430,7 @@ function page() {
                     </div>
                     <div
                       //onClick={onSignup}
-                      onClick={onOTPVerify}
+                      onClick={verifyOTP}
                       className="h-[50px] w-full select-none cursor-pointer bg-[#0066ff] flex items-center justify-center rounded-2xl text-white "
                     >
                       {loading && (
@@ -426,7 +455,7 @@ function page() {
                       <input
                         onKeyPress={(e) => {
                           if (e.key === "Enter") {
-                            onSignup();
+                            phoneAuth(e);
                           }
                         }}
                         type="tel"
@@ -440,7 +469,7 @@ function page() {
                       className={`w-full ${change === 1 ? "py-3" : "hidden"} `}
                     >
                       <div
-                        onClick={onSignup}
+                        onClick={phoneAuth}
                         // onClick={fetchid}
                         className="h-[50px] w-full select-none cursor-pointer bg-[#0066ff] flex items-center justify-center rounded-2xl text-white "
                       >

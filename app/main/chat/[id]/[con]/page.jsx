@@ -1156,15 +1156,15 @@ const Components = () => {
                     reply && replyId ? "h-[76%]" : "h-[80%]"
                   }`}
                 >
-                  {/*Put the scroll bar always on the bottom*/}
+               
                   <InfiniteScroll
                     dataLength={messages?.length}
                     next={loadmore}
                     style={{
                       display: "flex",
                       flexDirection: "column-reverse",
-                    }} //To put endMessage and loader to the top.
-                    inverse={true} //
+                    }} 
+                    inverse={true}
                     hasMore={end}
                     height={"100%"}
                     loader={
@@ -1277,7 +1277,7 @@ const Components = () => {
                         reply && replyId ? "" : "-mt-2"
                       }  w-full dark:bg-bluelight`}
                     >
-                      {/* <div onClick={() => loadmore()}>Load More</div> */}
+                  
 
                       {reply && replyId && (
                         <div className="flex justify-between p-1 px-2 rounded-[10px] m-1 items-center dark:text-white text-black">
