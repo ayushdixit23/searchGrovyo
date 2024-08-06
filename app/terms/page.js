@@ -59,10 +59,14 @@ const page = () => {
 						<p>Grovyo is not liable for any direct, indirect, incidental, or consequential damages arising from your use of the app.</p>
 					</div>
 					<div>
-						<h3 className="text-xl font-medium">6. Refund, Cancellation, and Shipping Policy</h3>
-						<p>Cancellation Policy: Users can cancel their orders up to 12 hours from the time of order placement. To cancel an order, please use the cancel button within the app during this window.</p>
-						<p>Refund Policy: Users are entitled to a refund within 48 hours of order delivery. A return fee of 40 INR will be charged for processing refunds and returns. Neither Grovyo nor the seller will be liable for this charge.</p>
-						<p>Shipping Policy: All orders will be shipped within the time frame provided at the time of purchase. Delivery times may vary based on location and shipping method.</p>
+						<h3 className="text-xl pb-2 font-medium">6. Refund, Cancellation, and Shipping Policy</h3>
+						<p>Cancellation Policy: Users can cancel their orders up to 12 hours from the time of order placement. To cancel an order, please use the cancel button within the app during this window.
+						</p>
+						<p className="py-2">Refund Policy: Users are entitled to a refund within 48 hours of order delivery. A return fee of 40 INR will be charged for processing refunds and returns. Neither Grovyo nor the seller will be liable for this charge. Refunds are available for both physical and digital products.
+						</p>
+						<p>Shipping Policy: Products offered can be either physical or digital. For physical products, please review the specific shipping details and prices available in the seller's store section.
+							For digital products, there are no shipping charges.
+							If you have any questions regarding the nature of the products offered, please contact customer support for confirmation.</p>
 					</div>
 					<div>
 						<h3 className="text-xl font-medium">7. Account Deletion</h3>

@@ -624,7 +624,7 @@ function page() {
                   </div>
                 </div>
               </Link>
-              <Link
+              {/* <Link
                 href={"/features/earnwithus"}
                 className="flex flex-col z-40 justify-center items-center pn:max-sm:hover:scale-95 pn:max-lg:scale-90 hover:scale-110 duration-100 "
               >
@@ -645,7 +645,7 @@ function page() {
                     </div>
                   </div>
                 </div>
-              </Link>
+              </Link> */}
               <Link
                 href={"/features/store"}
                 className="flex flex-col justify-center items-center z-40 pn:max-sm:hover:scale-95 pn:max-lg:scale-90 hover:scale-110 duration-100 "

@@ -175,7 +175,7 @@ export default function SettingLayout({ children }) {
 									</div>
 									<div>Create Your Ad</div>
 								</a>
-								<a
+								{/* <a
 									target="_blank"
 									href={`https://grovyo.com/features/earnwithus`}
 									className="text-sm rounded-xl my-2 flex items-center gap-3 sm:max-md:p-2 p-4  py-3  font-semibold"
@@ -184,7 +184,7 @@ export default function SettingLayout({ children }) {
 										<HiCurrencyDollar className="text-2xl" />
 									</div>
 									<div> Earn With US</div>
-								</a>
+								</a> */}
 								<div className="text-sm rounded-xl my-2 flex items-center gap-3 sm:max-md:p-2 p-4  py-3  font-semibold">
 									<div>
 										<FiHelpCircle className="text-xl" />

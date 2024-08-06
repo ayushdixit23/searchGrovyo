@@ -24,6 +24,7 @@ module.exports = {
       backgroundImage: {
         chats: "url('./assets/Header.png')",
         mobilechats: "url('./assets/mobilechat.png')",
+        "banner": "url('./assets/more/banner.png')",
         "com-image": "url('./assets/comimage.png')",
         loginbg: "url('./assets/backlogin.png')",
         piclogin: "url('./assets/piclogin.png')",
