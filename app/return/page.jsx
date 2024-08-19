@@ -14,9 +14,12 @@ const page = () => {
               the policy before returning the order.
             </div>
             <div>
-              <h2 className="text-2xl font-semibold py-3">Timeframe</h2> There
-              is usually a specific timeframe within which returns are accepted.
-              This could be, for example, 30 days from the date of purchase.
+              <h2 className="text-2xl font-semibold py-3">Timeframe</h2>
+              {/* There is usually a specific timeframe within which returns are
+              accepted. This could be, for example, 30 days from the date of
+              purchase. */}
+              Products can be returned within 7 business days from the date of
+              delivery.
             </div>
             <div>
               <h2 className="text-2xl font-semibold py-3">

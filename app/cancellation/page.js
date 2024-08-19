@@ -2,111 +2,103 @@ import React from "react";
 
 const page = () => {
 	return (
-		<div className="container mx-auto p-4">
-			<h1 className="text-3xl font-bold mb-6">Grovyo Cancellation and Refund Policy</h1>
-
-			<section className="mb-8">
-				<h2 className="text-2xl font-semibold mb-4">Cancellation Policy</h2>
-				<div className="space-y-4">
+		<>
+			<div className="flex justify-center items-center select-none">
+				<div className="grid grid-cols-1 w-[85%] sm:w-[70%]  my-2 sm:my-6">
+					<h1 className="text-3xl font-bold py-5">
+						Cancellation & Refund Policy
+					</h1>
 					<div>
-						<h3 className="text-xl font-medium">1. Order Cancellation by Users</h3>
-						<p>Users can cancel their orders within 12 hours of placing the order. To cancel an order:</p>
-						<ul className="list-disc ml-6">
-							<li><strong>In-App Cancellation:</strong> Use the cancel button within the app during the 12-hour window from the order time.</li>
-							<li><strong>Customer Support:</strong> Alternatively, contact our customer service team at <a href="mailto:support@grovyo.com" className="text-blue-500">support@grovyo.com</a> for assistance.</li>
-						</ul>
+						At Grovyo, we understand that circumstances may arise where you need
+						to cancel an order. Our cancellation policy is designed to ensure a
+						fair and transparent process for both our customers and our
+						business. By placing an order on our web application "Web App" or
+						mobile application "Mobile App", you agree to comply with the
+						following cancellation terms:
+					</div>
+					<h1 className="text-2xl font-semibold py-4 sm:py-5">
+						Order Cancellation
+					</h1>
+					<div>
+						Cancellation Window: You may request to cancel an order within 12
+						hours from the time of order placement. After this timeframe, we
+						cannot guarantee that cancellation requests will be accommodated.
 					</div>
 					<div>
-						<h3 className="text-xl font-medium">2. Cancellation Policy for Grovyo</h3>
-						<p>Once an order is confirmed and processed, it cannot be canceled after the 12-hour window. For any issues or disputes regarding cancellation, please reach out to our customer support team.</p>
+						No. Of days taken to process the refund to customer account is 5-7 working days.
+					</div>
+					<div>
+						Cancellation Process: To cancel an order, please contact our
+						customer support team at grovyoinc@gmail.com. Please provide your
+						order details and reasons for cancellation.
+					</div>
+					<div>
+						Order Status: Orders that have already been processed and shipped
+						cannot be canceled. Please refer to our Shipping Policy for further
+						information.
+					</div>
+					<h1 className="text-2xl font-semibold py-4 sm:py-5">Refund Policy</h1>
+					<div>
+						At Grovyo, we are committed to providing high-quality products and
+						services. Our refund policy outlines the terms and conditions for
+						requesting a refund for orders made through our Web App or Mobile
+						App. Please read this policy carefully before making a purchase:
+					</div>
+					<h1 className="text-2xl font-semibold py-4 sm:py-5">
+						Eligibility for Refund
+					</h1>
+					<div>
+						Product Condition: Refunds are only available for products that are
+						damaged, defective, or significantly different from the product
+						description on our platform.
+					</div>
+					<div>
+						Refund Request: To request a refund, please contact our customer
+						support team within 3 days of receiving the product. You will need
+						to provide details of the issue, including clear photos of the
+						product, if applicable.
+					</div>
+					<div>
+						Refund Evaluation: All refund requests are subject to evaluation by
+						our team. We reserve the right to determine the eligibility of the
+						product for a refund based on the provided information and evidence.
+					</div>
+					<h1 className="text-2xl font-semibold py-4 sm:py-5">
+						Refund Process
+					</h1>
+					<div>
+						Refund Methods: Approved refunds will be processed using the
+						original payment method or via store credit, as determined by our
+						team.
+					</div>
+					<div>
+						{/* Refund Timing: Refunds may take 5 business days to process. The
+						timing of the refund may vary depending on factors such as payment
+						method and financial institutions. */}
+						Refund Processing Time: Refunds will be processed within 4 business days after the successful return of the product.
+					</div>
+					<h1 className="text-2xl font-semibold py-4 sm:py-5">
+						Non-Refundable Items
+					</h1>
+					<div>
+						Digital Products: Digital products, subscriptions, and downloadable
+						content are non-refundable once the purchase is completed.
+					</div>
+					<div>
+						Customized or Personalized Items: Items that have been customized or
+						personalized according to your specifications are non-refundable.
+					</div>
+					<h1 className="text-2xl font-semibold py-4 sm:py-5">Contact Us</h1>
+					<div>
+						If you have any questions about our Cancellation and Refund Policy
+						or need assistance with an order, please contact our customer
+						support team at grovyoinc@gmail.com. We are here to assist you and
+						provide the best possible experience.
 					</div>
 				</div>
-			</section>
-
-			<section className="mb-8">
-				<h2 className="text-2xl font-semibold mb-4">Refund Policy</h2>
-				<div className="space-y-4">
-					<div>
-						<h3 className="text-xl font-medium">1. Refund Eligibility</h3>
-						<p>Users are eligible for a refund for physical product purchases if they request it within 48 hours of the order’s delivery. To request a refund:</p>
-						<ul className="list-disc ml-6">
-							<li><strong>Return Request:</strong> Contact our customer service team at <a href="mailto:support@grovyo.com" className="text-blue-500">support@grovyo.com</a> within the 48-hour window.</li>
-							<li><strong>In-App Request:</strong> Alternatively, use the in-app request feature to initiate the refund process.</li>
-						</ul>
-					</div>
-					<div>
-						<h3 className="text-xl font-medium">2. Non-Refundable Items</h3>
-						<p>Refunds are not available for the following:</p>
-						<ul className="list-disc ml-6">
-							<li><strong>Digital Assets:</strong> No refunds are allowed for the purchase of digital assets, including paid topics and exclusive content.</li>
-							<li><strong>Membership Purchases:</strong> No refunds are allowed for membership purchases.</li>
-							<li><strong>Special Conditions:</strong> Refunds are not available for items specified as non-refundable at the time of purchase.</li>
-						</ul>
-					</div>
-					<div>
-						<h3 className="text-xl font-medium">3. Refund Processing</h3>
-						<p>Refunds will be processed as follows:</p>
-						<ul className="list-disc ml-6">
-							<li><strong>Return Fee:</strong> A processing fee of 40 INR will be charged for handling returns and refunds. This fee is applicable per returned item and will be deducted from the total refund amount. Neither Grovyo nor the seller will be liable for this charge.</li>
-							<li><strong>Refund Timeline:</strong> Refunds will be issued to the original payment method within 7-10 business days after the return is processed.</li>
-						</ul>
-					</div>
-				</div>
-			</section>
-
-			<section className="mb-8">
-				<h2 className="text-2xl font-semibold mb-4">Return Policy</h2>
-				<div className="space-y-4">
-					<div>
-						<h3 className="text-xl font-medium">1. Return Eligibility</h3>
-						<p>Returns are accepted for physical items that meet the following criteria:</p>
-						<ul className="list-disc ml-6">
-							<li><strong>Condition:</strong> Items must be in their original, unused condition with all packaging and tags intact.</li>
-							<li><strong>Return Window:</strong> Return requests must be made within 48 hours of delivery.</li>
-						</ul>
-					</div>
-					<div>
-						<h3 className="text-xl font-medium">2. Return Process</h3>
-						<p>To return an item:</p>
-						<ul className="list-disc ml-6">
-							<li><strong>Return Request:</strong> Initiate a return request through the app or by contacting customer support at <a href="mailto:support@grovyo.com" className="text-blue-500">support@grovyo.com</a>.</li>
-							<li><strong>Return Shipping:</strong> Users are responsible for the return shipping costs unless the item is defective or incorrectly shipped.</li>
-						</ul>
-					</div>
-					<div>
-						<h3 className="text-xl font-medium">3. Refund Upon Return</h3>
-						<p>Once the returned item is received and inspected, the refund will be processed according to our refund policy.</p>
-					</div>
-				</div>
-			</section>
-
-			<section className="mb-8">
-				<h2 className="text-2xl font-semibold mb-4">Special Conditions</h2>
-				<div className="space-y-4">
-					<div>
-						<h3 className="text-xl font-medium">1. Workspace User Refunds</h3>
-						<p>For workspace users (creators and businesses), refunds are processed as follows:</p>
-						<ul className="list-disc ml-6">
-							<li><strong>Payment to Workspace Users:</strong> Payments are made 48 hours after the successful delivery of an order. For earnings from sales, ad displays, and exclusive content, payments are made on the 21st of each month directly to the bank accounts provided by workspace users.</li>
-						</ul>
-					</div>
-					<div>
-						<h3 className="text-xl font-medium">2. Shipping and Delivery Issues</h3>
-						<p>If there are issues with shipping or delivery, please contact our customer support team for resolution. We will work to address any concerns and facilitate a satisfactory resolution.</p>
-					</div>
-				</div>
-			</section>
-
-			<section className="mb-8">
-				<h2 className="text-2xl font-semibold mb-4">Contact Us</h2>
-				<p>For any questions or assistance regarding cancellations, refunds, or returns, please contact our customer support team:</p>
-				<p><strong>Email:</strong> <a href="mailto:support@grovyo.com" className="text-blue-500">support@grovyo.com</a></p>
-			</section>
-
-			<p>By using Grovyo, you acknowledge that you have read, understood, and agree to the terms of this Cancellation and Refund Policy.</p>
-		</div>
+			</div>
+		</>
 	);
-
 };
 
 export default page;
