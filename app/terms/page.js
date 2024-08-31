@@ -3,14 +3,14 @@ import React from "react";
 const page = () => {
 	return (
 		<div className="container mx-auto p-4">
-			<h1 className="text-3xl font-bold mb-6">Grovyo Terms and Conditions</h1>
+			<h1 className="text-3xl font-bold mb-6">"Grovyo Platforms Pvt Ltd" Terms and Conditions</h1>
 
 			<section className="mb-8">
 				<h2 className="text-2xl font-semibold mb-4">General Terms and Conditions for All Users</h2>
 				<div className="space-y-4">
 					<div>
 						<h3 className="text-xl font-medium">1. Introduction</h3>
-						<p>Welcome to Grovyo! By using our services, you agree to comply with and be bound by the following terms and conditions ("Terms"). Please review them carefully.</p>
+						<p>Welcome to "Grovyo Platforms Pvt Ltd"! By using our services, you agree to comply with and be bound by the following terms and conditions ("Terms"). Please review them carefully.</p>
 					</div>
 					<div>
 						<h3 className="text-xl font-medium">2. Acceptance of Terms</h3>

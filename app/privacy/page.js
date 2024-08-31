@@ -3,11 +3,11 @@ import React from "react";
 const page = () => {
 	return (
 		<div className="container mx-auto p-4">
-			<h1 className="text-3xl font-bold mb-6">Grovyo Privacy Policy</h1>
+			<h1 className="text-3xl font-bold mb-6">"Grovyo Platforms Pvt Ltd" Privacy Policy</h1>
 
 			<section className="mb-8">
 				<h2 className="text-2xl font-semibold mb-4">Introduction</h2>
-				<p>Welcome to Grovyo! Your privacy is important to us. This Privacy Policy outlines how we collect, use, disclose, and protect your information when you use our services, including our app, website, and related platforms. By using our services, you consent to the practices described in this Privacy Policy.</p>
+				<p>Welcome to "Grovyo Platforms Pvt Ltd"! Your privacy is important to us. This Privacy Policy outlines how we collect, use, disclose, and protect your information when you use our services, including our app, website, and related platforms. By using our services, you consent to the practices described in this Privacy Policy.</p>
 			</section>
 
 			<section className="mb-8">
