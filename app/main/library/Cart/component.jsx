@@ -205,25 +205,25 @@ function page() {
     }
   };
 
-  const placeOrderWithOnline = async () => {
-    try {
-      const productId = data.map((d) => {
-        return d?.c?.product?._id;
-      });
-      const res = await axios.post(`${API}/createrzporder/${user?.id}`, {
-        deliverycharges: 28,
-        productId,
-        total: actualPrice * 100,
-        path: "main/library/Cart",
-      });
+  // const placeOrderWithOnline = async () => {
+  //   try {
+  //     const productId = data.map((d) => {
+  //       return d?.c?.product?._id;
+  //     });
+  //     const res = await axios.post(`${API}/createrzporder/${user?.id}`, {
+  //       deliverycharges: 28,
+  //       productId,
+  //       total: actualPrice * 100,
+  //       path: "main/library/Cart",
+  //     });
 
-      if (res.data.success) {
-        router.push(res.data?.url);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  //     if (res.data.success) {
+  //       router.push(res.data?.url);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <>
@@ -496,8 +496,8 @@ function page() {
 
               <div
                 onClick={() => {
-                  // placeOrderWithCash();
-                  placeOrderWithOnline();
+                  placeOrderWithCash();
+                  // placeOrderWithOnline();
                 }}
                 className="py-2 flex justify-center font-semibold text-[13px] items-center bg-[#2e7eef] text-white rounded-xl px-4"
               >
@@ -883,8 +883,8 @@ function page() {
                 </div>
                 <div
                   onClick={() => {
-                    // placeOrderWithCash();
-                    placeOrderWithOnline();
+                    placeOrderWithCash();
+                    // placeOrderWithOnline();
                   }}
                   className="bg-black rounded-lg flex flex-row justify-center items-center py-3"
                 >

@@ -44,7 +44,7 @@ export default function CommunityLayout({ children }) {
   useEffect(() => {
     axios.get(`${API}/web/products`).then((res) => {
       // axios.get(`http://192.168.1.6:7190/api/web/products`).then((res) => {
-      console.log(res.data, "data")
+
       setDatas(res.data?.products)
     }).catch((err) => {
       console.log(err)
@@ -58,7 +58,7 @@ export default function CommunityLayout({ children }) {
   const comfetchfeed = async () => {
     try {
       const res = await axios.get(`${API}/joinedcomnews3/${data?.id}`);
-      console.log(res.data, "com");
+
       setFeed(res.data?.mergedData);
       setLoading(false)
     } catch (error) {
@@ -700,15 +700,17 @@ export default function CommunityLayout({ children }) {
                               <PiHandsClapping />
                               <div className="text-[12px]">{d?.posts[0]?.likes}</div>
                             </div>
+
+                            {console.log(d, "ghjk")}
                             <div
                               onClick={() => {
                                 if (isMobile) {
                                   setShareValue(
-                                    `https://grovyo.com/main/feed/newForYou?id=${d?.posts?.community?._id}#${d?.posts?._id}`
+                                    `https://grovyo.com/main/feed/newForYou?id=${d?.community?._id}#${d?.posts?.[0]?._id}`
                                   );
                                 } else {
                                   setShareValue(
-                                    `https://grovyo.com/main/feed/newForYou/${d?.posts?.community?._id}#${d?.posts?._id}`
+                                    `https://grovyo.com/main/feed/newForYou/${d?.community?._id}#${d?.posts?.[0]?._id}`
                                   );
                                 }
 
@@ -732,8 +734,9 @@ export default function CommunityLayout({ children }) {
           </div>
 
           <div className="lg:w-[73%] md:w-[68%] sm:w-[63%] pn:max-sm:hidden"> {children}</div>
-        </div>
-      )}
+        </div >
+      )
+      }
       {id && <CommunityFeed id={id} />}
     </>
   );
